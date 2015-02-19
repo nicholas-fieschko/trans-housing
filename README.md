@@ -8,3 +8,5 @@ Main repo for CPSC 439b group project
 
 + Able to access from VM
 + Need to import Google Doc assignments
+
+Usage: `git clone https://git.yale.edu/TransHousing/trans-housing`
