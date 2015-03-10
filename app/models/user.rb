@@ -1,13 +1,12 @@
 class User
   include Mongoid::Document
   field :name, type: String
-  field :email, type: String #login with email
+  field :email, type: String #login with email or phone number..
+# field :phone, type: ? How best stored?
   
-  # field :location, data format ?
-  # see Custom Field Serialization on mongoid.org/en/mongoid/docs/documents.html
+  embeds_one :location  # For now, just one location per user
+  embeds_one :extended_profile, validate: false # Optional
 
-  field :extended_profile,  type: Hash, 
-  							default: { has_extended_profile?: false }
-  
-  validates_presence_of :name
+  validates_presence_of :name, :location #, and one login method:
+  										 # either email or phone
 end
