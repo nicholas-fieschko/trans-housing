@@ -1,6 +1,8 @@
 class Location
   include Mongoid::Document
 
+  embedded_in :user
+  
   # GeoJSON
   # See http://docs.mongodb.org/manual/tutorial/build-a-2dsphere-index/
   # field :geojson # { type: "Point", coordinates: [longitude, latitude] }
