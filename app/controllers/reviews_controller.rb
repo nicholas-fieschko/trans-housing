@@ -12,19 +12,16 @@ class ReviewsController < ApplicationController
   end
 
   def create
+
+  end
+
+  def test
   	@user = User.find(params[:user_id])
-  	@user.reviews.create!(review_params)  
-    redirect_to user_path(params[:user_id])
-    
-  	
+  	@review = @user.reviews.create!
+  	@review.create_token_digest
   end
 
 
-  private
-
-    def review_params
-      params.require(:review).permit(:author, :text, :rating)
-    end
 
 
 end
