@@ -15,7 +15,7 @@ class User
 
   # has_one :inbox ?
 
-  validates_presence_of :name, :location, :gender 
+  #validates_presence_of :name, :location, :gender 
   # and one login method... such as email or phone...
 
 

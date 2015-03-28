@@ -3,7 +3,12 @@ Rails.application.routes.draw do
   root 'locations#index'
 
   resources :sessions
-  resources :users
+  resources :users do
+    resources :reviews
+  end
+
+  post '/users/:user_id/reviews/new' => 'reviews#create'
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
