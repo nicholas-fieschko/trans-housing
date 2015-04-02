@@ -1,7 +1,10 @@
 class Review
   include Mongoid::Document
+  include Mongoid::Timestamps
 
   embedded_in :user
+
+  default_scope -> { order(created_at: :desc) }
 
 #  field :authorID, type: ObjectId
   field :author, type: String
@@ -9,7 +12,7 @@ class Review
   field :rating, type: Integer
 
   field :token_digest, type: String
-  field :sent_at, type: DateTime
+  field :completed, type: Boolean
   
 
   attr_accessor :token
@@ -17,7 +20,7 @@ class Review
   def create_token_digest
     self.token = Review.new_token
     update_attribute(:token_digest,  Review.digest(token))
-    update_attribute(:sent_at, Time.zone.now)
+    update_attribute(:completed, 0)
   end
 
 # Returns the hash digest of the given string.

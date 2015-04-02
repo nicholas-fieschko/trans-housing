@@ -7,6 +7,9 @@ class UsersController < ApplicationController
   	if params[:review]
 	  	@review = @user.reviews.detect { |r| r.id.to_s == params[:review_id] }
     	if @review.update_attributes(review_params)
+    		@user.number_reviews = @user.number_reviews + 1
+    		@user.save
+    		@review.update_attribute(:completed, 1)
 	    	flash[:success] = "Review submitted"
       		redirect_to @user
 	    else
@@ -22,6 +25,7 @@ class UsersController < ApplicationController
 
   def show
   	@user = User.find(params[:id])
+  	@reviews = @user.reviews
   end
 
 

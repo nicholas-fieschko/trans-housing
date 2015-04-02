@@ -1,4 +1,9 @@
-<% if params[:review_id] && params[:euid] && (@review = @user.reviews.detect { |r| r.id.to_s == params[:review_id] }) && @review.authenticated?(:token, params[:euid]) %>
+<% flash.each do |message_type, message| %>
+        <div class="alert alert-<%= message_type %>"><%= message %></div>
+      <% end %>
+
+
+<% if params[:review_id] && params[:euid] && (@review = @user.reviews.detect { |r| r.id.to_s == params[:review_id] }) && @review.authenticated?(:token, params[:euid]) && not(@review.completed) %>
  <h1>Write a review for <%= @user.name %></h1>
 
 <div class="row">
@@ -25,4 +30,14 @@
 
 <% else %>
  <h1><%= @user.name %></h1>
+
+ <div class="col-md-8">
+    <% if @user.number_reviews > 0 %>
+      <h3>Reviews (<%= @user.number_reviews %>)</h3>
+       <ol class="reviews">
+        <%= render @reviews %>
+       </ol>
+    <% end %>
+ </div>
+
 <% end %>

@@ -11,7 +11,10 @@ class User
   embeds_one :contact    # Ranked contact methods
   # embeds_one :preference # User site/security preferences
   embeds_one :extended_profile, validate: false
+
+
   embeds_many :reviews
+  field :number_reviews, type: Integer
 
   # has_one :inbox ?
 

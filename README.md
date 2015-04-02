@@ -1,12 +1,10 @@
-trans-housing
-=============
+Reviews
+=======
 
-Main repo for CPSC 439b group project
-
-> Just a check that we can push from CL to git.yale.edu
-> Seems to be working!
-
-+ Able to access from VM
-+ Need to import Google Doc assignments
-
-Usage: `git clone https://git.yale.edu/TransHousing/trans-housing`
+To-do:
+1. After log-in functionality, encode author into the form sent
+2. Security
+3. Automatic database purges for old uncompleted reviews
+4. valid timestamp
+5. integrate with email app
+6. front end design
