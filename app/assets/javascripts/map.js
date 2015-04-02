@@ -1,9 +1,9 @@
-<style>
-      #map_canvas {
-        width: 1500px;
-        height: 600px;
-      }
-</style>
+// <style>
+//      #map_canvas {
+//        width: 1500px;
+//        height: 600px;
+//      }
+//</style>
 <script src="https://maps.googleapis.com/maps/api/js"></script>
 <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
         var lines = [];
