@@ -1,18 +1,22 @@
 Rails.application.routes.draw do
 
-  root 'locations#index'
+  root to: 'locations#index'
 
   post '/users/:user_id/reviews/new' => 'reviews#create'
   get '/users/:user_id/reviews/test' => 'reviews#test'
   post 'users/:id' => 'users#update'
 
-  resources :sessions
+  resources :sessions, only: [:new, :create, :destroy]
   resources :users do
     resources :reviews
   end
 
 
 
+  match '/signup',  to: 'users#new',            via: 'get'
+  match '/signin',  to: 'sessions#new',         via: 'get'
+  match '/signout', to: 'sessions#destroy',     via: 'delete'
+  
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

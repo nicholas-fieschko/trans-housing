@@ -1,0 +1,15 @@
+%h1 
+  = @user.name
+%ul
+  %li
+    = @user.contact[:email]
+  %li
+    = @user.contact[:phone]
+  %li 
+    = @user.gender[:identity]
+  %li
+    / Note: move the below into a helper method which returns user type text appropriately
+    - if @user.is_provider
+      Provider
+    - else
+      Seeker

@@ -1,0 +1,12 @@
+%header.navbar
+  %span#header-logo.navbar-brand TransHousing
+  - if signed_in?
+    .navbar-right
+      %span.navbar-brand
+        = current_user.name
+        = link_to "Log out", signout_path, method: "delete"
+  - else
+    .btn.btn-default.navbar-btn.navbar-right 
+      = link_to "Sign up", signup_path
+    .btn.btn-default.navbar-btn.navbar-right 
+      = link_to "Log in", signin_path
