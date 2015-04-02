@@ -1,7 +1,9 @@
 class User
   include Mongoid::Document
+  include Mongoid::Attributes::Dynamic
   include ActiveModel::SecurePassword
   field :name, type: String
+  field :is_provider, type: Boolean
 
   embeds_one :location   # For now, just one location per user.. 
                          # In future, useful to have multiple locations
@@ -19,9 +21,28 @@ class User
   # and one login method... such as email or phone...
 
 
-  field :password_digest
+  field :is_admin, type: Boolean
+  field :remember_token, type: String
+  field :password_digest, type: String
 
   has_secure_password
+
+  before_create :create_remember_token
+
+  def User.new_remember_token
+    SecureRandom.urlsafe_base64
+  end
+
+  def User.digest(token)
+    Digest::SHA1.hexdigest(token.to_s)
+  end
+
+    private
+
+    def create_remember_token
+      self.remember_token = User.digest(User.new_remember_token)
+    end
+
 end
 
 class Gender
@@ -36,6 +57,7 @@ class Gender
   field :their, type: String
   field :them, type: String
 
+  before_save { self.identity = identity.downcase }
 end
 
 class Contact
