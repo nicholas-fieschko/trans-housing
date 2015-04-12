@@ -1,4 +1,5 @@
 class User
+	#hi
   include Mongoid::Document
   include ActiveModel::SecurePassword
   field :name, type: String
