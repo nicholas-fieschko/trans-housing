@@ -10,7 +10,7 @@ class User
                          # to match ability to grab lunch for someone near
                          # work, etc.
   embeds_one :gender
-  embeds_one :contact    # Ranked contact methods
+  has_one :contact    # Ranked contact methods
   embeds_one :preference_profile # User site/security preferences
   embeds_one :extended_profile
 
@@ -62,25 +62,29 @@ class Gender
   field :their, type: String
   field :them, type: String
 
-  # VALIDATE: No custom pronoun text if custom_pronouns is false,
+  # VALIDATE TO-DO: No custom pronoun text if custom_pronouns is false,
   # or if "trans" is false!
   validates_presence_of :identity, :trans
 
-  before_save { self.identity = self.identity.downcase }
+  before_save { self.identity = identity.to_s.downcase }
 end
 
 class Contact
   include Mongoid::Document
-  embedded_in :user
+  belongs_to :user
 
   field :preferred_contact # How best to set?
   field :email, type: String
   field :phone, type: String
 
-  validates :email, uniqueness: true, 
-                    presence: true, unless: ->(contact){contact.phone.present?}
-  validates :phone, uniqueness: true,
-                    presence: true, unless: ->(contact){contact.email.present?}
+  validates :email, presence: true, unless: ->(contact){contact.phone.present?}
+  validates :phone, presence: true, unless: ->(contact){contact.email.present?}
+  
+  # Does not work: MongoDB cannot enforce uniqueness on embedded docs.
+  # Best solution to-do: change to has_one relationship instead of embeds_one.
+  index( { username: 1 },{ unique: true, sparse: true } )
+  index( { phone: 1 },{ unique: true, sparse: true } )
+  
   before_save { self.email = email.downcase }
 end
 
