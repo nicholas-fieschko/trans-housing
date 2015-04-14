@@ -1,5 +1,6 @@
 %header.navbar
-  %span#header-logo.navbar-brand TransHousing
+  %span#header-logo.navbar-brand 
+    = link_to "TransHousing", root_path
   - if signed_in?
     .navbar-right
       %span.navbar-brand
