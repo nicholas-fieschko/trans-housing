@@ -1,24 +1,17 @@
-// <style>
-//      #map_canvas {
-//        width: 1500px;
-//        height: 600px;
-//      }
-//</style>
-<script src="https://maps.googleapis.com/maps/api/js"></script>
-<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
         var lines = [];
         var map;
         var infowindow = new google.maps.InfoWindow();
         
         $(document).ready(function() {
-            $.ajax({
+           /* $.ajax({
                 type: "POST",
-                url: "http://www.gersteinlab.org/people/alumni_2014.csv",
+                url: "fake.csv",
                 dataType: "text",
                 success: function(data) {
                     processData(data);
                 }
-            });
+            });*/
+			initialize();
         });
 
 		function processData(allText) {
@@ -53,7 +46,7 @@
         console.log(p)
         if (p[5] == 0) {
                 var image = {
-                        url: 'http://www.gersteinlab.org/people/figures/user_male_white_orange.png',
+                        icon: "<%=asset_path('house.png') %>",
                         size: new google.maps.Size(32, 32),
                         origin: new google.maps.Point(0, 0),
                         anchor: new google.maps.Point(12,12)
@@ -62,7 +55,7 @@
 
 		else {
                 var image = {
-                        url: 'http://www.gersteinlab.org/people/figures/professor_32.png',
+                        icon: "<%=asset_path('people.png') %>",
                         size: new google.maps.Size(32, 32),
                         origin: new google.maps.Point(0, 0),
                         anchor: new google.maps.Point(12,12)
