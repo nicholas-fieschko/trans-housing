@@ -6,7 +6,7 @@ class Review
 
   default_scope -> { order(created_at: :desc) }
 
-#  field :authorID, type: ObjectId
+  field :authorID, type: BSON::ObjectId
   field :author, type: String
   field :text, type: String
   field :rating, type: Integer
