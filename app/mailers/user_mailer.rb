@@ -1,19 +1,18 @@
-class UserMailer < ApplicationMailer
-
-	# Need to set up the mail server
+# Per gotealeaf, Rails 4.2.1 supports preview fx
+class UserMailer < Actionmailer::Base
   default from: 'noreply@transhousing.com'
 
-  # I need to also do a captcha!
-
-	# At what other points will users need a non-changing email?
 	def welcome_email(user)
 		@user = user
     mail(to: @user.email, subject: 'Welcome to TransHousing')
 	end
 
-	# Notifications for messages (set in preferences)
-	def notify_email(user, message)
-  end
+	# For use in test/mailers/preview
+	def sample_email(user)
+		@user = user
+		mail(to: @user.email, subject: 'Sample Email')
+	end
 
+	# Add all the other types of email we will need to send
 
 end
