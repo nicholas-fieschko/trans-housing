@@ -268,17 +268,13 @@ DEPENDENCIES
   byebug
   capybara
   coffee-rails (~> 4.1.0)
-<<<<<<< .merge_file_3AmTcs
   geokit-rails (~> 2.1.0)
-  gmaps4rails (~> 2.1.2)
-=======
   database_cleaner
   fabrication
   faker
   guard
   guard-livereload (~> 2.4)
   guard-rspec
->>>>>>> .merge_file_rrn3Mk
   haml
   jbuilder (~> 2.0)
   jquery-rails
