@@ -23,8 +23,6 @@ class UsersController < ApplicationController
     	if @review.update_attributes(review_params)
     		@user.number_reviews = @user.number_reviews + 1
     		@user.save
-        @review.update_attribute(:authorID, params[:authorID])
-        @review.update_attribute(:author, params[:author])
     		@review.update_attribute(:completed, 1)
 	    	flash[:success] = "Review submitted"
       		redirect_to @user
