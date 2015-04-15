@@ -39,4 +39,8 @@ Rails.application.configure do
   # Add Rack::LiveReload to the bottom of the middleware stack with the default options.
   config.middleware.use Rack::LiveReload
 
+	# Enable ActionMailer previews
+	config.action_mailer.show_previews = true
+	config.action_mailer.preview_path = '#{Rails.root}/test/mailers/previews/user_mailer'
+
 end
