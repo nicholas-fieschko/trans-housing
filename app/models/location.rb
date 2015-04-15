@@ -1,7 +1,7 @@
 class Location
   include Mongoid::Document
 
-  embedded_in :user
+  belongs_to :user
   
   # GeoJSON
   # See http://docs.mongodb.org/manual/tutorial/build-a-2dsphere-index/

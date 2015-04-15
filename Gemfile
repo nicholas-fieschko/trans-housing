@@ -19,8 +19,8 @@ gem 'sdoc', '~> 0.4.0', group: :doc # bundle exec rake doc:rails generates the A
 gem 'bcrypt', '~> 3.1.7'		 # Use ActiveModel has_secure_password
 gem 'geokit-rails', '~> 2.1.0'   # Geokit for address/GPS coor transformation 
 								 # https://github.com/geokit/geokit-rails
-gem 'gmaps4rails', '~> 2.1.2'    # Google Maps for Rails 
-                                 # https://github.com/apneadiving/Google-Maps-for-Rails
+
+gem 'simple_form'
 
 # gem 'unicorn' # Use Unicorn as the app server
 
@@ -31,5 +31,15 @@ group :development, :test do
   gem 'web-console', '~> 2.0'	 # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'spring'					 # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'rspec-rails', '~> 3.0'
+  gem 'capybara'
+  gem 'fabrication'
+  gem 'faker'
+
+  gem 'database_cleaner'
+
+  gem 'guard'
+  gem 'guard-livereload', '~> 2.4', require: false
+  gem "rack-livereload", :group => :development
+  gem 'guard-rspec', require: false
 
 end
