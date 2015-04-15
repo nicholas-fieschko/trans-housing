@@ -11,6 +11,9 @@ gem 'bootstrap-sass', '~> 3.2.0'
 gem 'autoprefixer-rails'
 gem 'haml'
 
+# docs at: github.com/ambethia/recaptcha
+gem 'recaptcha', :require => 'recaptcha/rails'
+
 gem 'jquery-rails'				 # Use jquery as the JavaScript library
 gem 'turbolinks'				 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'jbuilder', '~> 2.0'		 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder

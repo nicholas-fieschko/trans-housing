@@ -66,6 +66,13 @@
     = f.collection_radio_buttons :is_provider, [[true, 'I can help!'] ,[false, 'I need help!']], :first, :last
     %br
 
+  / This should generate a reCAPTCHA and merely print an error (need to add
+  / error-handling logic)
+  .page
+    Ok, two more steps. Please tell me you're not a robot!
+    = recaptcha_tags
+    = verify_recaptcha(:message => "reCAPTCHA error.") 
+
   .page
     Alright! One last step. Create your password, and we're good to go!
     = f.input :password
