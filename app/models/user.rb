@@ -5,7 +5,7 @@ class User
   field :name, type: String
   field :is_provider, type: Boolean
 
-  embeds_one :location   # For now, just one location per user.. 
+  has_one :location   # For now, just one location per user.. 
                          # In future, useful to have multiple locations
                          # to match ability to grab lunch for someone near
                          # work, etc.
@@ -77,14 +77,11 @@ class Contact
   field :email, type: String
   field :phone, type: String
 
+  validates_uniqueness_of :email, unless: ->(contact){contact.email.nil?}
+  validates_uniqueness_of :phone, unless: ->(contact){contact.phone.nil?}
   validates :email, presence: true, unless: ->(contact){contact.phone.present?}
   validates :phone, presence: true, unless: ->(contact){contact.email.present?}
-  
-  # Does not work: MongoDB cannot enforce uniqueness on embedded docs.
-  # Best solution to-do: change to has_one relationship instead of embeds_one.
-  index( { username: 1 },{ unique: true, sparse: true } )
-  index( { phone: 1 },{ unique: true, sparse: true } )
-  
+
   before_save { self.email = email.downcase }
 end
 

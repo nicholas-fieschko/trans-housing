@@ -7,3 +7,7 @@ Fabricator(:user) do
   password                     "test123"
   password_confirmation        "test123"
 end
+
+Fabricator(:nonbinary_user, from: :user) do 
+  gender                       { Fabricate.build(:nonbinary_gender) }
+end
