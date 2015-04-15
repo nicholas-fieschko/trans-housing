@@ -2,7 +2,7 @@ Fabricator(:user) do
   name                         { Faker::Name.first_name }
   is_provider                  false
   is_admin                     false
-  gender                       { Fabricate.build(:gender) }
+  gender                       { Fabricate.build(:binary_gender) }
   contact                      
   password                     "test123"
   password_confirmation        "test123"

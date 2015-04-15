@@ -52,7 +52,6 @@ guard :rspec, cmd: "bundle exec rspec" do
   watch(rspec.spec_helper) { rspec.spec_dir }
   watch(rspec.spec_support) { rspec.spec_dir }
   watch(rspec.spec_files)
-  watch(%r{^spec/factories/(.+)\.rb$})
 
   # Ruby files
   ruby = dsl.ruby
@@ -62,6 +61,9 @@ guard :rspec, cmd: "bundle exec rspec" do
   rails = dsl.rails(view_extensions: %w(erb haml slim))
   dsl.watch_spec_files_for(rails.app_files)
   dsl.watch_spec_files_for(rails.views)
+
+  watch(%r{^spec/fabricators/(.+)\.rb$}) { "#{rspec.spec_dir}/models" }
+  watch(%r{^app/models/(.+)\.rb$}) { "#{rspec.spec_dir}/models" }
 
   watch(rails.controllers) do |m|
     [

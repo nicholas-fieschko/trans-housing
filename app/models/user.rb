@@ -62,29 +62,20 @@ class Gender
   field :their, type: String
   field :them, type: String
 
-  # VALIDATE TO-DO: No custom pronoun text if custom_pronouns is false,
-  # or if "trans" is false!
+  validates :custom_pronouns, inclusion: { in: [false] }, if: ->(gender){gender.trans == false}
+  validates :they, :their, :them, absence: true, if: ->(gender){gender.trans == false}
   validates_presence_of :identity, :trans
 
-  before_save { self.identity = identity.to_s.downcase }
+
+  before_save {
+    self.identity = identity.downcase 
+    if self.cp
+      self.they = they.downcase
+      self.them = them.downcase
+      self.their = their.downcase
+    end
+  }
 end
-
-class Contact
-  include Mongoid::Document
-  belongs_to :user
-
-  field :preferred_contact # How best to set?
-  field :email, type: String
-  field :phone, type: String
-
-  validates_uniqueness_of :email, unless: ->(contact){contact.email.nil?}
-  validates_uniqueness_of :phone, unless: ->(contact){contact.phone.nil?}
-  validates :email, presence: true, unless: ->(contact){contact.phone.present?}
-  validates :phone, presence: true, unless: ->(contact){contact.email.present?}
-
-  before_save { self.email = email.downcase }
-end
-
 
 class PreferenceProfile
   include Mongoid::Document
