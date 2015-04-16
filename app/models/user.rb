@@ -5,25 +5,20 @@ class User
   field :name, type: String
   field :is_provider, type: Boolean
 
-  has_one :location   # For now, just one location per user.. 
-                         # In future, useful to have multiple locations
-                         # to match ability to grab lunch for someone near
-                         # work, etc.
   embeds_one :gender
-  has_one :contact    # Ranked contact methods
+  has_one :contact,              dependent: :delete
+  has_one :location,             dependent: :delete
+  
   embeds_one :preference_profile # User site/security preferences
   embeds_one :extended_profile
 
   # embeds_many :resources
-
-  embeds_many :reviews
-
+  # embeds_many :reviews
   # has_one :inbox ?
 
   accepts_nested_attributes_for :location, :gender, :contact #, :resources
 
-
-  validates_presence_of :name, :gender, :contact#, :location
+  validates_presence_of :name, :gender, :contact, :location
   validates_associated :gender, :contact
 
   field :is_admin, type: Boolean
@@ -33,6 +28,13 @@ class User
   has_secure_password
 
   before_create :create_remember_token
+
+  def provider?
+    self.is_provider
+  end
+  def seeker?
+    !self.is_provider
+  end
 
   def User.new_remember_token
     SecureRandom.urlsafe_base64
@@ -61,9 +63,10 @@ class Gender
   field :they, type: String
   field :their, type: String
   field :them, type: String
-
   validates :custom_pronouns, inclusion: { in: [false] }, if: ->(gender){gender.trans == false}
   validates :they, :their, :them, absence: true, if: ->(gender){gender.trans == false}
+  validates_presence_of :they, :them, :their, if: ->(gender){gender.custom_pronouns == true}
+
   validates_presence_of :identity, :trans
 
 
