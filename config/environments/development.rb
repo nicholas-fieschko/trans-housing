@@ -41,6 +41,6 @@ Rails.application.configure do
 
 	# Enable ActionMailer previews
 	config.action_mailer.show_previews = true
-	config.action_mailer.preview_path = '#{Rails.root}/test/mailers/previews/user_mailer'
+	config.action_mailer.preview_path = '#{Rails.root}/spec/mailers/previews'
 
 end
