@@ -4,6 +4,15 @@
 
 = simple_form_for @user do |f|
   = f.error_notification
+  - if @user.errors.any?
+    %div#error_explanation
+      %div.alert.alert-error
+        The form contains #{pluralize(@user.errors.count, "error")}.
+      %ul
+      - @user.errors.full_messages.each do |msg|
+        %li
+          *
+          = msg
 
   .page
     = f.input :name
@@ -45,7 +54,7 @@
         / Only display this section if "trans" boolean was true
         / Likely best to have a Gender.they_tense(identity input string), etc to retrieve
         So, are your pronouns (RETRIEVE STANDARD PRONOUNS FOR IDENTITY SELECTED:) "he", "him", "his"?
-        = g.collection_radio_buttons :custom_pronouns, [[true, 'Yes'] ,[false, 'No']], :first, :last
+        = g.collection_radio_buttons :custom_pronouns, [[false, 'Yes'] ,[true, 'No']], :first, :last
         / -if no->
         %label Please enter your pronouns.
         = g.input :they, placeholder: '"She/he/they" tense'
@@ -70,7 +79,7 @@
     Alright! One last step. Create your password, and we're good to go!
     = f.input :password
     = f.input :password_confirmation
-    = f.button :submit, value: "Create my account!"
+    = f.button :submit, value: "Create my account!", id: "submit_signup"
 
   .page 
     / To get you started quickly, 

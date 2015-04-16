@@ -2,31 +2,30 @@ class User
   include Mongoid::Document
   include Mongoid::Attributes::Dynamic
   include ActiveModel::SecurePassword
-  field :name, type: String
-  field :is_provider, type: Boolean
+
+  field :name,                   type: String
+  field :is_provider,            type: Boolean
 
   embeds_one :gender
   has_one :contact,              dependent: :delete
   has_one :location,             dependent: :delete
   
-  embeds_one :preference_profile # User site/security preferences
-  embeds_one :extended_profile
+  # embeds_one :preference_profile # User site/security preferences
+  # embeds_one :extended_profile
 
   # embeds_many :resources
   # embeds_many :reviews
   # has_one :inbox ?
 
-  accepts_nested_attributes_for :location, :gender, :contact #, :resources
+  accepts_nested_attributes_for  :gender, :contact, :location #, :resources
+  validates_presence_of :name,   :gender, :contact#, :location
+  validates_associated           :gender, :contact#, :location
 
-  validates_presence_of :name, :gender, :contact, :location
-  validates_associated :gender, :contact
-
-  field :is_admin, type: Boolean
-  field :remember_token, type: String
-  field :password_digest, type: String
+  field :is_admin,               type: Boolean
+  field :remember_token,         type: String
+  field :password_digest,        type: String
 
   has_secure_password
-
   before_create :create_remember_token
 
   def provider?
@@ -63,7 +62,7 @@ class Gender
   field :they, type: String
   field :their, type: String
   field :them, type: String
-  validates :custom_pronouns, inclusion: { in: [false] }, if: ->(gender){gender.trans == false}
+  validates :custom_pronouns, inclusion: { in: [false, nil] }, if: ->(gender){gender.trans == false}
   validates :they, :their, :them, absence: true, if: ->(gender){gender.trans == false}
   validates_presence_of :they, :them, :their, if: ->(gender){gender.custom_pronouns == true}
 
