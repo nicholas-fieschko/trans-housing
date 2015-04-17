@@ -13,6 +13,7 @@ gem 'autoprefixer-rails'
 gem 'haml-rails'
 gem 'mailgun-ruby', '~> 1.0.2', require: 'mailgun'
 gem 'twilio-ruby'
+gem 'figaro'
 
 
 gem 'jquery-rails'				 # Use jquery as the JavaScript library
