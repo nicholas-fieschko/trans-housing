@@ -15,7 +15,7 @@ class Contact
     self.email = email.downcase unless email.nil?
   end
 
-  validates_uniqueness_of :email, unless: ->(contact){contact.email.nil?}
-  validates_uniqueness_of :phone, unless: ->(contact){contact.phone.nil?}
+  validates_uniqueness_of :email, unless: ->(contact){contact.email.blank?}
+  validates_uniqueness_of :phone, unless: ->(contact){contact.phone.blank?}
 
 end

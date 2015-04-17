@@ -18,6 +18,8 @@ RSpec.describe "sign up page", :type => :feature do
         click_button "submit_signup"
       }.to change(User,:count).by(1)
     end
+
+    # check that all attributes of user created match what was input correctly...
   end
 
 end
