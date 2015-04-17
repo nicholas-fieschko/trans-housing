@@ -62,10 +62,10 @@ class Gender
   field :they, type: String
   field :their, type: String
   field :them, type: String
-  validates :custom_pronouns, inclusion: { in: [false, nil] }, if: ->(gender){gender.trans == false}
-  validates :they, :their, :them, absence: true, if: ->(gender){gender.trans == false}
-  validates_presence_of :they, :them, :their, if: ->(gender){gender.custom_pronouns == true}
-
+  
+  validates :custom_pronouns,     absence: true, if: ->(gender){!gender.trans}
+  validates :they, :their, :them, absence: true, if: ->(gender){!gender.trans}
+  validates_presence_of :they, :them, :their,    if: ->(gender){gender.trans && gender.custom_pronouns}
   validates_presence_of :identity, :trans
 
 
