@@ -12,3 +12,4 @@ Main repo for CPSC 439b group project
 Usage: `git clone https://git.yale.edu/TransHousing/trans-housing`
 
 Had problem with git fetch and merge, here's for experiment.
+So the contents in Sublime Text changes whenever git checkout into a different branch, cool!
