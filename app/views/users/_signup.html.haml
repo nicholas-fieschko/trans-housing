@@ -54,7 +54,7 @@
         / Only display this section if "trans" boolean was true
         / Likely best to have a Gender.they_tense(identity input string), etc to retrieve
         So, are your pronouns (RETRIEVE STANDARD PRONOUNS FOR IDENTITY SELECTED:) "he", "him", "his"?
-        = g.collection_radio_buttons :custom_pronouns, [[false, 'Yes'] ,[true, 'No']], :first, :last
+        = g.collection_radio_buttons :cp, [[false, 'Yes'] ,[true, 'No']], :first, :last
         / -if no->
         %label Please enter your pronouns.
         = g.input :they, placeholder: '"She/he/they" tense'
