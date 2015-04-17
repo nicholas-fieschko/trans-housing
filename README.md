@@ -10,3 +10,5 @@ Main repo for CPSC 439b group project
 + Need to import Google Doc assignments
 
 Usage: `git clone https://git.yale.edu/TransHousing/trans-housing`
+
+Had problem with git fetch and merge, here's for experiment.
