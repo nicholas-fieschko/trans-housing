@@ -1,14 +1,20 @@
 class Location
   include Mongoid::Document
+  belongs_to :user
+  
+  field :c, as: :coordinates, type: Array             # [longitude, latitude]
 
-  embedded_in :user
+  # Validation: longitude is between -180 and 180
+  # Validation: latitude is between -90 and 90
+  validates_presence_of :coordinates
   
-  # GeoJSON
-  # See http://docs.mongodb.org/manual/tutorial/build-a-2dsphere-index/
-  # field :geojson # { type: "Point", coordinates: [longitude, latitude] }
-  
-  # Conversion of addresses and 
-  # https://developers.google.com/maps/documentation/geocoding/
-  # field :streets # [street 1, street 2] ?
+  index({ coordinates: "2d" }, { min: -200, max: 200 })  # Create 2D Geospatial Index
+
+  def lng
+    self.coordinates.first
+  end
+  def lat
+    self.coordinates.last
+  end
 
 end
