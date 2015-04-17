@@ -13,3 +13,8 @@ Usage: `git clone https://git.yale.edu/TransHousing/trans-housing`
 
 Had problem with git fetch and merge, here's for experiment.
 So the contents in Sublime Text changes whenever git checkout into a different branch, cool!
+
+I'll use the README.md as a note to keep track of the progress
+Still have trouble when trying to pull down Nick's latest branch with this command: git pull origin sign-on-log-in
+Returns the error message: fatal: Couldn't find remote ref sign-on-log-in
+Googled several posts but got nothing useful so far.
