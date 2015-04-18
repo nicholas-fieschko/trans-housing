@@ -1,9 +1,24 @@
 Rails.application.routes.draw do
 
-  root 'locations#index'
+  root to: 'locations#index'
 
-  resources :sessions
+  resources :sessions, only: [:new, :create, :destroy]
   resources :users
+
+  match '/signup',  to: 'users#new',            via: 'get'
+  match '/signin',  to: 'sessions#new',         via: 'get'
+  match '/signout', to: 'sessions#destroy',     via: 'delete'
+  
+  
+  # resources :spaces,   only: [:new, :create, :show, :index] do
+  #   resources :bookings, only: [:edit, :index]
+  # end
+
+  # match '/space', to: 'spaces#show', via: 'get'
+  # match '/space/new' to: 'spaces#create', via: 'get'
+
+
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
