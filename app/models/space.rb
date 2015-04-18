@@ -1,4 +1,5 @@
-class Space < ActiveRecord::Base
+class Space
+  include Mongoid::Document
   attr_accessible :owner_id, :title, :booking_rate_daily,
   :booking_rate_weekly, :booking_rate_monthly, :residence_type, :bedroom_count,
   :bathroom_count, :room_type, :bed_type, :accommodates, :amenities, :description,

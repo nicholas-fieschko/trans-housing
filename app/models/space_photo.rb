@@ -1,4 +1,5 @@
-class SpacePhoto < ActiveRecord::Base
+class SpacePhoto
+  include Mongoid::Document
   attr_accessible :space_id, :url, :flickr_id, :flickr_title, :flickr_owner_name
 
   validates_presence_of :url, :flickr_id, :flickr_title, :flickr_owner_name
