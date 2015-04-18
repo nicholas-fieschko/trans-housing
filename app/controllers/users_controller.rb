@@ -13,6 +13,10 @@ class UsersController < ApplicationController
       # OK, send an email on joining! N.B. only for the demo!
       # Notifier.mailgun(@user).deliver
 
+      # Send a sample text
+      Notifier.twilio(@user)
+      debugger
+
       sign_in @user
       redirect_to @user
     else
