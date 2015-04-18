@@ -39,4 +39,16 @@ Rails.application.configure do
   # Add Rack::LiveReload to the bottom of the middleware stack with the default options.
   config.middleware.use Rack::LiveReload
 
+  # For the purposes of the demo, this should be in dev
+  # (normally it should be only in production)
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    :address 				=> 'smtp.mailgun.org',
+    :port 					=> 587,
+    :domain 				=> ENV['domain'],
+    :user_name 			=> ENV['username'],
+    :password 			=> ENV['password'],
+    :authentication => :plain,
+  }
+
 end
