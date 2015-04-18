@@ -2,37 +2,39 @@ class User
   include Mongoid::Document
   include Mongoid::Attributes::Dynamic
   include ActiveModel::SecurePassword
-  field :name, type: String
-  field :is_provider, type: Boolean
 
-  has_one :location   # For now, just one location per user.. 
-                         # In future, useful to have multiple locations
-                         # to match ability to grab lunch for someone near
-                         # work, etc.
+  field :name,                   type: String
+  field :is_provider,            type: Boolean
+
   embeds_one :gender
-  has_one :contact    # Ranked contact methods
-  embeds_one :preference_profile # User site/security preferences
-  embeds_one :extended_profile
+  has_one :contact,              dependent: :delete
+  has_one :location,             dependent: :delete
+  
+  # embeds_one :preference_profile # User site/security preferences
+  # embeds_one :extended_profile
 
   # embeds_many :resources
-
-  embeds_many :reviews
-
+  # embeds_many :reviews
   # has_one :inbox ?
 
-  accepts_nested_attributes_for :location, :gender, :contact #, :resources
 
+  accepts_nested_attributes_for  :gender, :contact, :location #, :resources
+  validates_presence_of :name,   :gender, :contact#, :location
+  validates_associated           :gender, :contact#, :location
 
-  validates_presence_of :name, :gender, :contact#, :location
-  validates_associated :gender, :contact
-
-  field :is_admin, type: Boolean
-  field :remember_token, type: String
-  field :password_digest, type: String
+  field :is_admin,               type: Boolean
+  field :remember_token,         type: String
+  field :password_digest,        type: String
 
   has_secure_password
-
   before_create :create_remember_token
+
+  def provider?
+    self.is_provider
+  end
+  def seeker?
+    !self.is_provider
+  end
 
   def User.new_remember_token
     SecureRandom.urlsafe_base64
@@ -61,30 +63,22 @@ class Gender
   field :they, type: String
   field :their, type: String
   field :them, type: String
-
-  # VALIDATE TO-DO: No custom pronoun text if custom_pronouns is false,
-  # or if "trans" is false!
+  
+  validates :custom_pronouns,     absence: true, if: ->(gender){!gender.trans}
+  validates :they, :their, :them, absence: true, if: ->(gender){!gender.trans}
+  validates_presence_of :they, :them, :their,    if: ->(gender){gender.trans && gender.custom_pronouns}
   validates_presence_of :identity, :trans
 
-  before_save { self.identity = identity.to_s.downcase }
+
+  before_save {
+    self.identity = identity.downcase 
+    if self.cp
+      self.they = they.downcase
+      self.them = them.downcase
+      self.their = their.downcase
+    end
+  }
 end
-
-class Contact
-  include Mongoid::Document
-  belongs_to :user
-
-  field :preferred_contact # How best to set?
-  field :email, type: String
-  field :phone, type: String
-
-  validates_uniqueness_of :email, unless: ->(contact){contact.email.nil?}
-  validates_uniqueness_of :phone, unless: ->(contact){contact.phone.nil?}
-  validates :email, presence: true, unless: ->(contact){contact.phone.present?}
-  validates :phone, presence: true, unless: ->(contact){contact.email.present?}
-
-  before_save { self.email = email.downcase }
-end
-
 
 class PreferenceProfile
   include Mongoid::Document

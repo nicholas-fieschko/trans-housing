@@ -9,11 +9,8 @@ require 'rails_helper'
 #       expect(helper.concat_strings("this","that")).to eq("this that")
 #     end
 #   end
-<<<<<<< .merge_file_sO0QPs
 # end
 RSpec.describe SessionsHelper, type: :helper do
   pending "add some examples to (or delete) #{__FILE__}"
 end
-=======
 # end
->>>>>>> .merge_file_onytVo
