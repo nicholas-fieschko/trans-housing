@@ -1,8 +1,4 @@
 module SessionsHelper
-<<<<<<< .merge_file_wV2yi7
-end
-=======
-
   def sign_in(user)
     remember_token = User.new_remember_token
     cookies.permanent[:remember_token] = remember_token
@@ -50,4 +46,3 @@ end
     session[:return_to] = request.url if request.get?
   end
 end
->>>>>>> .merge_file_C1GAYA
