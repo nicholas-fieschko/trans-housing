@@ -1,6 +1,5 @@
 class User
   include Mongoid::Document
-
   include Mongoid::Attributes::Dynamic
   include ActiveModel::SecurePassword
 
@@ -49,6 +48,7 @@ class User
     def create_remember_token
       self.remember_token = User.digest(User.new_remember_token)
     end
+
 end
 
 class Gender
@@ -83,15 +83,4 @@ class PreferenceProfile
   include Mongoid::Document
   embedded_in :user
 
-end
-
-class Contact
-  include Mongoid::Document
-  embedded_in :user
-
-  # To be revised
-  field :email, type: String
-  field :phone, type: String
-
-  before_save { self.email = email.downcase }
 end

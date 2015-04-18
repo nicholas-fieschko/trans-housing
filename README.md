@@ -19,4 +19,6 @@ Still have trouble when trying to pull down Nick's latest branch with this comma
 Returns the error message: fatal: Couldn't find remote ref sign-on-log-in
 Googled several posts but got nothing useful so far.
 
+Somehow it's beginning to work in the evening...the basic page is up and running now.
+
 Added bookings related stuff to the folders, nothing works at the moment
