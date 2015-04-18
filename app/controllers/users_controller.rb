@@ -9,6 +9,10 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
     if @user.save
+
+      # OK, send an email on joining! N.B. only for the demo!
+      # Notifier.mailgun(@user).deliver
+
       sign_in @user
       redirect_to @user
     else

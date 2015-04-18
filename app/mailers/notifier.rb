@@ -15,6 +15,7 @@ def mailgun(user)
   @user = user
   mg_client = Mailgun::Client.new ENV['api_key']
   message_params = {
+    :from    => 'noreply@transhousing.com',
     :to      => 'stephen.krewson@gmail.com',
     :subject => 'Greetings from TransHousing!',
     :text    => 'This is an email sent with Mailgun.',
