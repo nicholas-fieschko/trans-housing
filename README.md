@@ -21,4 +21,6 @@ Googled several posts but got nothing useful so far.
 
 Somehow it's beginning to work in the evening...the basic page is up and running now.
 
-Added bookings related stuff to the folders, nothing works at the moment
+Everything's fine except after logging out and logging in, the users page does not show, but everything seems in accordance with Nick's branch.
+
+Added bookings related stuff to the folders, nothing works at the moment.
