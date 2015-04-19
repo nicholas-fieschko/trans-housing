@@ -1,0 +1,18 @@
+<h1> Hi <%= current_user.name %></h1>
+
+<% if @reviews.any? %>
+
+	Reminder: please complete the following reviews: <br>
+
+	<% @reviews.each do |r| %>
+		Review for <%= User.find(r.user_id).name %>: <%= link_to "Click here", user_url(r.user_id.to_s, review_id: r.id.to_s) %><br>
+	<% end %>
+
+
+<% else %>
+
+
+	All reviews completed.
+
+
+<% end %>

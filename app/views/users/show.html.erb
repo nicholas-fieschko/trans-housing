@@ -3,9 +3,9 @@
       <% end %>
 
 
-<% if params[:review_id] && params[:euid] && (@review = @user.reviews.detect { |r| r.id.to_s == params[:review_id] }) && @review.authenticated?(:token, params[:euid]) && not(@review.completed) && signed_in? && current_user.id == @review.authorID %>
+<% if params[:review_id] && (@review = Review.find(params[:review_id])) && not(@review.completed) && signed_in? && current_user.id == @review.authorID %>
  <h1>Write a review for <%= @user.name %></h1>
- <h3>Leaving review as <%= current_user.name %></h2>
+ <h3>Leaving review as <%= current_user.name %></h3>
 
 <div class="row">
   <div class="col-md-6 col-md-offset-3">

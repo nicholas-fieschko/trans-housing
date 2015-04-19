@@ -19,7 +19,7 @@ class UsersController < ApplicationController
   def update
   	@user = User.find(params[:id])
   	if params[:review]
-	  	@review = @user.reviews.detect { |r| r.id.to_s == params[:review_id] }
+	  	@review = Review.find(params[:review_id])
     	if @review.update_attributes(review_params)
     		@user.number_reviews = @user.number_reviews + 1
     		@user.save
@@ -43,6 +43,15 @@ class UsersController < ApplicationController
   	@reviews = @user.reviews
   end
 
+
+  def dashboard
+    if signed_in?
+      @user = current_user
+      @reviews = Review.where(authorID: @user.id, completed: false).all
+    else
+      signed_in_user
+    end
+  end
 
   private
 
