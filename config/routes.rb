@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
 
+  resources :messages
+
+  resources :conversations
+
   root to: 'locations#index'
 
   resources :sessions, only: [:new, :create, :destroy]
