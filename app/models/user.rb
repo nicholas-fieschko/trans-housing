@@ -45,9 +45,9 @@ class User
 
   def self.search(search)
     if search
-      find(:all, :conditions => ['NAME LIKE ?', "%#{search}%"])
+      where('name LIKE ?', "%#{search}%")
     else
-      find(:all)
+      scoped
     end
   end
 
