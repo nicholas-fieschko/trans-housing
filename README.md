@@ -9,6 +9,5 @@ Implemented:
 To-do:
 - User can see unfinished reviews on the dashboard and submit them there.
 - Security
-
 - integrate with email app
 - front end design
