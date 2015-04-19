@@ -7,6 +7,14 @@ Fabricator(:user) do
   contact                      { Fabricate.build(:contact) }
   password                     "test123"
   password_confirmation        "test123"
+
+  food_resource                 { [true,false].sample ? Fabricate.build(:food_resource) :           nil }                 
+  shower_resource               { [true,false].sample ? Fabricate.build(:shower_resource) :         nil }
+  laundry_resource              { [true,false].sample ? Fabricate.build(:laundry_resource) :        nil }
+  housing_resource              { [true,false].sample ? Fabricate.build(:housing_resource) :        nil }
+  transportation_resource       { [true,false].sample ? Fabricate.build(:transportation_resource) : nil }
+  buddy_resource                { [true,false].sample ? Fabricate.build(:buddy_resource) :          nil }
+  misc_resource                 { [true,false].sample ? Fabricate.build(:misc_resource) :           nil }
 end
 
 Fabricator(:provider, from: :user) do

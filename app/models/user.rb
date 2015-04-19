@@ -13,7 +13,14 @@ class User
   # embeds_one :preference_profile # User site/security preferences
   # embeds_one :extended_profile
 
-  # embeds_many :resources
+  embeds_one :food_resource
+  embeds_one :shower_resource
+  embeds_one :laundry_resource
+  embeds_one :housing_resource
+  embeds_one :transportation_resource
+  embeds_one :buddy_resource
+  embeds_one :misc_resource
+
   # embeds_many :reviews
   # has_one :inbox ?
 
@@ -35,12 +42,42 @@ class User
     !self.is_provider
   end
 
+  def offers_food?
+    !self.food_resource.nil?
+  end
+  def offers_shower?
+    !self.shower_resource.nil?
+  end
+  def offers_laundry?
+    !self.laundry_resource.nil?
+  end
+  def offers_housing?
+    !self.housing_resource.nil?
+  end
+  def offers_transportation?
+    !self.transportation_resource.nil?
+  end
+  def offers_buddy?
+    !self.buddy_resource.nil?
+  end
+  def offers_misc?
+    !self.misc_resource.nil?
+  end
+
   def User.new_remember_token
     SecureRandom.urlsafe_base64
   end
 
   def User.digest(token)
     Digest::SHA1.hexdigest(token.to_s)
+  end
+
+  def self.search(search)
+    if search
+      self.where(name: search).to_a
+    else
+      self.all.to_a
+    end
   end
 
     private
@@ -64,10 +101,9 @@ class Gender
   field :them, type: String
   
   validates :custom_pronouns,     absence: true, if: ->(gender){!gender.trans}
-  validates :they, :their, :them, absence: true, if: ->(gender){!gender.trans}
+  validates :they, :their, :them, absence: true, if: ->(gender){!gender.trans || !gender.custom_pronouns}
   validates_presence_of :they, :them, :their,    if: ->(gender){gender.trans && gender.custom_pronouns}
   validates_presence_of :identity, :trans
-
 
   before_save {
     self.identity = identity.downcase 
