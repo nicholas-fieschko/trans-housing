@@ -2,7 +2,7 @@ class Review
   include Mongoid::Document
   include Mongoid::Timestamps
 
-  embedded_in :user
+  belongs_to :user
 
   default_scope -> { order(created_at: :desc) }
 
@@ -14,6 +14,21 @@ class Review
   field :token_digest, type: String
   field :completed, type: Boolean
   
+
+  # Special date/time field to base expirations on.
+  field :expirable_created_at, type: Time
+
+  # TTL index on the above field. Need to run  rake db:mongoid:create_indexes
+  index({expirable_created_at: 1}, {expire_after_seconds: 1.minute})
+
+  # Callback to set `expirable_created_at`
+  before_create :set_expire
+  def set_expire
+	self.expirable_created_at = Time.now
+	return true
+  end
+
+
 
   attr_accessor :token
 

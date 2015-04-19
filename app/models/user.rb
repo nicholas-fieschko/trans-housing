@@ -24,7 +24,7 @@ class User
   embeds_one :buddy_resource
   embeds_one :misc_resource
 
-  embeds_many :reviews
+  has_many :reviews
   field :number_reviews, type: Integer
 
   # embeds_many :reviews

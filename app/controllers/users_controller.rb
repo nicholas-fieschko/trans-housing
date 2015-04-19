@@ -24,6 +24,7 @@ class UsersController < ApplicationController
     		@user.number_reviews = @user.number_reviews + 1
     		@user.save
     		@review.update_attribute(:completed, 1)
+        @review.update_attribute(:expirable_created_at, nil)
 	    	flash[:success] = "Review submitted"
       		redirect_to @user
 	    else
