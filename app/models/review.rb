@@ -19,7 +19,7 @@ class Review
   field :expirable_created_at, type: Time
 
   # TTL index on the above field. Need to run  rake db:mongoid:create_indexes
-  index({expirable_created_at: 1}, {expire_after_seconds: 1.minute})
+  index({expirable_created_at: 1}, {expire_after_seconds: 1.month})
 
   # Callback to set `expirable_created_at`
   before_create :set_expire
