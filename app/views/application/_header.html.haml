@@ -1,13 +1,14 @@
-%header.navbar
-  %span#header-logo.navbar-brand 
-    = link_to "TransHousing", root_path
+%header.home-menu.pure-menu.pure-menu-horizontal
+  =link_to render("logo"), '/', class: "pure-menu-heading #{current_page?('/') ? 'logo-homepage' : nil}", id: "logo"
   - if signed_in?
-    .navbar-right
-      %span.navbar-brand
-        = current_user.name
-        = link_to "Log out", signout_path, method: "delete"
+    = current_user.name
+    = link_to "Log out", signout_path, method: "delete"
   - else
-    .btn.btn-default.navbar-btn.navbar-right 
-      = link_to "Sign up", signup_path
-    .btn.btn-default.navbar-btn.navbar-right 
-      = link_to "Log in", signin_path
+    %span.header-menu-items
+      %ul.pure-menu-list
+        %li.pure-menu-item
+          = button_to "Sign up", signup_path, method: "get",
+          id: 'sign-up-button', class: "btn btn-header #{current_page?('/') ? 'btn-lg-header' : nil} btn-sign-up"
+        %li.pure-menu-item
+          = button_to "Sign in", signin_path, method: "get",
+          id: 'sign-in-button', class: "btn btn-header #{current_page?('/') ? 'btn-lg-header' : nil} btn-sign-in"

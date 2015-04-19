@@ -1,15 +1,52 @@
 @import "bootstrap-sprockets"
 @import "bootstrap"
 
-#header-logo
-  font-size: 2em
+$trans-pink: pink
+$trans-blue: #6FBEF3
 
-.navbar
-  margin-bottom: 0px
+.logo-homepage#logo
+  font-size:          300%
+#logo
+  text-decoration:    none
+#logo-housing
+  color:              $trans-blue
+#logo-trans
+  color:              $trans-pink
+
+.btn-header
+  @include transition(all 0.2s ease-in-out)
+  color:              white
+  text-transform:     uppercase
+  font-weight:        bold
+  margin:             8px 5px
+
+.btn-lg-header
+  padding:            10px 20px
+  font-size:          20px
+  line-height:        1.33
+  margin:             12px 5px
+
+.btn-sign-up
+  background-color:   $trans-blue
+  border-color:       $trans-blue
+  &:hover
+    color:            $trans-blue
+    background-color: white
+    border-color:     white
+
+.btn-sign-in
+  background-color:   $trans-pink
+  border-color:       $trans-pink
+  &:hover
+    color:            $trans-pink
+    background-color: white
+    border-color:     white
+
+
 
 #frontpage-map
-  background-image: url("map_placeholder.gif")
-  height: 70vh
+  background-image:   url("map_placeholder.gif")
+  height:             400vh
   
 body
-  font-family: 'Source Sans Pro', sans-serif
+  font-family:        'Source Sans Pro', sans-serif
