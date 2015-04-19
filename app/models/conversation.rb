@@ -8,9 +8,12 @@ class Conversation
   field :lookup_hash, type: String
   field :created, type: DateTime, default: -> { Time.now }
   field :last_message_time, type: DateTime, default: -> { Time.now }
-  # Array of user ids of users that have read all messages in this conversation
-  field :last_message_seen_by, type: Array, default: []
+  
+	# I think we can just junk this . . . 
+	# Array of user ids of users that have read all messages in this conversation
+  # field :last_message_seen_by, type: Array, default: []
 
+	# Relationships
   embeds_many :messages
   has_and_belongs_to_many :participants, :class_name => 'User'
 
