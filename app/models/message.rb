@@ -9,4 +9,5 @@ class Message
 
   validates_length_of :text, minimum: 2, maximum: 256
   validates_presence_of :author
+
 end
