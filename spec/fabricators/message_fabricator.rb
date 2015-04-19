@@ -2,5 +2,5 @@
 # has an author (just grab a random User)
 Fabricator(:message) do
 	text	 { Faker::Lorem.paragraph }
-	author { User.last }
+	author { User.last.id }
 end
