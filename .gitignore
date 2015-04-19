@@ -11,3 +11,12 @@
 /log/*
 !/log/.keep
 /tmp
+
+# Ignore swap files 
+*.swp
+
+# Ignore emacs autosave files 
+\#*
+.#*
+*~
+\#*\#
