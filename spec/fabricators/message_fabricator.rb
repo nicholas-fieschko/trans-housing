@@ -3,5 +3,4 @@
 Fabricator(:message) do
 	text	 { Faker::Lorem.paragraph }
 	author { User.last }
-  parent
 end

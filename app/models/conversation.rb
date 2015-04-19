@@ -35,7 +35,7 @@ class Conversation
       end
     conversation.messages << message
     conversation.last_message_time = Time.now
-    conversation.last_message_seen_by.delete(recipient)
+    #conversation.last_message_seen_by.delete(recipient)
     conversation.save
   end
 
