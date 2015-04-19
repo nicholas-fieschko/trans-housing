@@ -68,6 +68,11 @@ function handleNoGeolocation(errorFlag) {
     initialLocation = newhaven;
 }
 
+function queryNearbyUsers(latitude, longitude) {
+	
+	
+}
+
 
 function addMarkers(map, p) {
     console.log(p)
