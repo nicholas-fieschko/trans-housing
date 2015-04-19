@@ -15,7 +15,7 @@ Rails.application.routes.draw do
   match '/signout', to: 'sessions#destroy',     via: 'delete'
  
 	# Basic Twilio webhooks; need to integrate with user profile
-	post 'twilio/sms' => 'twilio#sms'
+	get 'twilio/sms' => 'twilio#sms'
  
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
