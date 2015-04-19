@@ -10,10 +10,9 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
     if @user.save
 
-      # OK, send an email on joining! N.B. only for the demo!
-      # Notifier.mailgun(@user).deliver
-      # Send a sample text (only working in console rn)
-      #Notifier.twilio(@user)
+      # Send an email upon signup--will go to Stephen's email because of
+			# 	Fabricator settings, so comment out until the demo.
+      Notifier.welcome(@user).deliver
 
       sign_in @user
       redirect_to @user

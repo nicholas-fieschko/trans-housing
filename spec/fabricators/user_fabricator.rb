@@ -3,7 +3,7 @@ Fabricator(:user) do
   is_provider                  false
   is_admin                     false
   gender                       { Fabricate.build(:binary_gender) }
-  contact                      
+  contact
   password                     "test123"
   password_confirmation        "test123"
 end
