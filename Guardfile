@@ -29,7 +29,7 @@ guard 'livereload' do
   watch(%r{public/.+\.(css|js|html)})
   watch(%r{config/locales/.+\.yml})
   # Rails Assets Pipeline
-  watch(%r{(app|vendor)(/assets/\w+/(.+\.(css|js|html|png|jpg))).*}) { |m| "/assets/#{m[3]}" }
+  watch(%r{(app|vendor)(/assets/\w+/(.+\.(css|sass|js|html|png|jpg))).*}) { |m| "/assets/#{m[3]}" }
 end
 
 # Note: The cmd option is now required due to the increasing number of ways
@@ -41,7 +41,8 @@ end
 #  * zeus: 'zeus rspec' (requires the server to be started separately)
 #  * 'just' rspec: 'rspec'
 
-guard :rspec, cmd: "bundle exec rspec" do
+# guard :rspec, cmd: "bundle exec rspec" do
+guard :rspec, cmd: "zeus test" do
   require "guard/rspec/dsl"
   dsl = Guard::RSpec::Dsl.new(self)
 
@@ -52,7 +53,6 @@ guard :rspec, cmd: "bundle exec rspec" do
   watch(rspec.spec_helper) { rspec.spec_dir }
   watch(rspec.spec_support) { rspec.spec_dir }
   watch(rspec.spec_files)
-  watch(%r{^spec/factories/(.+)\.rb$})
 
   # Ruby files
   ruby = dsl.ruby
@@ -62,6 +62,9 @@ guard :rspec, cmd: "bundle exec rspec" do
   rails = dsl.rails(view_extensions: %w(erb haml slim))
   dsl.watch_spec_files_for(rails.app_files)
   dsl.watch_spec_files_for(rails.views)
+
+  watch(%r{^spec/fabricators/(.+)\.rb$}) { "#{rspec.spec_dir}/models" }
+  watch(%r{^app/models/(.+)\.rb$}) { "#{rspec.spec_dir}/models" }
 
   watch(rails.controllers) do |m|
     [

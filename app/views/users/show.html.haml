@@ -1,16 +1,24 @@
 / temporary Profile page, will make more pretty and interesting later.
-%h1 
-  = @user.name
-%ul
-  %li
-    = @user.contact[:email]
-  %li
-    = @user.contact[:phone]
-  %li 
-    = @user.gender[:identity]
-  %li
-    / Todo: move the below into a helper method which returns user type text appropriately
-    - if @user.is_provider
-      Provider
-    - else
-      Seeker
+- provide(:title, '@user.name')
+= stylesheet_link_tag 'http://yui.yahooapis.com/pure/0.6.0/pure-min.css', rel: 'stylesheet', type: 'text/css'
+= stylesheet_link_tag 'http://yui.yahooapis.com/pure/0.6.0/grids-responsive-min.css', rel: 'stylesheet', type: 'text/css'
+= stylesheet_link_tag 'http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css', rel: 'stylesheet', type: 'text/css'
+
+= render 'show_temp'
+
+
+/ %h1
+/   = @user.name
+/ %ul
+/   %li
+/     = @user.contact[:email]
+/   %li
+/     = @user.contact[:phone]
+/   %li 
+/     = @user.gender[:identity]
+/   %li
+/     / Todo: move the below into a helper method which returns user type text appropriately
+/     - if @user.is_provider
+/       Provider
+/     - else
+/       Seeker
