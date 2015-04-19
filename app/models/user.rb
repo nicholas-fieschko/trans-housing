@@ -105,7 +105,6 @@ class Gender
   validates_presence_of :they, :them, :their,    if: ->(gender){gender.trans && gender.custom_pronouns}
   validates_presence_of :identity, :trans
 
-
   before_save {
     self.identity = identity.downcase 
     if self.cp
