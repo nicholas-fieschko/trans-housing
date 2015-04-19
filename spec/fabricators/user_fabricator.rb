@@ -8,6 +8,8 @@ Fabricator(:user) do
   password                     "test123"
   password_confirmation        "test123"
 
+  number_reviews                0
+
   food_resource                 { [true,false].sample ? Fabricate.build(:food_resource) :           nil }                 
   shower_resource               { [true,false].sample ? Fabricate.build(:shower_resource) :         nil }
   laundry_resource              { [true,false].sample ? Fabricate.build(:laundry_resource) :        nil }
