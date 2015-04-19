@@ -24,6 +24,7 @@ class User
   # embeds_many :reviews
   # has_one :inbox ?
 
+
   accepts_nested_attributes_for  :gender, :contact, :location #, :resources
   validates_presence_of :name,   :gender, :contact#, :location
   validates_associated           :gender, :contact#, :location
@@ -118,5 +119,4 @@ end
 class PreferenceProfile
   include Mongoid::Document
   embedded_in :user
-
 end

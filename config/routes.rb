@@ -17,8 +17,6 @@ Rails.application.routes.draw do
   # match '/space', to: 'spaces#show', via: 'get'
   # match '/space/new' to: 'spaces#create', via: 'get'
 
-
-
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
