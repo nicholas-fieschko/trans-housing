@@ -1,7 +1,7 @@
 var lines = [];
 var map;
 var infowindow = new google.maps.InfoWindow();
-var initialLoc;
+var initialLocation;
 var yale = new google.maps.LatLng(41.31845, -72.92226);
 var browserSupportFlag = new Boolean();
 
@@ -48,6 +48,7 @@ function initialize() {
 							 latitude, position.
 							 coords.longitude);
 		map.setCenter(initialLocation);
+		queryNearbyUsers(initialLocation.lat(), initialLocation.lng());
 	    },function (){
 		handleNoGeolocation(browerSupportFlag);
 	    });
@@ -56,27 +57,39 @@ function initialize() {
 	browserSupportFlag = false;
 	handleNoGeolocation(browserSupportFlag);
     }
-	for (var i=0; i<lines.length; i++){
-	    addMarkers(map, lines[i]);
-    }
 }
+
 
 function handleNoGeolocation(errorFlag) {
     if (errorFlag == true) {
 	alert("Geolocation service failed...");
     } 
-    initialLocation = newhaven;
+    initialLocation = yale;
+    map.setCenter(initialLocation)
 }
 
-function queryNearbyUsers(latitude, longitude) {
-	
-	
+function queryNearbyUsers(lat, lng, map) {
+    userCursor = db.trans_housing_development.find
+	(
+	 { 
+	     location:
+	     { $near: 
+	       {
+		   $geometry:{ type:"Point", coordinates:[lat, lng] },
+		   $maxDistance: 8046 // This is 5 miles in meters
+	       }
+	     }
+	 }
+	 ) 		     	 
+    while (userCursor.hasNext()) {
+	addMarkers(map, myCursor.next());
+    }
 }
 
 
-function addMarkers(map, p) {
-    console.log(p)
-	if (p[5] == 0) {
+function addMarkers(map, usr) {
+    // console.log(p)
+	if (usr.is_provider) {
 	    var image = {
 		icon: "<%=asset_path('house.png') %>",
 		size: new google.maps.Size(32, 32),
@@ -101,19 +114,20 @@ function addMarkers(map, p) {
     var contentString = '<div id="content">'+ 
 	'<div id="siteNotice">'+
 	'</div>'+
-	'<h1 id="firstHeading" class="firstHeading">' + p[0] + '</h1>'+
-	'<div id="bodyContent"><p>' + p[1] + '<br><b>' + p[2] + '</b></div>'+'</div>';
+	'<h1 id="firstHeading" class="firstHeading">' + usr.name + '</h1>'+
+	'<div id="bodyContent"><p>' + usr.gender + '<br><b>' + usr.contact + 
+	'</b></div>'+'</div>';
     
     //      var infowindow = new google.maps.InfoWindow({
     //            content: contentString
     //        });
     
-    var myLatLng = new google.maps.LatLng(p[3], p[4]);
+    var myLatLng = new google.maps.LatLng(usr.Location.lng, usr.Location.lat);
     var marker = new google.maps.Marker({
 	    position: myLatLng,
 	    icon: image,
 	    map: map,
-	    title: p[0],
+	    title: usr.name,
 	    //      shape: shape
 	    zIndex: parseInt(p[5])
 	});
