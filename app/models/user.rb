@@ -74,9 +74,9 @@ class User
 
   def self.search(search)
     if search
-      where('name LIKE ?', "%#{search}%")
+      self.where(name: search).to_a
     else
-      scoped
+      self.all.to_a
     end
   end
 
