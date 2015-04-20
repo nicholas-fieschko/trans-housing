@@ -3,7 +3,7 @@ require 'twilio-ruby'
 class TwilioController < ApplicationController
 	include Webhookable
 
-	# 'set_header' and 'render_twiml' abstracted to concerns/webhookable.rb	
+	# N.B.: 'set_header', 'render_twiml' in concerns/webhookable.rb	
 	after_filter :set_header
 	
 	# Disable CSRF Detections

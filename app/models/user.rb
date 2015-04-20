@@ -20,9 +20,11 @@ class User
 
   # has_one :inbox ?
 
-  # OK, so this is the link between Conversations/Messages and User
-  # See: StackOverflow discussion on MongoDB private message schema
-  has_and_belongs_to_many :conversations
+	# Basic messaging system (Stephen). Cf. StackOverflow discussion of MongoID
+	#		private messaging. This is option 1 (much simpler than before).
+	has_many :messages_sent,		 :class_name => 'Message', :inverse_of => :sender
+	has_many :messages_received, :class_name => 'Message', :inverse_of => :receiver
+	# END OF messaging system!
 
   accepts_nested_attributes_for :location, :gender, :contact #, :resources
 
