@@ -1,0 +1,38 @@
+<h1> Hi <%= @user.name %></h1>
+
+<% if @reviews.any? %>
+
+	Reminder: please complete the following reviews: <br>
+
+	<% @reviews.each do |r| %>
+		Review for <%= User.find(r.user_id).name %>: <%= link_to "Click here", user_url(r.user_id.to_s, review_id: r.id.to_s) %><br>
+	<% end %>
+
+
+<% else %>
+
+
+	All reviews completed.
+
+
+<% end %>
+
+
+
+
+
+
+<br><br>
+
+
+
+
+<h3> History </h3>
+
+<% @user.requests.each do |r| %>
+	<% if @user.is_provider %>
+		Helped <%= User.find(r.helpee).name %> <%= time_ago_in_words(r.updated_at) %> ago. <br>
+	<% else %>
+		Helped by <%= User.find(r.helper).name %> <%= time_ago_in_words(r.updated_at) %> ago. <br>
+	<% end %>
+<% end %>

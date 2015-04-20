@@ -27,8 +27,7 @@ class User
   has_many :reviews
   field :number_reviews, type: Integer
 
-  # embeds_many :reviews
-  # has_one :inbox ?
+  has_and_belongs_to_many :requests
 
 
   accepts_nested_attributes_for  :gender, :contact, :location #, :resources
