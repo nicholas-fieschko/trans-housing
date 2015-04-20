@@ -1,15 +1,118 @@
 @import "bootstrap-sprockets"
 @import "bootstrap"
 
-#header-logo
-  font-size: 2em
+$trans-pink: pink
+$trans-blue: #6FBEF3
 
-.navbar
-  margin-bottom: 0px
+@mixin bg-and-text-color($bg,$text)
+  color:              $text
+  background-color:   $bg
+  border-color:       $bg
+
+@mixin btn-hover-invert($default-bg-color, $default-text-color)
+  @include            bg-and-text-color($default-bg-color,$default-text-color)
+  &:hover
+    @include          bg-and-text-color($default-text-color,$default-bg-color)
+
+.logo-homepage#logo
+  font-size:          300%
+#logo
+  text-decoration:    none
+#logo-housing
+  color:              $trans-blue
+#logo-trans
+  color:              $trans-pink
+
+.btn-header
+  @include transition(all 0.2s ease-in-out)
+  color:              white
+  text-transform:     uppercase
+  font-weight:        bold
+  margin:             8px 5px
+
+.btn-lg-header
+  padding:            10px 20px
+  font-size:          20px
+  line-height:        1.33
+  margin:             12px 5px
+
+.btn-sign-up
+  @include            btn-hover-invert($trans-blue,white)
+
+.btn-sign-in
+  @include            btn-hover-invert($trans-pink,white)
+
+
 
 #frontpage-map
-  background-image: url("map_placeholder.gif")
-  height: 70vh
+  background-image:   url("map_placeholder.gif")
+  height:             400vh
   
 body
-  font-family: 'Source Sans Pro', sans-serif
+  font-family:        'Source Sans Pro', sans-serif
+
+
+// Sessions SASS. Until I completely re-do the application.css.sass
+// organization as recommended elsewhere (a to-do item), things must
+// be put here if I wish to use existing mixins. 
+@mixin login-field-label($bg-color,$text-color)
+  @include            bg-and-text-color($bg-color,$text-color)
+  cursor:             default
+  text-transform:     uppercase
+  display:            block
+  font-size:          150%
+  font-weight:        normal
+  line-height:        1.43
+  text-align:         center
+  vertical-align:     middle
+  padding:            6px 12px
+  margin:             0px
+  &:hover
+    @include          bg-and-text-color($bg-color,$text-color)
+
+@mixin login-field-input($border-color)
+  color:              $border-color
+  border-color:       $border-color
+  border-style:       dashed
+  width:              100%
+  font-size:          100%
+  padding:            6px 12px
+  outline:            none
+
+.login-column
+  height: 100%
+
+.login-email-label
+  @include            login-field-label(white,$trans-blue)
+
+.login-email-input
+  @include            login-field-input($trans-blue)
+
+.login-password-label
+  @include            login-field-label(white,$trans-pink)
+
+.login-password-input
+  @include            login-field-input($trans-pink)
+
+.login-submit-button
+  @extend             .btn
+  @extend             .btn-header
+  @include            btn-hover-invert($trans-blue, white)
+  font-size:          150%
+  width:              100%
+  margin:             20px 0px 0px 0px
+
+.login-box
+  background-color:   white
+  padding:            15px
+
+.login-box-positioner
+  position:           relative
+  top:                10%
+  border-radius:      6px
+
+.map-bg
+  background-image:   url("map_placeholder.gif")
+
+html,body
+  height:             100%
