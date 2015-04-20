@@ -45,9 +45,16 @@ function initialize() {
 	browserSupportFlag = true;
 	navigator.geolocation.getCurrentPosition(function(position) {
 		initialLocation = new google.maps.LatLng(position.coords.
-							 latitude, position.
-							 coords.longitude);
+												latitude, position.
+												coords.longitude);
 		map.setCenter(initialLocation);
+		// We want to put a marker on our location
+		var myLatLng = new google.maps.LatLng(initialLocation.lat(), 
+												initialLocation.lng());
+		var marker = new google.maps.Marker ({
+			position:myLatLng,
+			map: map,	
+		});
 		queryNearbyUsers(initialLocation.lat(), initialLocation.lng());
 	    },function (){
 		handleNoGeolocation(browerSupportFlag);
