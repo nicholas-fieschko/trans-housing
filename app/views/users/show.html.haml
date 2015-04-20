@@ -1,20 +1,36 @@
-/ temporary Profile page, will make more pretty and interesting later.
+- provide :title, @user.name
 
-= render 'show_temp'
-
-
-/ %h1
-/   = @user.name
-/ %ul
-/   %li
-/     = @user.contact[:email]
-/   %li
-/     = @user.contact[:phone]
-/   %li 
-/     = @user.gender[:identity]
-/   %li
-/     / Todo: move the below into a helper method which returns user type text appropriately
-/     - if @user.is_provider
-/       Provider
-/     - else
-/       Seeker
+.pure-g.grid-columns-container
+  .pure-u-1-5
+  .pure-u-3-5.user-profile-column
+    Profile page layout not implemented yet yo. Stay tuned.
+    %h1
+      = @user.name
+      = link_to "Reach out to #{@user.name}", "#", class: "btn btn-primary"
+    = @user.gender[:identity]
+    .temp
+      = @user.seeker? ? "Seeking help" : "Offering help"
+    .temp
+      = "#{@user.they} be located at #{@user.location.coordinates}"
+    .temp
+      food?
+      = @user.offers_food?
+    .temp
+      shower?
+      = @user.offers_shower?
+    .temp
+      laundry?
+      = @user.offers_laundry?
+    .temp
+      housing?
+      = @user.offers_housing?
+    .temp
+      transportation?
+      = @user.offers_transportation?
+    .temp
+      buddy?
+      = @user.offers_buddy?
+    .temp
+      misc?
+      = @user.offers_misc?
+  .pure-u-1-5

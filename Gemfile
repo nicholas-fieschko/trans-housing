@@ -10,6 +10,7 @@ gem 'mongoid', "~> 4.0.0"
 gem 'bootstrap-sass', '~> 3.2.0'
 gem 'autoprefixer-rails'
 gem 'haml'
+gem 'font-awesome-sass'
 
 gem 'jquery-rails'				 # Use jquery as the JavaScript library
 gem 'turbolinks'				 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
