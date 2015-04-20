@@ -11,7 +11,7 @@
     .temp
       = @user.seeker? ? "Seeking help" : "Offering help"
     .temp
-      = "#{@user.they} be located at #{@user.location.coordinates}"
+      = "#{@user.they} be located at #{@user.location ? @user.location.coordinates : '... hell if we know'}"
     .temp
       food?
       = @user.offers_food?
