@@ -22,6 +22,10 @@ class UsersController < ApplicationController
   def index
     @users = User.all
     @users = User.search(params[:search])
+
+    if params[:user_filters]
+      @users = User.find_with_filters(params[:user_filters])
+    end
   end
 
   def show
