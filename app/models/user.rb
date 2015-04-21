@@ -12,6 +12,7 @@ class User
   embeds_one :gender
   has_one :contact,              dependent: :delete
   has_one :location,             dependent: :delete
+  embeds_one :location
   
   # embeds_one :preference_profile # User site/security preferences
   # embeds_one :extended_profile
@@ -56,7 +57,7 @@ class User
 
   #Pronoun getters to be refactored
   def they
-    identity = self.gender[:identity].downcase
+    identity = self.gender[:identity].to_s.downcase
     if identity == "male"
       "he"
     elsif identity == "female"
@@ -93,8 +94,6 @@ class User
       "them"
     end
   end
-        
-        
 
   def provider?
     self.is_provider
@@ -135,10 +134,46 @@ class User
 
   def self.search(search)
     if search
-      self.where(name: search).to_a
+      any_of({name: /#{search}/i}, {location: /#{search}/i})
     else
       self.all.to_a
     end
+  end
+
+  def self.resources_list
+    ["Food",
+     "Shower",
+     "Laundry",
+     "Transportation",
+     "Misc"]
+  end
+
+  def self.integer_from_options_list(options_list)
+    # convert options list given by radio buttons into one-hot integer
+    resources = 0;
+    if options_list
+      options_list.each do |option|
+        resources += 2 ** option.to_i
+      end
+    end
+
+    resources
+  end
+
+  def self.find_with_filters(filters)
+
+    filtered_users = User
+
+    if filters[:city] && filters[:city].length > 0
+      filtered_users = filtered_users.near(filters[:city], 30)
+    end
+
+    if filters[:resources]
+      resources = User.integer_from_options_list(filters[:resources])
+      filtered_users = filtered_users.where("resources & ? = ?", resources, resources)
+    end
+
+    filtered_users
   end
 
     private

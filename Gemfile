@@ -31,6 +31,8 @@ gem 'bcrypt', '~> 3.1.7'		 # Use ActiveModel has_secure_password
 
 gem 'geokit-rails', '~> 2.1.0'   # Geokit for address/GPS coor transformation 
 								 # https://github.com/geokit/geokit-rails
+gem 'mongoid-geospatial', '~>4.0'	# Mongoid Geospatial
+									# https://github.com/nofxx/mongoid-geospatial
 
 
 gem 'simple_form'

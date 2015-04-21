@@ -15,15 +15,22 @@ module ApplicationHelper
   end
 
   def gender_category(user_gender_identity)
-    if user_gender_identity.downcase != "male" &&
-       user_gender_identity.downcase != "female"
+    if user_gender_identity.to_s.downcase != "male" &&
+       user_gender_identity.to_s.downcase != "female"
       "nb"
     else
-      user_gender_identity.downcase
+      user_gender_identity.to_s.downcase
     end
   end
 
   def gender_category_class
     "header-username-#{gender_category(current_user.gender[:identity])}"
   end
+
+  def checkbox_group(options)
+    # options hash must include :collection, :ul_class, and :html_name
+    @ul = options
+    render "shared/checkbox_group"
+  end
+  
 end
