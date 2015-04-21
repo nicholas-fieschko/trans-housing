@@ -8,7 +8,8 @@ Rails.application.routes.draw do
 
   resources :sessions, only: [:new, :create, :destroy]
   resources :users do
-		resources :conversations, except: [:edit, :update], as: 'mail'
+		# Mailbox at /user/id/mail
+		resources :conversation, except: [:edit, :update], path: 'mail'
 	end
 
 

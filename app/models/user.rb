@@ -19,14 +19,7 @@ class User
   embeds_many :reviews
 
   # has_one :inbox ?
-
 	has_many :conversations
-
-	# Basic messaging system (Stephen). Cf. StackOverflow discussion of MongoID
-	#		private messaging. This is option 1 (much simpler than before).
-	#has_many :messages_sent,		 :class_name => 'Message', :inverse_of => :sender
-	#has_many :messages_received, :class_name => 'Message', :inverse_of => :receiver
-	# END OF messaging system!
 
   accepts_nested_attributes_for :location, :gender, :contact #, :resources
 
