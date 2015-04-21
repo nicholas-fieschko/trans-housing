@@ -7,7 +7,8 @@ class ConversationController < ApplicationController
 
 	# Gather form info for the new conversation
 	def new()
-		@test = "Teen Wolf"
+		@user = User.last #find(params[:user_id])
+		@convo = Conversation.create
 	end
 
 	# Create that new conversation

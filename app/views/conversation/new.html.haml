@@ -1,1 +1,11 @@
-%h1 This is the Creation form (linked to in inbox)
+%h1 Create a new message
+
+/ Will need instance variable for the recipient(s)
+= form_for [@user, @convo] do |job|
+
+	= job.text_field :messages
+
+	= job.button :submit, value: "Send message"
+
+/ When done, should go back to the inbox and the sent message should be
+/ in snippet view at the top of the conversation partial
