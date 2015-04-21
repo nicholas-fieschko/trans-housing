@@ -26,6 +26,8 @@ class User
 
   has_many :reviews
   field :number_reviews, type: Integer
+  field :sum_rating, type: Float
+  field :average_rating, type: Float
 
   has_and_belongs_to_many :requests
 

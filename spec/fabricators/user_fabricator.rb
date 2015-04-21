@@ -9,6 +9,8 @@ Fabricator(:user) do
   password_confirmation        "test123"
 
   number_reviews                0
+  average_rating                0.0
+  sum_rating                    0
 
 
   food_resource                 { [true,false].sample ? Fabricate.build(:food_resource) :           nil }                 

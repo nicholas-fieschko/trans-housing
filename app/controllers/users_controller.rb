@@ -21,7 +21,9 @@ class UsersController < ApplicationController
   	if params[:review]
 	  	@review = Review.find(params[:review_id])
     	if @review.update_attributes(review_params)
+        @user.sum_rating = @user.sum_rating + @review.rating
     		@user.number_reviews = @user.number_reviews + 1
+        @user.average_rating = (@user.sum_rating / @user.number_reviews).round(1)
     		@user.save
     		@review.update_attribute(:completed, 1)
         @review.update_attribute(:expirable_created_at, nil)

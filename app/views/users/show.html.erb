@@ -31,6 +31,8 @@
 
  <div class="col-md-8">
     <% if @user.number_reviews > 0 %>
+      <h3>Average Rating</h3>
+        <%= @user.average_rating %>
       <h3>Reviews (<%= @user.number_reviews %>)</h3>
        <ol class="reviews">
         <%= render @reviews %>

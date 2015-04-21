@@ -12,7 +12,9 @@ class RequestsController < ApplicationController
     if (@request = Request.find(params[:id])) && signed_in? && @request.helper.to_s == params[:user_id] && @request.helpee == current_user.id
       @request.update_attribute(:completed, true)
       @helper = User.find(params[:user_id])
-      @review = @helper.reviews.create!(authorID: current_user.id, author: current_user.name)
+      @review = Review.new(authorID: current_user.id, author: current_user.name)
+      @helper.reviews.push(@review)
+      @review.save(validate: false)
       @request.update_attribute(:review, @review.id)
       redirect_to user_request_path(@helper,@request)
     else

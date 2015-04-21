@@ -22,6 +22,10 @@ class Review
   # TTL index on the above field. Need to run  rake db:mongoid:create_indexes
   index({expirable_created_at: 1}, {expire_after_seconds: 1.month})
 
+
+  validates_presence_of :text, :rating
+  validates :rating, numericality: { only_integer: true, greater_than: 0, less_than: 6}
+
   # Callback to set `expirable_created_at`
   before_create :set_expire
   def set_expire
