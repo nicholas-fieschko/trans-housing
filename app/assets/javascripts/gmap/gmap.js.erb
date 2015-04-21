@@ -68,11 +68,10 @@ function queryNearbyUsers(lat, lng, map) {
 		dataType: 'json',
 		success: function(data) {
 		    $.each($(data), function(k,v) {
-				$.each(v, function(key, val){
-					$.each(val, function(k, userInfo){
-						console.debug(userInfo)
-						addMarkers(map, userInfo)
-					});
+				
+				$.each(v, function(k, userInfo){
+					console.debug(userInfo)
+					addMarkers(map, userInfo)
 				});
 			});
 		},
