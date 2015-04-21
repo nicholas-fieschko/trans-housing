@@ -1,13 +1,28 @@
-%header.navbar
-  %span#header-logo.navbar-brand 
-    = link_to "TransHousing", root_path
-  - if signed_in?
-    .navbar-right
-      %span.navbar-brand
-        = current_user.name
-        = link_to "Log out", signout_path, method: "delete"
-  - else
-    .btn.btn-default.navbar-btn.navbar-right 
-      = link_to "Sign up", signup_path
-    .btn.btn-default.navbar-btn.navbar-right 
-      = link_to "Log in", signin_path
+%header.home-menu.pure-menu.pure-menu-horizontal
+  =link_to render("logo"), '/', class: "pure-menu-heading #{current_page?('/') && !signed_in? ? 'logo-homepage' : nil}", id: "logo"
+  %span.header-menu-items
+    %ul.pure-menu-list
+      - if signed_in?
+        - # Signed in user Navbar
+        %li.pure-menu-item
+          Signed in as
+          = link_to current_user.name, current_user, id: "header-username", class: gender_category_class
+        %li.pure-menu-item
+          = link_to "#" do
+            %span.spin-fix
+              = icon 'fa fa-cog fa-lg settings-icon'
+        %li.pure-menu-item
+          = link_to "#" do
+            = icon 'fa fa-lg fa-envelope-o'
+        %li.pure-menu-item
+          = link_to "Sign out", signout_path, method: "delete", id: 'sign-out-button', class: "btn btn-header btn-sign-out"
+      - else                             
+        - # Signed in user Navbar
+        %li.pure-menu-item
+          - unless current_page? signup_path
+            = link_to "Sign up", signup_path, 
+            id: 'sign-up-button', class: "btn btn-header #{current_page?('/') && !signed_in? ? 'btn-lg-header' : nil} btn-sign-up"
+        %li.pure-menu-item
+          - unless current_page? signin_path
+            = link_to "Sign In", signin_path, 
+            id: 'sign-in-button', class: "btn btn-header #{current_page?('/') && !signed_in? ? 'btn-lg-header' : nil} btn-sign-in"

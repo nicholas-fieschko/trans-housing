@@ -1,12 +1,23 @@
-trans-housing
-=============
+Reviews
+=======
 
-Main repo for CPSC 439b group project
+Implemented:
+- Each review belongs to the user receiving the review and has a authorID corresponding to the ObjectId of the user who is supposed to leave the review. Only this user can leave the review and must be signed in to do so.
+- Automatic database purges for old uncompleted reviews using TTL field. Currently set to 1 month (time limit for a user to leave a review)
+- Users can submit help requests to other users
+- History for User model - review automatically generated after user1 helps user2
+- User can see a list of unfinished reviews as well as history on the dashboard.
+- Average rating field added
+- Validations for text and ratings added
+- only non-providers can submit help requests to providers
+- integration with mailer - user gets an email with link to leave review
 
-> Just a check that we can push from CL to git.yale.edu
-> Seems to be working!
 
-+ Able to access from VM
-+ Need to import Google Doc assignments
+To-do:
+- friendly error messages
+- both providers and non-providers can complete a request
+- Security
+- front end design
+- write tests
+- refactor code and views
 
-Usage: `git clone https://git.yale.edu/TransHousing/trans-housing`

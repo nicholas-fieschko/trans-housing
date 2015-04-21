@@ -2,7 +2,7 @@ class UsersController < ApplicationController
   def new
     @user = User.new
     @user.build_contact
-    @user.location = Location.new
+    @user.location = Fabricate.build(:location)
     @user.build_gender
   end
 
@@ -25,18 +25,42 @@ class UsersController < ApplicationController
   end
 
   def index
+    @users = User.all
+    @users = User.search(params[:search])
   end
 
   def show
-    @user = User.find(params[:id])
+  	@user = User.find(params[:id])
+  	@reviews = @user.reviews
   end
+
+
+  def dashboard
+    if signed_in?
+      @user = current_user
+      @reviews = Review.where(authorID: @user.id, completed: false).all
+    else
+      signed_in_user
+    end
+  end
+
+
+
+
+
+
 
   private
 
     def user_params
-      params.require(:user).permit(:name, :is_provider,
+      params.require(:user).permit(
+        :name,
+        :is_provider,
         :password, :password_confirmation,
-        gender_attributes: [:identity, :trans, :cp, :they, :their, :them], 
-        contact_attributes: [:email, :phone])
+        gender_attributes:  [:identity, :trans, :cp, :they, :their, :them],
+        contact_attributes: [:email, :phone]
+        # location_attributes: [:coordinates],
+        )
     end
+
 end

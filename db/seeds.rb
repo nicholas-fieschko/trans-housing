@@ -6,5 +6,19 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-User.create!(name: 'yujia', password: '123456', contact: Contact.new(email: 'huyujia415@gmail.com'), location: Location.new(), gender: Gender.new())
+
+
+#richard = User.create!(name: 'richard', password: 'password', contact: Contact.create!(email: "richard.chang@gmail.com", phone: 8888888), number_reviews: 0, location: Location.new(), gender: Gender.new(identity: "Male", trans: false))
+#arnold = User.create!(name: 'arnold', password: 'password', contact: Contact.create!(email: "arnold.chang@gmail.com", phone: 8888888), number_reviews: 0, location: Location.new(), gender: Gender.new(identity: "Male", trans: false))
+#david = User.create!(name: 'david', password: 'password', contact: Contact.create!(email: "david.chang@gmail.com", phone: 8888888), number_reviews: 0, location: Location.new(), gender: Gender.new(identity: "Male", trans: false))
+
+
+
+
+
+Fabricate.times(10,:provider)
+Fabricate.times(10,:seeker)
+
+
+
 

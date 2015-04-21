@@ -20,6 +20,14 @@ class Notifier < ApplicationMailer
 				)
 	end
 
+
+	def new_review(helpee, helper, review)
+		@to = helpee
+		@helper = helper
+		@review = review
+		mail(to: "richang11@gmail.com", subject: "[TransHousing] Please leave a review for #{helper.name}")
+	end
+
 	# - We will need more of these!
 
 end

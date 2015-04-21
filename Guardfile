@@ -29,7 +29,7 @@ guard 'livereload' do
   watch(%r{public/.+\.(css|js|html)})
   watch(%r{config/locales/.+\.yml})
   # Rails Assets Pipeline
-  watch(%r{(app|vendor)(/assets/\w+/(.+\.(css|js|html|png|jpg))).*}) { |m| "/assets/#{m[3]}" }
+  watch(%r{(app|vendor)(/assets/\w+/(.+\.(css|sass|js|html|png|jpg))).*}) { |m| "/assets/#{m[3]}" }
 end
 
 # Note: The cmd option is now required due to the increasing number of ways
@@ -41,7 +41,8 @@ end
 #  * zeus: 'zeus rspec' (requires the server to be started separately)
 #  * 'just' rspec: 'rspec'
 
-guard :rspec, cmd: "bundle exec rspec" do
+# guard :rspec, cmd: "bundle exec rspec" do
+guard :rspec, cmd: "zeus test" do
   require "guard/rspec/dsl"
   dsl = Guard::RSpec::Dsl.new(self)
 
