@@ -5,6 +5,7 @@ Fabricator(:user) do
   location                     { Fabricate.build(:location) }
   gender                       { Fabricate.build(:binary_gender) }
   contact                      { Fabricate.build(:contact) }
+
   password                     "test123"
   password_confirmation        "test123"
 

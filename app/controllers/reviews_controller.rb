@@ -10,7 +10,7 @@ class ReviewsController < ApplicationController
       @user.save
       @review.update_attribute(:completed, 1)
       @review.update_attribute(:expirable_created_at, nil)
-      flash[:success] = "Review submitted"
+      #flash[:success] = "Review submitted"
       redirect_to @user
     else
       flash[:danger] = "Review not submitted"

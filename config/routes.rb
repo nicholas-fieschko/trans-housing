@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
 
+  resources :messages
+
+  resources :conversations
+
   root to: 'locations#index'
 
 
@@ -13,6 +17,7 @@ Rails.application.routes.draw do
     resources :reviews, only: [:edit, :update, :show]
     resources :requests
   end
+
 
 
   match '/signup',			to: 'users#new',				via: 'get'
@@ -32,6 +37,12 @@ Rails.application.routes.draw do
   # match '/space', to: 'spaces#show', via: 'get'
   # match '/space/new' to: 'spaces#create', via: 'get'
 
+
+
+ 
+	# Basic Twilio webhooks; need to integrate with user profile
+	get 'twilio/sms' => 'twilio#sms'
+ 
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

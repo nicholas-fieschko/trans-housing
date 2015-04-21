@@ -17,6 +17,7 @@ class RequestsController < ApplicationController
       @helper.reviews.push(@review)
       @review.save(validate: false)
       @request.update_attribute(:review, @review.id)
+      Notifier.new_review(current_user,@helper,@review).deliver
       redirect_to user_request_path(@helper,@request)
     else
       redirect_to user_path(params[:user_id])

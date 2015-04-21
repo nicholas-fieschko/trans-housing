@@ -9,6 +9,11 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
     if @user.save
+
+      # Send an email upon signup--will go to Stephen's email because of
+			# 	Fabricator settings, so comment out until the demo.
+      Notifier.welcome(@user).deliver
+
       sign_in @user
       redirect_to @user
     else
