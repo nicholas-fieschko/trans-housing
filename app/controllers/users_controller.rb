@@ -23,8 +23,8 @@ class UsersController < ApplicationController
     @users = User.all
     @users = User.search(params[:search])
 
-    if params[:user_filters]
-      @users = User.find_with_filters(params[:user_filters])
+    if params[:users_filters]
+      @users = User.find_with_filters(params[:users_filters])
     end
   end
 
