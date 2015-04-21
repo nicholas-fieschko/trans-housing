@@ -59,7 +59,7 @@ function handleNoGeolocation(errorFlag) {
 
 function queryNearbyUsers(lat, lng, map) {
     var url = "/location/posts";
-    var loc = { 'lat': lat, 'lng': lng };
+    var loc = { loc: [lat, lng]};
         $.ajax({
 		type: "POST",
 		url: url,
@@ -70,8 +70,11 @@ function queryNearbyUsers(lat, lng, map) {
 		    $(userData).each(function(userInfo) {
 			addMarkers(map, userInfo);
 			});
-		}
-	    })
+		},
+		error: function() {
+		    alert("Ajax error!")
+			}
+	    });
 	}
 
 function addMarkers(map, usr) {
