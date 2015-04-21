@@ -10,12 +10,12 @@ Implemented:
 - Average rating field added
 - Validations for text and ratings added
 - only non-providers can submit help requests to providers
+- integration with mailer - user gets an email with link to leave review
 
 
 To-do:
 - friendly error messages
 - both providers and non-providers can complete a request
-- integrate with email app
 - Security
 - front end design
 - write tests
