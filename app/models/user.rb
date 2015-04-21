@@ -36,6 +36,48 @@ class User
   has_secure_password
   before_create :create_remember_token
 
+  #Pronoun getters to be refactored
+  def they
+    identity = self.gender[:identity].downcase
+    if identity == "male"
+      "he"
+    elsif identity == "female"
+      "she"
+    elsif self.gender[:custom_pronouns]
+      self.gender[:they]
+    else
+      "they"
+    end
+  end
+
+  def their
+    identity = self.gender[:identity].downcase
+    if identity == "male"
+      "his"
+    elsif identity == "female"
+      "her"
+    elsif self.gender[:custom_pronouns]
+      self.gender[:their]
+    else
+      "their"
+    end
+  end
+
+  def them
+    identity = self.gender[:identity].downcase
+    if identity == "male"
+      "him"
+    elsif identity == "female"
+      "her"
+    elsif self.gender[:custom_pronouns]
+      self.gender[:their]
+    else
+      "them"
+    end
+  end
+        
+        
+
   def provider?
     self.is_provider
   end
@@ -75,7 +117,7 @@ class User
 
   def self.search(search)
     if search
-      self.where(name: search).to_a
+      any_of({name: /#{search}/i}).to_a
     else
       self.all.to_a
     end
