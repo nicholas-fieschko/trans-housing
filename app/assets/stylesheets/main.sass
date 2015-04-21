@@ -1,18 +1,24 @@
 @import "bootstrap-sprockets"
 @import "bootstrap"
 
-$trans-pink: pink
-$trans-blue: #6FBEF3
+$trans-pink:          pink
+$trans-blue:          #6FBEF3
+$trans-purple:        #BF55EC
 
 @mixin bg-and-text-color($bg,$text)
   color:              $text
   background-color:   $bg
   border-color:       $bg
+  border-style:       solid
+  border-width:       1px
 
 @mixin btn-hover-invert($default-bg-color, $default-text-color)
   @include            bg-and-text-color($default-bg-color,$default-text-color)
   &:hover
     @include          bg-and-text-color($default-text-color,$default-bg-color)
+
+li.pure-menu-item
+  margin:             0px 3px
 
 .logo-homepage#logo
   font-size:          300%
@@ -22,6 +28,10 @@ $trans-blue: #6FBEF3
   color:              $trans-blue
 #logo-trans
   color:              $trans-pink
+
+.btn
+  &:active
+    box-shadow:       none
 
 .btn-header
   @include transition(all 0.2s ease-in-out)
@@ -36,21 +46,48 @@ $trans-blue: #6FBEF3
   line-height:        1.33
   margin:             12px 5px
 
-.btn-sign-up
+#sign-up-button.btn-sign-up
   @include            btn-hover-invert($trans-blue,white)
 
-.btn-sign-in
+#sign-in-button.btn-sign-in,#sign-out-button.btn-sign-out
   @include            btn-hover-invert($trans-pink,white)
 
+a#header-username
+  text-decoration:    none
+  &.header-username-male
+    color:            $trans-blue
+  &.header-username-female
+    color:            $trans-pink
+  &.header-username-nb
+    color:            $trans-purple
 
+i.settings-icon
+  vertical-align:      middle
+  text-align:          center
+  &:hover
+    color:             $trans-blue
+    -webkit-animation: spin 3.1s infinite linear
+    -moz-animation:    spin 3.1s infinite linear
+    -o-animation:      spin 3.1s infinite linear
+    animation:         spin 3.1s infinite linear
 
 #frontpage-map
   background-image:   url("map_placeholder.gif")
   height:             400vh
+
+.spin-fix .settings-icon
+  -webkit-transform-origin:  50% calc(50% - .5px)
+  transform-origin:          50% calc(50% - .5px)
+
   
 body
   font-family:        'Source Sans Pro', sans-serif
-
+// User Profile SASS
+.grid-columns-container,.user-profile-column
+  height:             100%
+.user-profile-column
+  background-color:   white
+  padding:            20px
 
 // Sessions SASS. Until I completely re-do the application.css.sass
 // organization as recommended elsewhere (a to-do item), things must
@@ -78,6 +115,7 @@ body
   font-size:          100%
   padding:            6px 12px
   outline:            none
+  text-align:         center
 
 .login-column
   height: 100%
