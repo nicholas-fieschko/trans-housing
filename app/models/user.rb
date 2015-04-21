@@ -121,7 +121,7 @@ class User
     end
   end
 
-  def self.resource_list
+  def self.resources_list
     ["Food",
      "Shower",
      "Laundry",
