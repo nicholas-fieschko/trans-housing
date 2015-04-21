@@ -7,9 +7,10 @@ Rails.application.routes.draw do
   root to: 'locations#index'
 
   resources :sessions, only: [:new, :create, :destroy]
+  
   resources :users do
 		# Mailbox at /user/id/mail
-		resources :conversation, except: [:edit, :update], path: 'mail'
+		resources :conversation, except: :edit, path: 'mail'
 	end
 
 

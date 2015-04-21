@@ -1,3 +1,10 @@
-%h1 Conversations
+%h1 Inbox
 
-= @convo 
+/ Basically, just show the partial in ./_conversation.html.haml
+/ we can give some more user-friendly dates and snippet views
+
+= render "conversation"
+
+/ Options that apply to individual conversations are in the partial
+/ viz., delete, update, show. Here we link to creation form
+= link_to 'Send a new message', new_user_conversation_path
