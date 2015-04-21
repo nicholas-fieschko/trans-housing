@@ -1,5 +1,3 @@
 Fabricator(:location) do
-  transient lat:        (-180..180).to_a.sample
-  transient lng:        (-90..90).to_a.sample
-  coordinates           { |attrs| [ attrs[:lat], attrs[:lng] ] }
+  coordinates           { [ (rand * 0.5) + 41, (rand * 0.5) + 72] }
 end

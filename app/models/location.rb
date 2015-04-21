@@ -3,6 +3,10 @@ class Location
   belongs_to :user
   
   field :c, as: :coordinates, type: Array             # [longitude, latitude]
+  field :zip,                 type: String
+  field :city,                type: String
+  field :state,               type: String
+  field :country,             type: String
 
   # Validation: longitude is between -180 and 180
   # Validation: latitude is between -90 and 90
