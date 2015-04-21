@@ -32,6 +32,7 @@ class User
   has_and_belongs_to_many :requests
 
 
+
   accepts_nested_attributes_for  :gender, :contact, :location #, :resources
   validates_presence_of :name,   :gender, :contact#, :location
   validates_associated           :gender, :contact#, :location
@@ -81,6 +82,14 @@ class User
     Digest::SHA1.hexdigest(token.to_s)
   end
 
+  def self.search(search)
+    if search
+      self.where(name: search).to_a
+    else
+      self.all.to_a
+    end
+  end
+
     private
 
     def create_remember_token
@@ -107,7 +116,6 @@ class Gender
   validates_presence_of :they, :them, :their,    if: ->(gender){gender.trans && gender.custom_pronouns}
   validates_presence_of :identity, :trans
 
-
   before_save {
     self.identity = identity.downcase 
     if self.cp
@@ -122,5 +130,5 @@ end
 class PreferenceProfile
   include Mongoid::Document
   embedded_in :user
-
 end
+

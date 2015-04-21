@@ -2,9 +2,11 @@ Rails.application.routes.draw do
 
   root to: 'locations#index'
 
+
   post '/users/:user_id/reviews/new' => 'reviews#create'
   get '/users/:user_id/reviews/test' => 'reviews#test'
   post 'users/:id' => 'users#update'
+
 
   resources :sessions, only: [:new, :create, :destroy]
   resources :users do
@@ -13,12 +15,22 @@ Rails.application.routes.draw do
   end
 
 
+  match '/signup',			to: 'users#new',				via: 'get'
+  match '/signin',			to: 'sessions#new',				via: 'get'
+  match '/signout',			to: 'sessions#destroy',			via: 'delete'
 
-  match '/signup',  to: 'users#new',            via: 'get'
-  match '/signin',  to: 'sessions#new',         via: 'get'
-  match '/signout', to: 'sessions#destroy',     via: 'delete'
+  match '/location/posts',	to: 'locations#search',			via: 'post'   
   
+
   match '/dashboard', to: 'users#dashboard',    via: 'get'
+
+
+  # resources :spaces,   only: [:new, :create, :show, :index] do
+  #   resources :bookings, only: [:edit, :index]
+  # end
+
+  # match '/space', to: 'spaces#show', via: 'get'
+  # match '/space/new' to: 'spaces#create', via: 'get'
 
 
   # The priority is based upon order of creation: first created -> highest priority.
