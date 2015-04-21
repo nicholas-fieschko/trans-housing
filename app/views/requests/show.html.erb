@@ -8,7 +8,7 @@
 	<% if @review.completed %>
 		Review already completed.
 	<% else %>
-		Remember to leave a review for <%= @helper.name %>: <%= link_to "Click here", user_url(@helper.id.to_s, review_id: @review.id.to_s) %>
+		Remember to leave a review for <%= @helper.name %>: <%= link_to "Click here", edit_user_review_url(@helper.id.to_s, @review.id.to_s) %>
 	<% end %>
 
 

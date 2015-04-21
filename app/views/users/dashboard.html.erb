@@ -5,7 +5,7 @@
 	Reminder: please complete the following reviews: <br>
 
 	<% @reviews.each do |r| %>
-		Review for <%= User.find(r.user_id).name %>: <%= link_to "Click here", user_url(r.user_id.to_s, review_id: r.id.to_s) %><br>
+		Review for <%= User.find(r.user_id).name %>: <%= link_to "Click here", edit_user_review_url(r.user_id.to_s, r.id.to_s) %><br>
 	<% end %>
 
 

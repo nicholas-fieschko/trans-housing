@@ -8,4 +8,22 @@ module ApplicationHelper
       "#{page_title} | #{base_title}"
     end
   end
+
+  def icon(class_str)
+    icon_class = "."+class_str.strip.split(" ").join(".")
+    raw Haml::Engine.new("%i#{icon_class}").render.chop
+  end
+
+  def gender_category(user_gender_identity)
+    if user_gender_identity.downcase != "male" &&
+       user_gender_identity.downcase != "female"
+      "nb"
+    else
+      user_gender_identity.downcase
+    end
+  end
+
+  def gender_category_class
+    "header-username-#{gender_category(current_user.gender[:identity])}"
+  end
 end
