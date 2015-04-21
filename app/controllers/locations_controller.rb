@@ -7,12 +7,10 @@ class LocationsController < ApplicationController
     location = Location.new
 	@nearbyUsers = location.search(params[:loc])
 	if @nearbyUsers
+		print @nearbyUsers
 		render:json => { :users => @nearbyUsers }	
 	else
 		flash.now[:error] = "Location error..."
 	end			 	
-	#respond_to do |format|
-	#	format.json
-	#end
   end
 end

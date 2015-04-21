@@ -1,14 +1,15 @@
 class Location
   include Mongoid::Document
   include Mongoid::Geospatial
+  include Mongoid::Attributes::Dynamic
 
   belongs_to :user
   
   # field :c, as: :coordinates, type: Array             # [longitude, latitude]
 
 
-  field :location, type: Point
-  field :area,     type: String
+  field :coordinates, type: Point
+  # field :area,     type: String
 
   # spatial_index :location
 
@@ -17,7 +18,7 @@ class Location
   validates_presence_of :coordinates
  
   # Create 2D Geospatial Index
-  index({ location: "2dsphere" }, { min: -200, max: 200 })
+  index({ coordinates: "2dsphere" }, { min: -200, max: 200 })
 
   # db.trans_housing_test.ensureIndex({"location":"2dsphere"})
   # db.trans_housing_test.find({"location": {"$nearSphere": { "$geometry": { "type": "Point", "coordinates": [47, -71]}, "$maxDistance": 2000000000}}})
@@ -37,7 +38,7 @@ class Location
 		Location.where("location" => {"$nearSphere"=> {"$geometry"=> {
 			"type"=> "Point",
 			"coordinates"=> [query[0].to_f, query[1].to_f],
-			"$maxDistance"=> 200}
+			"$maxDistance"=> 2000000}
 		}}).to_json
 
 		#Location.where(:coordinates =>
@@ -52,5 +53,6 @@ class Location
 	else
 		[].to_json
 	end
+
   end	
 end
