@@ -1,15 +1,28 @@
 class Location
   include Mongoid::Document
+  include Mongoid::Geospatial
+  include Mongoid::Attributes::Dynamic
+
   belongs_to :user
   
-  field :c, as: :coordinates, type: Array             # [longitude, latitude]
+  # field :c, as: :coordinates, type: Array             # [longitude, latitude]
+
+
+  field :coordinates, type: Point
+  # field :area,     type: String
+
+  # spatial_index :location
 
   # Validation: longitude is between -180 and 180
   # Validation: latitude is between -90 and 90
   validates_presence_of :coordinates
  
   # Create 2D Geospatial Index
-  index({ coordinates: "2d" }, { min: -200, max: 200 })  
+  index({ coordinates: "2dsphere" }, { min: -200, max: 200 })
+
+  # db.trans_housing_test.ensureIndex({"location":"2dsphere"})
+  # db.trans_housing_test.find({"location": {"$nearSphere": { "$geometry": { "type": "Point", "coordinates": [47, -71]}, "$maxDistance": 2000000000}}})
+
 
   def lng
     self.coordinates.first
@@ -20,17 +33,26 @@ class Location
 	
 
   def search(query)
+	@distance = 100
 	if query
-		self.where(location=>
-		{ $near =>
-			{
-				$geometry => {type:"Point",coodinates:[query.lat,query.lng]},
-				$maxDistance => 16100 # ~10 miles
-			}
-		}).to_json
+		Location.where("coordinates" => {"$nearSphere"=> {"$geometry"=> {
+			"type"=> "Point",
+			"coordinates"=> [query[0].to_f, query[1].to_f],
+			"$maxDistance"=> 2000000}
+		}}).to_a
+
+		#Location.where(:coordinates =>
+		#{ '$near' => [query[0].to_f,query[1].to_f],
+				#{
+				# "$geometry" => {type:"Point",coodinates: query},
+		#	'$maxDistance' => @distance.fdiv(69) # ~10 miles
+			#}
+		
+		#}).to_json
 	# TODO: better error handel here
 	else
-		[].to_json
+		[].to_a
 	end
+
   end	
 end

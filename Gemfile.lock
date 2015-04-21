@@ -76,7 +76,6 @@ GEM
     erubis (2.7.0)
     eventmachine (1.0.7)
     execjs (2.4.0)
-    execjs (2.5.2)
     fabrication (2.13.1)
     faker (1.4.3)
       i18n (~> 0.5)
@@ -90,8 +89,6 @@ GEM
       geokit (~> 1.5)
       rails (>= 3.0)
     globalid (0.3.3)
-      activesupport (>= 4.1.0)
-    globalid (0.3.5)
       activesupport (>= 4.1.0)
     guard (2.12.5)
       formatador (>= 0.2.4)
@@ -142,6 +139,8 @@ GEM
       moped (~> 2.0.0)
       origin (~> 2.1)
       tzinfo (>= 0.3.37)
+    mongoid-geospatial (4.0.1)
+      mongoid (>= 4.0.0)
     moped (2.0.4)
       bson (~> 2.2)
       connection_pool (~> 2.0)
@@ -279,6 +278,7 @@ DEPENDENCIES
   jbuilder (~> 2.0)
   jquery-rails
   mongoid (~> 4.0.0)
+  mongoid-geospatial (~> 4.0)
   rack-livereload
   rails (= 4.2.0)
   rspec-rails (~> 3.0)
