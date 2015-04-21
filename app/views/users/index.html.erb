@@ -12,6 +12,14 @@
 	</p>
 <% end %>
 
+<ul class="users">
+  <% @users.each do |user| %>
+    <li>
+      <%= link_to user.name, user %>
+    </li>
+  <% end %>
+</ul>
+
 <form class="sidebar-filters"
 data-remote="true"
          id="space-index-filter-form">
@@ -23,13 +31,5 @@ data-remote="true"
                          html_name:  "user_filters[resources]" %>
     </div>
 
-  <input type="submit" class="button blue" value="Filter" id="user-index-sidebar-filter-button">
+  <input type="submit" value="Filter" id="user-index-sidebar-filter-button">
 </form>
-
-<ul class="users">
-  <% @users.each do |user| %>
-    <li>
-      <%= link_to user.name, user %>
-    </li>
-  <% end %>
-</ul>
