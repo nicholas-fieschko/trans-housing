@@ -2,7 +2,6 @@ class Contact
   include Mongoid::Document
   belongs_to :user
 
-  field :preferred_contact # How best to set?
   field :email, type: String
   field :phone, type: String
 

@@ -2,7 +2,7 @@ class UsersController < ApplicationController
   def new
     @user = User.new
     @user.build_contact
-    @user.location = Fabricate.build(:location)
+    @user.build_location
     @user.build_gender
   end
 
@@ -34,8 +34,8 @@ class UsersController < ApplicationController
         :is_provider,
         :password, :password_confirmation,
         gender_attributes:  [:identity, :trans, :cp, :they, :their, :them],
-        contact_attributes: [:email, :phone]
-        # location_attributes: [:coordinates],
+        contact_attributes: [:email, :phone],
+        location_attributes: [:coordinates,:zip,:city,:state]
         )
     end
 end
