@@ -1,7 +1,5 @@
 Fabricator(:location) do
-  transient lat:        rand(1000)/1000.0 + 41 
-  transient lng:        rand(1000) / 1000.0 - 74 
-  coordinates           { |attrs| [ attrs[:lat], attrs[:lng] ] }
 
-  # user
+  coordinates           { [ (rand * 0.5) + 41, (rand * 0.5) + 72] }
+
 end
