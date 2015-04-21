@@ -1,13 +1,15 @@
 Rails.application.routes.draw do
 
-  resources :messages
+  #resources :messages
 
   resources :conversations
 
   root to: 'locations#index'
 
   resources :sessions, only: [:new, :create, :destroy]
-  resources :users
+  resources :users do
+		resources :conversations, except: [:edit, :update], as: 'mail'
+	end
 
 
   match '/signup',  to: 'users#new',            via: 'get'
