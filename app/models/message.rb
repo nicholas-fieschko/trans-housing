@@ -7,8 +7,8 @@ class Message
 
 	# Relations
 	belongs_to :conversation
-	has_one :sender, :class_name => 'User'
-	has_one :receiver, :class_name => 'User'
+	field :sender
+	field :receiver
 
 	# TODO
 
