@@ -1,41 +1,23 @@
-var lines = [];
 var map;
 var infowindow = new google.maps.InfoWindow();
-var initialLocation;
-var yale = new google.maps.LatLng(41.31845, -72.92226);
-var browserSupportFlag = new Boolean();
 
 $(document).ready(function() {
-	/* $.ajax({
-	   type: "POST",
-	   url: "fake.csv",
-	   dataType: "text",
-	   success: function(data) {
-	   processData(data);
-	   }
-	   });*/
+	var url = "/location/posts"
 	initialize();
+       	/*function(){
+	    var markerData = <%= raw @hash.to_json %>;
+	    updateMarkers(map, markersData);
+	    });*/
     });
 
-function processData(allText) {
-    var allTextLines = allText.split(/\r\n|\n/);
-    for (var i=0; i<allTextLines.length; i++) {
-	var data = allTextLines[i].split(",");
-	if (data.length == 6) {
-	    var tarr = [];
-	    for (var j=0; j<6; j++) {
-		tarr.push(data[j]);
-	    }
-	    lines.push(tarr);
-	}
-    }
-    initialize();
-}
 
 function initialize() {
+    var initialLocation;
+    var yale = new google.maps.LatLng(41.31845, -72.92226);
+    var browserSupportFlag = new Boolean();
     var map_canvas = document.getElementById('map_canvas');
     var map_options = {
-	zoom: 12,
+	zoom: 14,	  
 	mapTypeId: google.maps.MapTypeId.ROADMAP
     }
     map = new google.maps.Map(map_canvas, map_options);
@@ -48,6 +30,13 @@ function initialize() {
 							 latitude, position.
 							 coords.longitude);
 		map.setCenter(initialLocation);
+		// We want to put a marker on our location
+		var myLatLng = new google.maps.LatLng(initialLocation.lat(), 
+						      initialLocation.lng());
+		var marker = new google.maps.Marker ({
+			position:myLatLng,
+			map: map,	
+		});
 		queryNearbyUsers(initialLocation.lat(), initialLocation.lng());
 	    },function (){
 		handleNoGeolocation(browerSupportFlag);
@@ -69,23 +58,21 @@ function handleNoGeolocation(errorFlag) {
 }
 
 function queryNearbyUsers(lat, lng, map) {
-    userCursor = db.trans_housing_development.find
-	(
-	 { 
-	     location:
-	     { $near: 
-	       {
-		   $geometry:{ type:"Point", coordinates:[lat, lng] },
-		   $maxDistance: 8046 // This is 5 miles in meters
-	       }
-	     }
-	 }
-	 ) 		     	 
-    while (userCursor.hasNext()) {
-	addMarkers(map, myCursor.next());
-    }
-}
-
+    var url = "/location/posts";
+    var loc = { 'lat': lat, 'lng': lng };
+        $.ajax({
+		type: "POST",
+		url: url,
+		data: loc,
+		dataType: 'json',
+		success: function(data) {
+		    var userData = JSON.parse(data);
+		    $(userData).each(function(userInfo) {
+			addMarkers(map, userInfo);
+			});
+		}
+	    })
+	}
 
 function addMarkers(map, usr) {
     // console.log(p)

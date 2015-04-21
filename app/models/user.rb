@@ -117,7 +117,7 @@ class User
 
   def self.search(search)
     if search
-      any_of({name: /#{search}/i}).to_a
+      any_of({name: /#{search}/i}, {location: /#{search}/i})
     else
       self.all.to_a
     end
