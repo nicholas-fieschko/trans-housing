@@ -3,6 +3,7 @@ class RequestsController < ApplicationController
     if signed_in?
       @helpee = current_user
       @helper = User.find(params[:user_id])
+      check_provider_status
     else
       signed_in_user
     end    
@@ -51,6 +52,16 @@ class RequestsController < ApplicationController
     end
   end
 
+
+
+  private
+
+    def check_provider_status
+      if @helpee.is_provider || !@helper.is_provider
+        render 'error'
+      else
+      end
+    end
 
 
 end

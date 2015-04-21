@@ -9,13 +9,15 @@ Implemented:
 - User can see a list of unfinished reviews as well as history on the dashboard.
 - Average rating field added
 - Validations for text and ratings added
+- only non-providers can submit help requests to providers
 
 
 To-do:
 - friendly error messages
-- only non-providers can submit help requests to providers
 - both providers and non-providers can complete a request
 - integrate with email app
 - Security
 - front end design
 - write tests
+- refactor code and views
+

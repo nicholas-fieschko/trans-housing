@@ -15,7 +15,8 @@
 
 
 
-Fabricate.times(5,:user)
+Fabricate.times(10,:provider)
+Fabricate.times(10,:seeker)
 
 
 
