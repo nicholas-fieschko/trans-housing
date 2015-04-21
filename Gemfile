@@ -9,8 +9,17 @@ gem 'mongoid', "~> 4.0.0"
 # gem 'therubyracer', platforms: :ruby # See https://github.com/sstephenson/execjs#readme for more supported runtimes
 gem 'bootstrap-sass', '~> 3.2.0'
 gem 'autoprefixer-rails'
+
 gem 'haml'
 gem 'font-awesome-sass'
+
+
+gem 'haml-rails'
+gem 'mailgun-ruby', '~> 1.0.2', require: 'mailgun'
+gem 'twilio-ruby', '~> 4.0.0'
+gem 'figaro'
+
+
 
 gem 'jquery-rails'				 # Use jquery as the JavaScript library
 gem 'turbolinks'				 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
@@ -19,10 +28,12 @@ gem 'sdoc', '~> 0.4.0', group: :doc # bundle exec rake doc:rails generates the A
 
 gem 'will_paginate',           '3.0.7'
 gem 'bcrypt', '~> 3.1.7'		 # Use ActiveModel has_secure_password
+
 gem 'geokit-rails', '~> 2.1.0'   # Geokit for address/GPS coor transformation 
 								 # https://github.com/geokit/geokit-rails
 gem 'mongoid-geospatial', '~>4.0'	# Mongoid Geospatial
 									# https://github.com/nofxx/mongoid-geospatial
+
 
 gem 'simple_form'
 

@@ -1,9 +1,24 @@
 Rails.application.routes.draw do
 
+  resources :messages
+
+  resources :conversations
+
   root to: 'locations#index'
 
+
+  post '/users/:user_id/reviews/new' => 'reviews#create'
+  get '/users/:user_id/reviews/test' => 'reviews#test'
+  post 'users/:id' => 'users#update'
+
+
   resources :sessions, only: [:new, :create, :destroy]
-  resources :users
+  resources :users do
+    resources :reviews, only: [:edit, :update, :show]
+    resources :requests
+  end
+
+
 
   match '/signup',			to: 'users#new',				via: 'get'
   match '/signin',			to: 'sessions#new',				via: 'get'
@@ -11,12 +26,23 @@ Rails.application.routes.draw do
 
   match '/location/posts',	to: 'locations#search',			via: 'post'   
   
+
+  match '/dashboard', to: 'users#dashboard',    via: 'get'
+
+
   # resources :spaces,   only: [:new, :create, :show, :index] do
   #   resources :bookings, only: [:edit, :index]
   # end
 
   # match '/space', to: 'spaces#show', via: 'get'
   # match '/space/new' to: 'spaces#create', via: 'get'
+
+
+
+ 
+	# Basic Twilio webhooks; need to integrate with user profile
+	get 'twilio/sms' => 'twilio#sms'
+ 
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

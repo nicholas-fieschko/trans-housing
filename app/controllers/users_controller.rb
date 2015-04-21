@@ -9,6 +9,11 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
     if @user.save
+
+      # Send an email upon signup--will go to Stephen's email because of
+			# 	Fabricator settings, so comment out until the demo.
+      Notifier.welcome(@user).deliver
+
       sign_in @user
       redirect_to @user
     else
@@ -29,8 +34,25 @@ class UsersController < ApplicationController
   end
 
   def show
-    @user = User.find(params[:id])
+  	@user = User.find(params[:id])
+  	@reviews = @user.reviews
   end
+
+
+  def dashboard
+    if signed_in?
+      @user = current_user
+      @reviews = Review.where(authorID: @user.id, completed: false).all
+    else
+      signed_in_user
+    end
+  end
+
+
+
+
+
+
 
   private
 
@@ -44,4 +66,5 @@ class UsersController < ApplicationController
         # location_attributes: [:coordinates],
         )
     end
+
 end
