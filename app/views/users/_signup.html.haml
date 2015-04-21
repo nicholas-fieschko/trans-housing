@@ -1,125 +1,139 @@
-/ Text-only Content Skeleton
+.sign-up-box.sign-up-column
+  %h1 Sign up!
 
-%h1 Sign up!
+  = simple_form_for @user do |f|
 
-= simple_form_for @user do |f|
-  = f.error_notification
-  - if @user.errors.any?
-    %div#error_explanation
-      %div.alert.alert-error
-        The form contains #{pluralize(@user.errors.count, "error")}.
-      %ul
-      - @user.errors.full_messages.each do |msg|
-        %li
-          *
-          = msg
+    %ul#sign-up-progress-bar
+      %li.active Name
+      %li
+        Gender
+        %ul
+          %li Category
+          %li Identity
+          %li Pronouns
+      %li Location
+      %li 
+        Resources
+        %ul
+          %li Position
+          %li Food
+          %li Shower
+          %li Laundry
+          %li Housing
+          %li Transport
+          %li Buddy
+          %li Misc
+      %li Contact
+      %li Finish
 
-  .page
-    = f.input :name
-    %span.help-block Enter whatever name you would like other users of the site to see.
+    %fieldset
+      %h2.fs-title What name would you like to be listed by?
+      = f.input :name, label: false, placeholder: "Name"
 
-  .page
-    Contact methods
-    = f.simple_fields_for :contact do |c|
-      / Implement "preference" selection-- drop down? Checkbox?
-      = c.input :email
-      = c.input :phone
-    %span.help-block
-      You need at least one contact method associated with your account, as it also serves as your login information.
-      %br Note that your contact information is never revealed to other users unless you specifically unlock it for someone.
+      = f.simple_fields_for :gender do |g|
+        %fieldset
+          %h2.fs-title Are you a transgender person, or otherwise under the trans* identity umbrella?
+          = g.collection_radio_buttons :trans, [[true, 'Yes'] ,[false, 'No']], :first, :last
+    
+        %fieldset 
+          %h2.fs-title What is your gender?
+          / JAVASCRIPT TO-DO: if "trans" boolean was true, display this help text. Cis folk don't need the clarification.
+          / Rails to-do: Likely best to move the default selection options into the Gender model itself, and retrieve with a getter.
+          %span.fs-subtitle (Your identified gender, not neccessarily your birth sex.)
+          /- ["Male","Female","Non-binary"], ["Wait, I'm binary, take me back.","Bigender","Agender","Genderqueer","Genderfluid","Just let me type it!"], 
+          = g.input :identity, collection: ["Male","Female","Non-binary"]
+          / / JS: -if Non-binary selected, swap out selection for these options->
+          = g.input :identity, collection: ["Wait, I'm binary, take me back.","Bigender","Agender","Genderqueer","Genderfluid","Just let me type it!"]
+          / / JS: -if "Just let me type it!" is chosen, allow custom text entry->
+          = text_field :identity, placeholder: "Gender identity"
 
-  .page
-    Location
-    .answer [txt box with pre-filled guess][Change button]
-    .map [map?]
-  %br
+        %fieldset
+          / Only display this section if "trans" boolean was true
+          / Likely best to have a Gender.they_tense(identity input string), etc to retrieve
+          So, are your pronouns (RETRIEVE STANDARD PRONOUNS FOR IDENTITY SELECTED:) "he", "him", "his"?
+          = g.collection_radio_buttons :cp, [[false, 'Yes'] ,[true, 'No']], :first, :last
+          / -if no->
+          %label Please enter your pronouns.
+          = g.input :they, placeholder: '"She/he/they" tense'
+          = g.input :their, placeholder: '"Her/him/them" tense'
+          = g.input :them, placeholder: '"Her/his/their" tense'
 
-  .page
-    = f.simple_fields_for :gender do |g|
-      %label Are you a transgender person, or otherwise under the trans* identity umbrella?
-      = g.collection_radio_buttons :trans, [[true, 'Yes'] ,[false, 'No']], :first, :last
-  
-      .page 
-        What is your gender?
-        / JAVASCRIPT TO-DO: if "trans" boolean was true, display this help text. Cis folk don't need the clarification.
-        / Rails to-do: Likely best to move the default selection options into the Gender model itself, and retrieve with a getter.
-        %span.help-block (Your identified gender, not neccessarily your birth sex.)
-        = g.input :identity, collection: ["Male","Female","Non-binary"]
-        / / JS: -if Non-binary selected, swap out selection for these options->
-        / = g.input :identity, collection: ["Bigender","Agender","Genderqueer","Genderfluid","Just let me type it!"]
-        / / JS: -if "Just let me type it!" is chosen, allow custom text entry->
-        / = g.input :identity
+        / .page 
+        /   /-if custom entered, confirmation page->
+        /   %div
+        /     So, your pronouns are:
+        /     [They] joined TransHousing on MM/DD/YY.
+        /     I can't wait to see [their] profile!
+        /     I wonder who will get in touch with [them] first?
+        /   .answer [looks good!][oops, not quite]
 
-      .page
-        / Only display this section if "trans" boolean was true
-        / Likely best to have a Gender.they_tense(identity input string), etc to retrieve
-        So, are your pronouns (RETRIEVE STANDARD PRONOUNS FOR IDENTITY SELECTED:) "he", "him", "his"?
-        = g.collection_radio_buttons :cp, [[false, 'Yes'] ,[true, 'No']], :first, :last
-        / -if no->
-        %label Please enter your pronouns.
-        = g.input :they, placeholder: '"She/he/they" tense'
-        = g.input :their, placeholder: '"Her/him/them" tense'
-        = g.input :them, placeholder: '"Her/his/their" tense'
 
-      / .page 
-      /   /-if custom entered, confirmation page->
-      /   %div
-      /     So, your pronouns are:
-      /     [They] joined TransHousing on MM/DD/YY.
-      /     I can't wait to see [their] profile!
-      /     I wonder who will get in touch with [them] first?
-      /   .answer [looks good!][oops, not quite]
+    %fieldset
+      %h2.fs-title Contact methods
+      = f.simple_fields_for :contact do |c|
+        / Implement "preference" selection-- drop down? Checkbox?
+        = c.input :email
+        = c.input :phone
+      %span.help-block
+        You need at least one contact method associated with your account, as it also serves as your login information.
+        %br Note that your contact information is never revealed to other users unless you specifically unlock it for someone.
 
-  .page 
-    %label Are you seeking help, or can you offer help?
-    = f.collection_radio_buttons :is_provider, [[true, 'I can help!'] ,[false, 'I need help!']], :first, :last
+    .page
+      Location
+      .answer [txt box with pre-filled guess][Change button]
+      .map [map?]
     %br
 
-  .page
-    Alright! One last step. Create your password, and we're good to go!
-    = f.input :password
-    = f.input :password_confirmation
-    = f.button :submit, value: "Create my account!", id: "submit_signup"
+    .page 
+      %label Are you seeking help, or can you offer help?
+      = f.collection_radio_buttons :is_provider, [[true, 'I can help!'] ,[false, 'I need help!']], :first, :last
+      %br
 
-  .page 
-    / To get you started quickly, 
-    / This gets into "resource" data model, also embedded in each user model instance.
-    Resource profiles: Model in progress.
-    %br What can you help with/offer?
-    /.checkbox [Each is a "checkbox" or radio button for OFFER HELP side, but set up visually so doesnt quite look like checkboxes:
-    / Has short descriptions with icons and "Yes/No" mobile-style slider checkbox
-    .item
-      Be a Buddy
-      .description (Description, description...)
-      .checkbox    [yes/no with no as default]
-    .item
-      Offer Food
-      .description (Description, description...)
-      .checkbox    [yes/no with no as default]
-    .item
-      Help with transportation
-      .description (Description, description...)
-      .checkbox    [yes/no with no as default]
-    .item
-      Help with laundry
-      .description (Description, description...)
-      .checkbox    [yes/no with no as default]
-    .item
-      Offer a clean shower
-      .description (Description, description...)
-      .checkbox    [yes/no with no as default]
-    .item
-      Offer temporary shelter
-      .description (Description, description...)
-      .checkbox    [yes/no with no as default]
-    .item
-      Offer housing
-      .description (Description, description...)
-      .checkbox    [yes/no with no as default]
-
+    .page 
+      / To get you started quickly, 
+      / This gets into "resource" data model, also embedded in each user model instance.
+      Resource profiles: Model in progress.
+      %br What can you help with/offer?
+      /.checkbox [Each is a "checkbox" or radio button for OFFER HELP side, but set up visually so doesnt quite look like checkboxes:
+      / Has short descriptions with icons and "Yes/No" mobile-style slider checkbox
+      .item
+        Be a Buddy
+        .description (Description, description...)
+        .checkbox    [yes/no with no as default]
+      .item
+        Offer Food
+        .description (Description, description...)
+        .checkbox    [yes/no with no as default]
+      .item
+        Help with transportation
+        .description (Description, description...)
+        .checkbox    [yes/no with no as default]
+      .item
+        Help with laundry
+        .description (Description, description...)
+        .checkbox    [yes/no with no as default]
+      .item
+        Offer a clean shower
+        .description (Description, description...)
+        .checkbox    [yes/no with no as default]
+      .item
+        Offer temporary shelter
+        .description (Description, description...)
+        .checkbox    [yes/no with no as default]
+      .item
+        Offer housing
+        .description (Description, description...)
+        .checkbox    [yes/no with no as default]
 
 
-/* Once signed up-- redirect to what: preferences, or profile, or matches?
-/ Profile probably best, so they can flesh it out more
-/ Have a flash: 'You can also set up your site preferences [here]...'
-/
+    .page
+      Alright! One last step. Create your password, and we're good to go!
+      = f.input :password
+      = f.input :password_confirmation
+      = f.button :submit, value: "Create my account!", id: "submit_signup"
+
+
+  /* Once signed up-- redirect to what: preferences, or profile, or matches?
+  / Profile probably best, so they can flesh it out more
+  / Have a flash: 'You can also set up your site preferences [here]...'
+  /
