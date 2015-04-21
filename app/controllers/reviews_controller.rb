@@ -14,7 +14,7 @@ class ReviewsController < ApplicationController
       redirect_to @user
     else
       flash[:danger] = "Review not submitted"
-      render 'show'
+      render 'edit'
     end
   end
 
