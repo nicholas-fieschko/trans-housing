@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 
 gem 'rails', '4.2.0'			 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'sass-rails', '~> 5.0'		 # Use SCSS for stylesheets
+gem 'sass-rails'
 gem 'uglifier', '>= 1.3.0'		 # Use Uglifier as compressor for JavaScript assets
 gem 'coffee-rails', '~> 4.1.0'	 # Use CoffeeScript for .coffee assets and views
 gem 'mongoid', "~> 4.0.0"
@@ -10,6 +10,7 @@ gem 'mongoid', "~> 4.0.0"
 gem 'bootstrap-sass', '~> 3.2.0'
 gem 'autoprefixer-rails'
 gem 'haml'
+gem 'font-awesome-sass'
 
 gem 'jquery-rails'				 # Use jquery as the JavaScript library
 gem 'turbolinks'				 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
@@ -20,6 +21,8 @@ gem 'will_paginate',           '3.0.7'
 gem 'bcrypt', '~> 3.1.7'		 # Use ActiveModel has_secure_password
 gem 'geokit-rails', '~> 2.1.0'   # Geokit for address/GPS coor transformation 
 								 # https://github.com/geokit/geokit-rails
+gem 'mongoid-geospatial', '~>4.0'	# Mongoid Geospatial
+									# https://github.com/nofxx/mongoid-geospatial
 
 gem 'simple_form'
 

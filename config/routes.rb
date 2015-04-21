@@ -5,10 +5,11 @@ Rails.application.routes.draw do
   resources :sessions, only: [:new, :create, :destroy]
   resources :users
 
-  match '/signup',  to: 'users#new',            via: 'get'
-  match '/signin',  to: 'sessions#new',         via: 'get'
-  match '/signout', to: 'sessions#destroy',     via: 'delete'
-  
+  match '/signup',			to: 'users#new',				via: 'get'
+  match '/signin',			to: 'sessions#new',				via: 'get'
+  match '/signout',			to: 'sessions#destroy',			via: 'delete'
+
+  match '/location/posts',	to: 'locations#search',			via: 'post'   
   
   # resources :spaces,   only: [:new, :create, :show, :index] do
   #   resources :bookings, only: [:edit, :index]
