@@ -38,7 +38,7 @@ class User
 
   #Pronoun getters to be refactored
   def they
-    identity = self.gender[:identity].downcase
+    identity = self.gender[:identity].to_s.downcase
     if identity == "male"
       "he"
     elsif identity == "female"

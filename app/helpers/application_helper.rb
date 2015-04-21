@@ -15,11 +15,11 @@ module ApplicationHelper
   end
 
   def gender_category(user_gender_identity)
-    if user_gender_identity.downcase != "male" &&
-       user_gender_identity.downcase != "female"
+    if user_gender_identity.to_s.downcase != "male" &&
+       user_gender_identity.to_s.downcase != "female"
       "nb"
     else
-      user_gender_identity.downcase
+      user_gender_identity.to_s.downcase
     end
   end
 
