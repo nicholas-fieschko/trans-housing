@@ -31,17 +31,6 @@ Rails.application.routes.draw do
 
   match '/dashboard', to: 'users#dashboard',    via: 'get'
 
-
-  # resources :spaces,   only: [:new, :create, :show, :index] do
-  #   resources :bookings, only: [:edit, :index]
-  # end
-
-  # match '/space', to: 'spaces#show', via: 'get'
-  # match '/space/new' to: 'spaces#create', via: 'get'
-
->>>>>>> c79c72d9af4e190dbbca692ba247ca0fcd93a481
-
-
  
 	# Basic Twilio webhooks; need to integrate with user profile
 	get 'twilio/sms' => 'twilio#sms'
