@@ -117,7 +117,7 @@ class User
 
   def self.search(search)
     if search
-      self.where(name: search).to_a
+      any_of({name: /#{search}/i}).to_a
     else
       self.all.to_a
     end
