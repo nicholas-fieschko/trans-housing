@@ -15,7 +15,7 @@ class Location
 
   # Validation: longitude is between -180 and 180
   # Validation: latitude is between -90 and 90
-  validates_presence_of :coordinates
+   validates_presence_of :coordinates
  
   # Create 2D Geospatial Index
   index({ coordinates: "2dsphere" }, { min: -200, max: 200 })
