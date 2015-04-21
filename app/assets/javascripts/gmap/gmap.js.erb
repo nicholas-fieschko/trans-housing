@@ -37,7 +37,8 @@ function initialize() {
 			position:myLatLng,
 			map: map,	
 		});
-		queryNearbyUsers(initialLocation.lat(), initialLocation.lng());
+		queryNearbyUsers(initialLocation.lat(), 
+			initialLocation.lng(), map);
 	    },function (){
 		handleNoGeolocation(browerSupportFlag);
 	    });
@@ -83,11 +84,11 @@ function queryNearbyUsers(lat, lng, map) {
 
 function addMarkers(map, usr) {
     // console.log(p)
-	if (usr.coordinates[0] > 30) {
+	if (usr.coordinates[0] > 41) {
 	    var image = {
 		size: new google.maps.Size(32, 32),
-		//icon: "<%=asset_path('/images/house.png') %>",
-		icon: '/images/house.png',
+		url: "<%= asset_path 'house_opt.png' %>",
+		// icon: '/images/house.png',
 		origin: new google.maps.Point(0, 0),
 		anchor: new google.maps.Point(12,12)
                 };
@@ -95,8 +96,8 @@ function addMarkers(map, usr) {
     
 	else {
 	    var image = {
-		icon: "<%=asset_path('/images/people.png') %>",
-		size: new google.maps.Size(32, 32),
+		url: "<%= asset_path 'people_opt.png' %>",
+		size: new google.maps.Size(32, 45),
 		origin: new google.maps.Point(0, 0),
 		anchor: new google.maps.Point(12,12)
                 };    
@@ -121,7 +122,7 @@ function addMarkers(map, usr) {
 	console.debug(myLatLng);
     var marker = new google.maps.Marker({
 	    position: myLatLng,
-	    // icon: image,
+	    icon: image,
 	    map: map,
 	    // title: usr.name,
 	    //      shape: shape
