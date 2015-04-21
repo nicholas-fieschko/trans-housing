@@ -66,9 +66,13 @@ function queryNearbyUsers(lat, lng, map) {
 		data: loc,
 		dataType: 'json',
 		success: function(data) {
-		    var userData = JSON.parse(data);
-		    $(userData).each(function(userInfo) {
-			addMarkers(map, userInfo);
+		    $.each($(data), function(k,v) {
+				$.each(v, function(key, val){
+					$.each(val, function(k, userInfo){
+						console.debug(userInfo)
+						addMarkers(map, userInfo)
+					});
+				});
 			});
 		},
 		error: function() {
@@ -79,10 +83,11 @@ function queryNearbyUsers(lat, lng, map) {
 
 function addMarkers(map, usr) {
     // console.log(p)
-	if (usr.is_provider) {
+	if (usr.coordinates[0] > 30) {
 	    var image = {
-		icon: "<%=asset_path('house.png') %>",
 		size: new google.maps.Size(32, 32),
+		//icon: "<%=asset_path('/images/house.png') %>",
+		icon: '/images/house.png',
 		origin: new google.maps.Point(0, 0),
 		anchor: new google.maps.Point(12,12)
                 };
@@ -90,7 +95,7 @@ function addMarkers(map, usr) {
     
 	else {
 	    var image = {
-		icon: "<%=asset_path('people.png') %>",
+		icon: "<%=asset_path('/images/people.png') %>",
 		size: new google.maps.Size(32, 32),
 		origin: new google.maps.Point(0, 0),
 		anchor: new google.maps.Point(12,12)
@@ -103,23 +108,24 @@ function addMarkers(map, usr) {
 
     var contentString = '<div id="content">'+ 
 	'<div id="siteNotice">'+
-	'</div>'+
-	'<h1 id="firstHeading" class="firstHeading">' + usr.name + '</h1>'+
-	'<div id="bodyContent"><p>' + usr.gender + '<br><b>' + usr.contact + 
-	'</b></div>'+'</div>';
+	'</div>'+ '</div>;'
+	//'<h1 id="firstHeading" class="firstHeading">' + usr.name + '</h1>'+
+	//'<div id="bodyContent"><p>' + usr.gender + '<br><b>' + usr.contact + 
+	//'</b></div>'+'</div>';
     
     //      var infowindow = new google.maps.InfoWindow({
     //            content: contentString
     //        });
     
-    var myLatLng = new google.maps.LatLng(usr.Location.lng, usr.Location.lat);
+    var myLatLng = new google.maps.LatLng(usr.coordinates[0], usr.coordinates[1]);
+	console.debug(myLatLng);
     var marker = new google.maps.Marker({
 	    position: myLatLng,
-	    icon: image,
+	    // icon: image,
 	    map: map,
-	    title: usr.name,
+	    // title: usr.name,
 	    //      shape: shape
-	    zIndex: parseInt(p[5])
+	    // zIndex: parseInt(p[5])
 	});
     google.maps.event.addListener(marker, 'click', function() {
 	    infowindow.close();

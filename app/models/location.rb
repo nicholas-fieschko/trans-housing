@@ -35,11 +35,11 @@ class Location
   def search(query)
 	@distance = 100
 	if query
-		Location.where("location" => {"$nearSphere"=> {"$geometry"=> {
+		Location.where("coordinates" => {"$nearSphere"=> {"$geometry"=> {
 			"type"=> "Point",
 			"coordinates"=> [query[0].to_f, query[1].to_f],
 			"$maxDistance"=> 2000000}
-		}}).to_json
+		}}).to_a
 
 		#Location.where(:coordinates =>
 		#{ '$near' => [query[0].to_f,query[1].to_f],
@@ -51,7 +51,7 @@ class Location
 		#}).to_json
 	# TODO: better error handel here
 	else
-		[].to_json
+		[].to_a
 	end
 
   end	
