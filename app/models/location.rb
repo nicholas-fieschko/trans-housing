@@ -1,6 +1,5 @@
 class Location
   include Mongoid::Document
-  include Mongoid::Geospatial
   include Mongoid::Attributes::Dynamic
 
   belongs_to :user
@@ -37,7 +36,7 @@ class Location
 			"$nearSphere"=> {"$geometry"=> {
 			"type"=> "Point",
 			"coordinates"=> [query[0].to_f, query[1].to_f],
-			"$maxDistance"=> @distance}
+			"$maxDistance"=> 100000}
 		}}).to_a.map{|loc| loc.user}
 		#Location.where(:coordinates =>
 		#{ '$near' => [query[0].to_f,query[1].to_f],

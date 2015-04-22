@@ -5,8 +5,14 @@ Fabricator(:user) do
   location                     { Fabricate.build(:location) }
   gender                       { Fabricate.build(:binary_gender) }
   contact                      { Fabricate.build(:contact) }
+
   password                     "test123"
   password_confirmation        "test123"
+
+  number_reviews                0
+  average_rating                0.0
+  sum_rating                    0
+
 
   food_resource                 { [true,false].sample ? Fabricate.build(:food_resource) :           nil }                 
   shower_resource               { [true,false].sample ? Fabricate.build(:shower_resource) :         nil }

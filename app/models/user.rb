@@ -1,15 +1,19 @@
 class User
+	
   include Mongoid::Document
   include Mongoid::Attributes::Dynamic
   include ActiveModel::SecurePassword
 
+
   field :name,                   type: String
   field :is_provider,            type: Boolean
+
 
   embeds_one :gender
   has_one :contact,              dependent: :delete
   has_one :location,             dependent: :delete
-  
+  #embeds_one :location
+
   # embeds_one :preference_profile # User site/security preferences
   # embeds_one :extended_profile
 
@@ -21,13 +25,28 @@ class User
   embeds_one :buddy_resource
   embeds_one :misc_resource
 
-  # embeds_many :reviews
-  # has_one :inbox ?
+  has_many :reviews
+  field :number_reviews, type: Integer
+  field :sum_rating, type: Float
+  field :average_rating, type: Float
+
+  has_and_belongs_to_many :requests
+
+
+	has_many :conversations
+
+	# Basic messaging system (Stephen). Cf. StackOverflow discussion of MongoID
+	#		private messaging. This is option 1 (much simpler than before).
+	#has_many :messages_sent,		 :class_name => 'Message', :inverse_of => :sender
+	#has_many :messages_received, :class_name => 'Message', :inverse_of => :receiver
+	# END OF messaging system!
+
 
 
   accepts_nested_attributes_for  :gender, :contact, :location #, :resources
   validates_presence_of :name,   :gender, :contact#, :location
   validates_associated           :gender, :contact#, :location
+
 
   field :is_admin,               type: Boolean
   field :remember_token,         type: String
@@ -176,6 +195,7 @@ class Gender
   field :they, type: String
   field :their, type: String
   field :them, type: String
+
   
   validates :custom_pronouns,     absence: true, if: ->(gender){!gender.trans}
   validates :they, :their, :them, absence: true, if: ->(gender){!gender.trans || !gender.custom_pronouns}
@@ -190,9 +210,12 @@ class Gender
       self.their = their.downcase
     end
   }
+
 end
 
 class PreferenceProfile
   include Mongoid::Document
   embedded_in :user
 end
+
+

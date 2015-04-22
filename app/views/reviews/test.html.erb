@@ -1,0 +1,4 @@
+<h1>Hi <%= current_user.name %></h1>
+<p>
+Leave a review for <%= @user.name %>: <%= link_to "Click here", user_url(@user.id.to_s, review_id: @review.id.to_s) %>
+</p>

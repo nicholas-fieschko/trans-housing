@@ -11,5 +11,6 @@ Fabricator(:location) do
   city                  "New Haven"        #{ Faker::Address.city }
   state                 "Connecticut"     #{ Faker::Address.state }
   country               "USA"           #{ Faker::Address.country }
-  coordinates           { [ (rand * 0.5) + 41, (rand * 0.5) + 72] }
+  coordinates           { [ (rand * 0.5) + 41, (rand * 0.5) - 73.2] }
 end
+

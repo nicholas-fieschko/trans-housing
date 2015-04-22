@@ -1,0 +1,14 @@
+<% if review.completed %>
+
+<li id="review-<%= review.id %>">
+  <span class="author"><%= review.author %></span> <span class="rating"><%= review.rating %></span>
+  <span class="text"><%= review.text %></span>
+  <span class="timestamp">
+    Posted <%= time_ago_in_words(review.created_at) %> ago.
+  </span>
+</li>
+
+<% else %>
+
+
+<% end %>
