@@ -2,13 +2,12 @@ class ConversationController < ApplicationController
 
 	# Show user's inbox, ordered by most recently updated
 	def index
-		@convo = Conversation.all.to_a
 	end
 
 	# Gather form info for the new conversation
 	def new
 		@user = User.find(params[:user_id])
-		@convo = Conversation.create
+		@convo = Conversation.last
 	end
 
 	# Create that new conversation

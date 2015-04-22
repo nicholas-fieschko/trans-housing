@@ -1,9 +1,13 @@
-%h1 Write a message. From #{current_user.name} to #{@user.name}.
+%h1 Write a message to #{@user.name}.
 
 / Will need instance variable for the recipient(s)
 = form_for [@user, @convo] do |job|
 
-	= job.text_field :messages
+	%p Subject
+	= job.text_field :subject
+
+	%p Message
+	= job.text_area :subject, size: '24x6'
 
 	= job.button :submit, value: "Send message"
 
