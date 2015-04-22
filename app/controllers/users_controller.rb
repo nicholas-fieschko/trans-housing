@@ -11,7 +11,7 @@ class UsersController < ApplicationController
     if @user.save
 
       # Send an email upon signup--will go to Stephen's email because of
-			# 	Fabricator settings, so comment out until the demo.
+			# Fabricator settings, so comment out until the demo.
       Notifier.welcome(@user).deliver
 
       sign_in @user
