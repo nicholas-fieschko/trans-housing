@@ -1,4 +1,4 @@
-%h1 Create a new message
+%h1 Write a message. From #{current_user.name} to #{@user.name}.
 
 / Will need instance variable for the recipient(s)
 = form_for [@user, @convo] do |job|
