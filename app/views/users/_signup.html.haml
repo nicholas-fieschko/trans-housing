@@ -31,42 +31,44 @@
       %h2.fs-title What name would you like to be listed by?
       = f.input :name, label: false, placeholder: "Name"
 
+    %fieldset.step-2
+      %h2.fs-title Are you a transgender person, or otherwise under the trans* identity umbrella?
       = f.simple_fields_for :gender do |g|
-        %fieldset.step-2
-          %h2.fs-title Are you a transgender person, or otherwise under the trans* identity umbrella?
-          = g.collection_radio_buttons :trans, [[true, 'Yes'] ,[false, 'No']], :first, :last
-    
-        %fieldset.step-3
-          %h2.fs-title What is your gender?
-          / JAVASCRIPT TO-DO: if "trans" boolean was true, display this help text. Cis folk don't need the clarification.
-          / Rails to-do: Likely best to move the default selection options into the Gender model itself, and retrieve with a getter.
-          %span.fs-subtitle (Your identified gender, not neccessarily your birth sex.)
-          /- ["Male","Female","Non-binary"], ["Wait, I'm binary, take me back.","Bigender","Agender","Genderqueer","Genderfluid","Just let me type it!"], 
-          = g.input :identity, collection: ["Male","Female","Non-binary"]
-          / / JS: -if Non-binary selected, swap out selection for these options->
-          = g.input :identity, collection: ["Wait, I'm binary, take me back.","Bigender","Agender","Genderqueer","Genderfluid","Just let me type it!"]
-          / / JS: -if "Just let me type it!" is chosen, allow custom text entry->
-          = text_field :identity, label: false, placeholder: "Gender identity"
+        = g.collection_radio_buttons :trans, [[true, 'Yes'] ,[false, 'No']], :first, :last
+  
+    %fieldset.step-3
+      %h2.fs-title What is your gender?
+      / JAVASCRIPT TO-DO: if "trans" boolean was true, display this help text. Cis folk don't need the clarification.
+      / Rails to-do: Likely best to move the default selection options into the Gender model itself, and retrieve with a getter.
+      %span.fs-subtitle 
+        (Your identified gender, not neccessarily your birth sex.)
+        /- ["Male","Female","Non-binary"], ["Wait, I'm binary, take me back.","Bigender","Agender","Genderqueer","Genderfluid","Just let me type it!"], 
+        / g.input :identity, collection: ["Male","Female","Non-binary"]
+        -# ["Wait, I'm binary, take me back.","Bigender","Agender","Genderqueer","Genderfluid","Just let me type it!"]
+        / / JS: -if "Just let me type it!" is chosen, allow custom text entry->
+        = g.input :identity, label: false, input_html: { value: '', placeholder: "Gender identity"}
 
-        %fieldset.step-4
-          %h2.fs-title So, are your pronouns (RETRIEVE STANDARD PRONOUNS FOR IDENTITY SELECTED:) "he", "him", "his"?
-          = g.collection_radio_buttons :cp, [[false, 'Yes'] ,[true, 'No']], :first, :last
-          / -if no->
-          %label Please enter your pronouns.
-          = g.input :they, label: false, placeholder: '"She/he/they" tense'
-          = g.input :their, label: false, placeholder: '"Her/him/them" tense'
-          = g.input :them, label: false, placeholder: '"Her/his/their" tense'
+      %fieldset.step-4
+        %h2.fs-title 
+          So, are your pronouns 
+          %span#they "he",
+          %span#them "him", 
+          %span#their "his"?
+        = g.collection_radio_buttons :cp, [[false, 'Yes'] ,[true, 'No']], :first, :last
+        / -if no->
+        %label Please enter your pronouns.
+        = g.input :they, label: false, placeholder: '"She/he/they" tense'
+        = g.input :their, label: false, placeholder: '"Her/him/them" tense'
+        = g.input :them, label: false, placeholder: '"Her/his/their" tense'
 
-          = text_field :identity, placeholder: "Gender identity"
-
-        / .page 
-        /   /-if custom entered, confirmation page->
-        /   %div
-        /     So, your pronouns are:
-        /     [They] joined TransHousing on MM/DD/YY.
-        /     I can't wait to see [their] profile!
-        /     I wonder who will get in touch with [them] first?
-        /   .answer [looks good!][oops, not quite]
+      / .page 
+      /   /-if custom entered, confirmation page->
+      /   %div
+      /     So, your pronouns are:
+      /     [They] joined TransHousing on MM/DD/YY.
+      /     I can't wait to see [their] profile!
+      /     I wonder who will get in touch with [them] first?
+      /   .answer [looks good!][oops, not quite]
 
 
     %fieldset.step-5
@@ -97,7 +99,7 @@
       = f.input :transportation_resource, as: :boolean
       = f.input :buddy_resource, as: :boolean
       = f.input :misc_resource, as: :boolean, label: "Other resource"
-      
+
     %fieldset.step-9
       %h2.fs-title
       Alright! One last step. Create your password, and we're good to go!

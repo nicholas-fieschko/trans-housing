@@ -11,7 +11,21 @@
 // about supported directives.
 //
 //= require jquery
+//= require jquery.turbolinks
 //= require jquery_ujs
-//= require turbolinks
 //= require bootstrap-sprockets
+//= require turbolinks
 //= require_tree .
+
+handlers = function(){
+  $("#user_gender_attributes_identity").blur(th.updatePronouns);
+};
+
+$(window).on('page:load', function(){ 
+  console.log("Loading handlers through 'window on page:load'.");
+  handlers();
+});
+$(window).ready(function(){ 
+  console.log("Loading handlers through 'window ready'.");
+  handlers();
+});
