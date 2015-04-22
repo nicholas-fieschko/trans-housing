@@ -1,14 +1,21 @@
 class Message
   include Mongoid::Document
+	include Mongoid::Timestamps::Created
 
-	# Fields
-	field :created, type: DateTime, default: -> { Time.now }
+	# Return in descending order (:asc?)
+	default_scope -> { order(created_at: :desc) }
+
+	# Fields (sender/receiver are user_ids)
+	field :created_at, type: Time, default: Time.now
 	field :text, type: String
+	field :sender
+	field :receiver
 
 	# Relations
 	belongs_to :conversation
-	field :sender
-	field :receiver
+	
+	# Error-checking
+	validates_length_of :text, minimum: 1, maximum: 1000
 
 	# TODO
 

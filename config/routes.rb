@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
 
-  resources :messages
+  #resources :messages
 
   resources :conversations
 
@@ -13,9 +13,11 @@ Rails.application.routes.draw do
 
 
   resources :sessions, only: [:new, :create, :destroy]
-  resources :users do
+  
+	resources :users do
     resources :reviews, only: [:edit, :update, :show]
     resources :requests
+		resources :conversations, except: :edit, path: 'mail'
   end
 
 
@@ -28,16 +30,6 @@ Rails.application.routes.draw do
   
 
   match '/dashboard', to: 'users#dashboard',    via: 'get'
-
-
-  # resources :spaces,   only: [:new, :create, :show, :index] do
-  #   resources :bookings, only: [:edit, :index]
-  # end
-
-  # match '/space', to: 'spaces#show', via: 'get'
-  # match '/space/new' to: 'spaces#create', via: 'get'
-
-
 
  
 	# Basic Twilio webhooks; need to integrate with user profile

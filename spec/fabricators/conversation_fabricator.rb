@@ -1,5 +1,7 @@
 Fabricator(:conversation) do
 
+	subject 							{ Faker::Company.bs }
+
 	# Get setup with some temporary users
 	transient sender: 		Fabricate.build(:user)
 	transient receiver:		Fabricate.build(:user)
