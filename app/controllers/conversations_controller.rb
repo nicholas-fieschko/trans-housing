@@ -2,6 +2,7 @@ class ConversationsController < ApplicationController
 
 	# Show user's inbox, ordered by most recently updated
 	def index
+		@inbox = Conversation.find(:user_ids => params[:user_id])
 	end
 
 	# Gather form info for the new conversation

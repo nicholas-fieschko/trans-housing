@@ -7,7 +7,7 @@
 	= job.text_field :subject
 
 	%p Message
-	= job.text_area :subject, size: '24x6'
+	= job.text_area :messages[0], size: '24x6'
 
 	= job.button :submit, value: "Send message"
 
