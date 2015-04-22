@@ -1,6 +1,5 @@
 class Location
   include Mongoid::Document
-  include Mongoid::Geospatial
   include Mongoid::Attributes::Dynamic
 
   belongs_to :user

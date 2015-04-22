@@ -8,7 +8,9 @@ class LocationsController < ApplicationController
 	@nearbyUsers = location.search(params[:loc])
 	if @nearbyUsers
 		print @nearbyUsers
-		render:json => { :users => @nearbyUsers }	
+		render:json => Hash[@nearbyUsers.collect { |v| [v.id, v.as_document.as_json] }]
+
+
 	else
 		flash.now[:error] = "Location error..."
 	end			 	
