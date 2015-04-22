@@ -107,7 +107,7 @@ function addMarkers(map, usr) {
     var contentString = '<div id="content">'+ 
 	'<div id="siteNotice">'+
 	'</div>'+
-	'<h1 id="firstHeading" class="firstHeading">' + usr.name + '</h1>'+
+	'<h1 id="firstHeading" class="firstHeading">' + '<a href="http://localhost:3000/users/' + usr._id.$oid + '">' + usr.name + '</a>' + '</h1>'+
 	'<div id="bodyContent"><p>' + usr.name + '<br><b>' + usr.name + 
 	'</b></div>'+'</div>';
     
