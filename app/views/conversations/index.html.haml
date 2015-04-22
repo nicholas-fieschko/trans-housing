@@ -1,14 +1,13 @@
-%h1 Inbox
+%h1 My Conversations
 
-/ Basically, just show the partial in ./_conversation.html.haml
-/ we can give some more user-friendly dates and snippet views
+%ul
+= @inbox.each do |f|
+	%li
+	= f.subject
+	= link_to 'Expand', user_conversation_path(id: f.id)
 
-= @inbox.all.to_a
-
-%h2 Some boilerplate . . . 
-
+%h2 Boilerplate (rendered from _conversations)
 = render "conversations"
 
-/ Options that apply to individual conversations are in the partial
-/ viz., delete, update, show. Here we link to creation form
+/ Create a new conversation (search for user?)
 = link_to 'Send a new message', new_user_conversation_path
