@@ -13,7 +13,7 @@ class Location
 
   # Validation: longitude is between -180 and 180
   # Validation: latitude is between -90 and 90
-   validates_presence_of :coordinates
+  validates_presence_of :coordinates
  
   # Create 2D Geospatial Index
   index({ coordinates: "2dsphere" }, { min: -200, max: 200 })
@@ -33,12 +33,12 @@ class Location
   def search(query)
 	@distance = 10000
 	if query
-		User.find{Location.where("coordinates" => {
+		Location.where("coordinates" => {
 			"$nearSphere"=> {"$geometry"=> {
 			"type"=> "Point",
 			"coordinates"=> [query[0].to_f, query[1].to_f],
 			"$maxDistance"=> @distance}
-		}})}.each do |loc| loc=loc.user end
+		}}).to_a.each do |loc| loc.user end
 		#Location.where(:coordinates =>
 		#{ '$near' => [query[0].to_f,query[1].to_f],
 				#{
