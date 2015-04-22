@@ -1,10 +1,13 @@
 class User
+	
   include Mongoid::Document
   include Mongoid::Attributes::Dynamic
   include ActiveModel::SecurePassword
 
+
   field :name,                   type: String
   field :is_provider,            type: Boolean
+
 
   embeds_one :gender
   has_one :contact,              dependent: :delete
@@ -22,13 +25,28 @@ class User
   embeds_one :buddy_resource
   embeds_one :misc_resource
 
-  # embeds_many :reviews
-  # has_one :inbox ?
+  has_many :reviews
+  field :number_reviews, type: Integer
+  field :sum_rating, type: Float
+  field :average_rating, type: Float
+
+  has_and_belongs_to_many :requests
+
+
+	has_many :conversations
+
+	# Basic messaging system (Stephen). Cf. StackOverflow discussion of MongoID
+	#		private messaging. This is option 1 (much simpler than before).
+	#has_many :messages_sent,		 :class_name => 'Message', :inverse_of => :sender
+	#has_many :messages_received, :class_name => 'Message', :inverse_of => :receiver
+	# END OF messaging system!
+
 
 
   accepts_nested_attributes_for  :gender, :contact, :location #, :resources
   validates_presence_of :name,   :gender, :contact#, :location
   validates_associated           :gender, :contact#, :location
+
 
   field :is_admin,               type: Boolean
   field :remember_token,         type: String
@@ -122,8 +140,13 @@ class User
     end
   end
 
+  def self.numerical_options
+    ["1","2","3","4","5","6","7","8","9","10"]
+  end
+
   def self.resources_list
-    ["Food",
+    ["Housing",
+     "Food",
      "Shower",
      "Laundry",
      "Transportation",
@@ -146,9 +169,9 @@ class User
 
     filtered_users = User
 
-    if filters[:city] && filters[:city].length > 0
-      filtered_users = filtered_users.near(filters[:city], 30)
-    end
+    # if filters[:city] && filters[:city].length > 0
+    #   filtered_users = filtered_users.near(filters[:city], 30)
+    # end
 
     if filters[:resources]
       resources = User.integer_from_options_list(filters[:resources])
@@ -156,6 +179,18 @@ class User
     end
 
     filtered_users
+  end
+
+  def set_resources_from_options_list!(options_list)
+    self.resources = User.integer_from_options_list(options_list)
+  end
+
+  def boolean_array_from_resources_integer
+    [].tap do |resources_list|
+      User.resources_list.length.times do |order|
+        resources_list << (self.resources & 2 ** order > 0)
+      end
+    end
   end
 
     private
@@ -177,6 +212,7 @@ class Gender
   field :they, type: String
   field :their, type: String
   field :them, type: String
+
   
   validates :custom_pronouns,     absence: true, if: ->(gender){!gender.trans}
   validates :they, :their, :them, absence: true, if: ->(gender){!gender.trans || !gender.custom_pronouns}
@@ -191,9 +227,12 @@ class Gender
       self.their = their.downcase
     end
   }
+
 end
 
 class PreferenceProfile
   include Mongoid::Document
   embedded_in :user
 end
+
+

@@ -1,0 +1,24 @@
+<h1> Hi <%= @helpee.name %></h1>
+
+
+<% if @request.completed %>
+
+	Your help request to <%= @helper.name %> is completed.<br>
+
+	<% if @review.completed %>
+		Review already completed.
+	<% else %>
+		Remember to leave a review for <%= @helper.name %>: <%= link_to "Click here", edit_user_review_url(@helper.id.to_s, @review.id.to_s) %>
+	<% end %>
+
+
+<% else %>
+
+
+	You have submitted a help request to <%= @helper.name %> <br>
+
+
+	<%= link_to "Click here", user_request_path(@helper, @request), method: :patch %> to complete the request.
+
+
+<% end %>

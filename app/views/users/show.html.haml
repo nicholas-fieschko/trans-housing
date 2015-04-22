@@ -34,3 +34,15 @@
       misc?
       = @user.offers_misc?
   .pure-u-1-5
+
+.col-md-8
+  %h3 
+    Average Rating
+  = @user.average_rating
+  %h3 
+    = "Reviews (#{@user.number_reviews})"
+  %ol.reviews
+    = render @reviews
+
+
+
