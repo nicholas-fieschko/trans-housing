@@ -136,14 +136,16 @@ function addMarkers(map, usr) {
     
 	
 	var contentString = '<div id="content">'+ 
-	'<div id="siteNotice">'+
-	'</div>'+
-	'<h1 id="firstHeading" class="firstHeading">' + '<a href="http://localhost:3000/users/' + usr._id.$oid + '">' + 
-	usr.name + '</h1>'+
-	'<div id="bodyContent"><p>' + usr.gender.identity + '<br><b>' + usr.location.city + 
-	'</b></div>'+'</div>' + "</div>" + housingIcon + foodIcon + 
-	transportationIcon + laundryIcon + showerIcon + buddyIcon + "</div>";
+	'<div id="siteNotice">'+ '</div>'+
+
+	housingIcon + foodIcon + transportationIcon + laundryIcon + showerIcon + buddyIcon +
+
+	'<div id="firstHeading" class="firstHeading">' + usr.name + '</div>' + '<button type="submit", formmethod="get", formaction="http://localhost:3000/users/' + usr._id.$oid + '>More</button>'
+
+	'<div id="bodyContent">' + '<b>' + usr.location.city + 
+	'</b></div>'+'</div>' + "</div>" +  "</div>";
     
+
 
     //      var infowindow = new google.maps.InfoWindow({
     //            content: contentString
