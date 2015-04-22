@@ -5,6 +5,7 @@ class ConversationsController < ApplicationController
 	def index
 		@user = current_user
 		@inbox = Conversation.where(:user_ids => @user.id)
+
 	end
 
 	# Gather form info for the new conversation; send the message to whatever

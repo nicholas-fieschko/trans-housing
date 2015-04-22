@@ -3,7 +3,8 @@
 %ul
 = @inbox.each do |f|
 	%li
-	= f.subject
+	(#{ User.find(f.user_ids[0]).name }, #{ User.find(f.user_ids[1]).name })
+	= f.subject.to_s
 	= link_to 'Expand', user_conversation_path(id: f.id)
 
 %h2 Boilerplate (rendered from _conversations)
