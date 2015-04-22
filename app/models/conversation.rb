@@ -15,11 +15,7 @@ class Conversation
 	has_many :messages
 
 	# Validations
-	#validates_length_of :subject, minimum: 1, maximum: 300
-
-	# Methods
-	def test
-	end
+	validates_length_of :subject, minimum: 1, maximum: 300
 
 	# TODO will Mongoid know that a message added is an update?
 
