@@ -12,7 +12,7 @@ class Conversation
 
 	# Relations
 	has_and_belongs_to_many :users
-	has_many :messages
+	has_many :messages, order: :updated_at.desc
 
 	# Validations
 	validates_length_of :subject, minimum: 1, maximum: 300

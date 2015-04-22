@@ -4,7 +4,7 @@ class ConversationsController < ApplicationController
 	# all conversations in which @user is in the user_ids
 	def index
 		@user = current_user
-		@inbox = Conversation.where(:user_ids => @user.id)
+		@inbox = Conversation.where(:user_ids => @user.id, )
 
 	end
 
