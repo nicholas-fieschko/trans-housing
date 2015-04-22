@@ -45,6 +45,8 @@ GEM
       debug_inspector (>= 0.0.1)
     bootstrap-sass (3.2.0.2)
       sass (~> 3.2)
+    bootstrap-will_paginate (0.0.10)
+      will_paginate
     bson (2.3.0)
     builder (3.2.2)
     byebug (4.0.5)
@@ -302,6 +304,7 @@ DEPENDENCIES
   autoprefixer-rails
   bcrypt (~> 3.1.7)
   bootstrap-sass (~> 3.2.0)
+  bootstrap-will_paginate (= 0.0.10)
   byebug
   capybara
   coffee-rails (~> 4.1.0)
