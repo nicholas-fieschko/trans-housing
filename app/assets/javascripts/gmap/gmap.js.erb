@@ -184,6 +184,12 @@ function addMarkers(map, usr) {
 	    infowindow.setContent(contentString);
 	    infowindow.open(map,marker);
         });
+
+	/*google.maps.event.addListener(map, 'center_changed', function(){
+		var newCenter = map.getCenter();
+		console.debug(newCenter);
+		queryNearbyUsers(newCenter.lat(), newCenter.lng());
+	});*/
 }
 google.maps.event.addListener(window, 'click', function() {
 	infowindow.close();
