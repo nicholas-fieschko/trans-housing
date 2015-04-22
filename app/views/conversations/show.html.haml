@@ -1,0 +1,16 @@
+%h1 Re: #{@thread.subject}
+
+/ Display each of the messages
+= @thread.messages.each do |f|
+	%p #{ User.find(f.sender).name } 
+	= f.text
+
+/ Give way to add more messages in the thread
+%h3 Add a message
+= form_for @thread.messages.last, url: {controller: "conversations", action: "update"} do |m|
+	= m.text_area :text, size: '24x6'
+	= m.button :submit, value: "Send"
+
+/ Otherwise, they can go back to inbox
+%h3 Back to inbox
+= link_to 'Back to inbox', user_conversations_path
