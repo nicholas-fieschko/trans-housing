@@ -36,7 +36,7 @@ class Location
 			"$nearSphere"=> {"$geometry"=> {
 			"type"=> "Point",
 			"coordinates"=> [query[0].to_f, query[1].to_f],
-			"$maxDistance"=> 100000}
+			"$maxDistance"=> @distance}
 		}}).to_a.map{|loc| loc.user}
 		#Location.where(:coordinates =>
 		#{ '$near' => [query[0].to_f,query[1].to_f],
