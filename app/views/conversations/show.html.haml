@@ -2,7 +2,7 @@
 
 / Display each of the messages
 = @thread.messages.each do |f|
-	%p 
+	%p #{ User.find(f.sender).name } 
 	= f.text
 
 / Give way to add more messages in the thread
