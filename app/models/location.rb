@@ -30,13 +30,13 @@ class Location
 	
 
   def search(query)
-	@distance = 10000
+	@distance = 100
 	if query
 		Location.where("coordinates" => {
 			"$nearSphere"=> {"$geometry"=> {
 			"type"=> "Point",
 			"coordinates"=> [query[0].to_f, query[1].to_f],
-			"$maxDistance"=> @distance}
+			"$maxDistance"=> @distance/111.2}
 		}}).to_a.map{|loc| loc.user}
 		#Location.where(:coordinates =>
 		#{ '$near' => [query[0].to_f,query[1].to_f],

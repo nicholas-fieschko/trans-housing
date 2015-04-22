@@ -104,14 +104,66 @@ function addMarkers(map, usr) {
     };
 
 
-    var contentString = '<div id="content">'+ 
+	var foodIcon="";
+	var buddyIcon="";
+	var housingIcon="";
+	var transportationIcon="";
+	var miscIcon="";
+	var laundryIcon="";
+	var showerIcon="";
+
+	if (usr.food_resource) {
+		foodIcon = '<i class="fa fa-cutlery fa-lg"></i>'
+	}
+	if (usr.buddy_resource) {
+		buddyIcon = '<i class="fa fa-users fa-lg"></i>'
+	}
+    if (usr.housing_resource) {
+		housingIcon = '<i class="fa fa-bed fa-lg"></i>'
+	}
+    if (usr.transportation_resource){
+		transportationIcon = '<i class="fa fa-car fa-lg"></i>'
+	}
+	if (usr.misc_resource) {
+		miscIcon = '<i class="fa fa-plus fa-lg"></i>'
+	}
+	if (usr.laundry_resource) {
+		laundryIcon = '<i class="fa fa-tags fa-lg"></i>'
+	}
+	if (usr.shower_resource) {
+		showerIcon = '<i class="fa fa-street-view fa-lg"></i>'
+	}
+
+	var averageRating = usr.average_rating;
+	var counter = 0;
+	var rating = "&nbsp&nbsp"
+
+	while (averageRating > 0.67) {
+		rating += '<i class="fa fa-star" fa-lg></i>'
+		counter++;
+		averageRating--;
+	}
+	if (averageRating > 0.33) {
+		rating += '<i class="fa fa-star-half-o" fa-lg></i>'
+		counter++;
+	}
+    while (counter< 5) {
+		rating += '<i class="fa fa-star-o" fa-lg></i>'
+		counter++;
+	}
+	
+	// Grabing the number of reviews
+	rating += '<div id="bodyContent"><p>' + usr.number_reviews + 
+		" Reviews" + '<br><br></div>'
+	var contentString = '<div id="content">'+ 
 	'<div id="siteNotice">'+
 	'</div>'+
-	'<h1 id="firstHeading" class="firstHeading">' + usr.name + '</h1>'+
-	'<div id="bodyContent"><p>' + usr.name + '<br><b>' + usr.name + 
-	'</b></div>'+'</div>';
+	'<h1 id="firstHeading" class="firstHeading">' + '<a href="http://localhost:3000/users/' + usr._id.$oid + '">' + 
+	usr.name + '</h1>'+
+	'<div id="bodyContent"><p>' + usr.gender.identity + '<br><b>' + usr.location.city + 
+	'</b></div>'+'</div>' + "</div>" + housingIcon + foodIcon + 
+	transportationIcon + laundryIcon + showerIcon + buddyIcon + rating+ "</div>";
     
-
 
     //      var infowindow = new google.maps.InfoWindow({
     //            content: contentString
@@ -132,6 +184,12 @@ function addMarkers(map, usr) {
 	    infowindow.setContent(contentString);
 	    infowindow.open(map,marker);
         });
+
+	/*google.maps.event.addListener(map, 'center_changed', function(){
+		var newCenter = map.getCenter();
+		console.debug(newCenter);
+		queryNearbyUsers(newCenter.lat(), newCenter.lng());
+	});*/
 }
 google.maps.event.addListener(window, 'click', function() {
 	infowindow.close();
