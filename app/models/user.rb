@@ -9,7 +9,6 @@ class User
   embeds_one :gender
   has_one :contact,              dependent: :delete
   has_one :location,             dependent: :delete
-  embeds_one :location
   
   # embeds_one :preference_profile # User site/security preferences
   # embeds_one :extended_profile
