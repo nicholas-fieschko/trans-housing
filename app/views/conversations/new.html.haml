@@ -1,7 +1,7 @@
-%h1 Write a message to #{@user.name}.
+%h1 Write a message to #{@receiver.name}.
 
 / Will need instance variable for the recipient(s)
-= form_for [@user, @conversation] do |job|
+= form_for [@receiver, @conversation] do |job|
 
 	%p Subject
 	= job.text_field :subject
