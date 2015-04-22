@@ -2,19 +2,23 @@ class ConversationsController < ApplicationController
 
 	# Show user's inbox, ordered by most recently updated
 	def index
-		@inbox = Conversation.find(:user_ids => params[:user_id])
+		@user = current_user
+		@inbox = Conversation.where(:user_ids => @user.id)
 	end
 
 	# Gather form info for the new conversation
 	def new
 		@user = User.find(params[:user_id])
-		@conversation = Conversation.new
+		@conversation = Conversation.new(:user_ids => [@user.id, current_user.id])
+		@user.save
+		current_user.save
 	end
 
-	# Create that new conversation
+	# Create that new conversation, persist, and redirect to inbox
 	def create
 		@user = User.find(params[:user_id])
 		@user.save
+		redirect_to user_conversations_path
 	end
 
 	# Display a particular conversation (fully expanded)
@@ -23,7 +27,7 @@ class ConversationsController < ApplicationController
 	end
 
 	# Add a message to a 
-	def update()
+	def update
 
 	end
 

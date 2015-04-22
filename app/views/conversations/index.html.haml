@@ -3,7 +3,11 @@
 / Basically, just show the partial in ./_conversation.html.haml
 / we can give some more user-friendly dates and snippet views
 
-= render "conversation"
+= @inbox.all.to_a
+
+%h2 Some boilerplate . . . 
+
+= render "conversations"
 
 / Options that apply to individual conversations are in the partial
 / viz., delete, update, show. Here we link to creation form
