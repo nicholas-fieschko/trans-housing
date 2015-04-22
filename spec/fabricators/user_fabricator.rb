@@ -9,7 +9,7 @@ Fabricator(:user) do
   password                     "test123"
   password_confirmation        "test123"
 
-  number_reviews                0
+  number_reviews                { rand(100) }
   average_rating                { rand(1.0..5.0).round(1) }
   sum_rating                    0
 
