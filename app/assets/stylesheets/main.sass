@@ -64,12 +64,13 @@ li.pure-menu-item
 
 a#header-username
   text-decoration:    none
-  &.header-username-male
-    color:            $trans-blue
-  &.header-username-female
-    color:            $trans-pink
-  &.header-username-nb
-    color:            $trans-purple
+
+.header-username-male
+  color:            $trans-blue
+.header-username-female
+  color:            $trans-pink
+.header-username-nb
+  color:            $trans-purple
 
 i.settings-icon
   vertical-align:      middle
@@ -93,13 +94,26 @@ i.settings-icon
 body
   font-family:        'Source Sans Pro', sans-serif
 // User Profile SASS
-.grid-columns-container,.user-profile-column,.sign-up-column
+.grid-columns-container,.user-profile-column,.sign-up-column,.gen-column
   height:             100%
   font-family:        'Source Sans Pro', sans-serif
 
 .user-profile-column
   background-color:   white
   padding:            20px
+
+.user-rating,.user-name
+  float: left
+
+.user-name
+  margin: .67em 0.67em 0
+
+.user-status
+  clear: both
+
+.user-resources
+  float: left
+  clear: both
 
 //Sign up
 
@@ -126,7 +140,7 @@ form
   &.wizard-current
     display: block
 
-.wizard-forward
+.wizard-forward,.message-reply-button
   float:              right
   @extend             .btn 
   @extend             .btn-header 
@@ -215,3 +229,28 @@ div fieldset
 html,body
   height:             100%
   overflow-x: hidden
+
+// Messages
+
+#inbox-return-link
+  float: left
+  display: block
+
+#message-subject,#message-reply-header
+  clear: both
+  margin-bottom: 5px
+
+.message-body 
+  padding: 15px 30px
+  text-align: left
+  color: black
+  background-color: #f8f9f9
+  clear: both
+
+.message-sender
+  float: right
+  font-style: italic
+
+#message-reply
+  width: 70%
+  margin: 30px

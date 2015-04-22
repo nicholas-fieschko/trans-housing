@@ -17,13 +17,21 @@ class User
   # embeds_one :preference_profile # User site/security preferences
   # embeds_one :extended_profile
 
-  embeds_one :food_resource
-  embeds_one :shower_resource
-  embeds_one :laundry_resource
-  embeds_one :housing_resource
-  embeds_one :transportation_resource
-  embeds_one :buddy_resource
-  embeds_one :misc_resource
+  # embeds_one :food_resource
+  # embeds_one :shower_resource
+  # embeds_one :laundry_resource
+  # embeds_one :housing_resource
+  # embeds_one :transportation_resource
+  # embeds_one :buddy_resource
+  # embeds_one :misc_resource
+
+  field :food_resource,            type: Boolean
+  field :shower_resource,            type: Boolean
+  field :laundry_resource,            type: Boolean
+  field :housing_resource,            type: Boolean
+  field :transportation_resource,            type: Boolean
+  field :buddy_resource,            type: Boolean
+  field :misc,            type: Boolean
 
   has_many :reviews
   field :number_reviews, type: Integer

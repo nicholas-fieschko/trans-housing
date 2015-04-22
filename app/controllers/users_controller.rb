@@ -21,12 +21,12 @@ class UsersController < ApplicationController
       @user.gender[:their] = nil
     end
 
-    @user.food_resource = params[:user][:food_resource] == 1 ? FoodResource.new : nil
-    @user.shower_resource = params[:user][:shower_resource] == 1 ? ShowerResource.new : nil
-    @user.laundry_resource = params[:user][:laundry_resource] == 1 ? LaundryResource.new : nil
-    @user.housing_resource = params[:user][:housing_resource] == 1 ? HousingResource.new : nil
-    @user.transportation_resource = params[:user][:transportation_resource] == 1 ? TransportationResource.new : nil
-    @user.buddy_resource = params[:user][:buddy_resource] == 1 ? BuddyResource.new : nil
+    @user.food_resource = params[:user][:food_resource] == "1" ? true : false
+    @user.shower_resource = params[:user][:shower_resource] == "1" ? true : false
+    @user.laundry_resource = params[:user][:laundry_resource] == "1" ? true : false
+    @user.housing_resource = params[:user][:housing_resource] == "1" ? true : false
+    @user.transportation_resource = params[:user][:transportation_resource] == "1" ? true : false
+    @user.buddy_resource = params[:user][:buddy_resource] == "1" ? true : false
 
     if @user.save
 

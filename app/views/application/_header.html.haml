@@ -12,7 +12,7 @@
             %span.spin-fix
               = icon 'fa fa-cog fa-lg settings-icon'
         %li.pure-menu-item
-          = link_to "#" do
+          = link_to user_conversations_path(current_user) do
             = icon 'fa fa-lg fa-envelope-o'
         %li.pure-menu-item
           = link_to "Sign out", signout_path, method: "delete", id: 'sign-out-button', class: "btn btn-header btn-sign-out"
