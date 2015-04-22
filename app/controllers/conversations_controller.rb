@@ -34,9 +34,9 @@ class ConversationsController < ApplicationController
 		)
 		
 		@conversation.messages.push(@message)
-		@user.save
+		#@user.save
 		@message.save
-		@receiver.save
+		#@receiver.save
 		@conversation.save
 
 		redirect_to user_conversations_path
@@ -61,9 +61,8 @@ class ConversationsController < ApplicationController
 		
 		@thread.messages.push(@message)
 		@thread.save
-		@user.save
-		@message.save
-		@receiver.save
+
+		redirect_to user_conversation_path(id: @thread.id)
 	end
 
 	# Delete a conversation (no individual message deletion)
