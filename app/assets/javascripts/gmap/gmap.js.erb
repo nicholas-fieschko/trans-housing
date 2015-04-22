@@ -133,8 +133,28 @@ function addMarkers(map, usr) {
 	if (usr.shower_resource) {
 		showerIcon = '<i class="fa fa-street-view fa-lg"></i>'
 	}
-    
+
+	var averageRating = usr.average_rating;
+	var counter = 0;
+	var rating = "&nbsp&nbsp"
+
+	while (averageRating > 0.67) {
+		rating += '<i class="fa fa-star" fa-lg></i>'
+		counter++;
+		averageRating--;
+	}
+	if (averageRating > 0.33) {
+		rating += '<i class="fa fa-star-half-o" fa-lg></i>'
+		counter++;
+	}
+    while (counter< 5) {
+		rating += '<i class="fa fa-star-o" fa-lg></i>'
+		counter++;
+	}
 	
+	// Grabing the number of reviews
+	rating += '<div id="bodyContent"><p>' + usr.number_reviews + 
+		" Reviews" + '<br><br></div>'
 	var contentString = '<div id="content">'+ 
 	'<div id="siteNotice">'+
 	'</div>'+
@@ -142,7 +162,7 @@ function addMarkers(map, usr) {
 	usr.name + '</h1>'+
 	'<div id="bodyContent"><p>' + usr.gender.identity + '<br><b>' + usr.location.city + 
 	'</b></div>'+'</div>' + "</div>" + housingIcon + foodIcon + 
-	transportationIcon + laundryIcon + showerIcon + buddyIcon + "</div>";
+	transportationIcon + laundryIcon + showerIcon + buddyIcon + rating+ "</div>";
     
 
     //      var infowindow = new google.maps.InfoWindow({
