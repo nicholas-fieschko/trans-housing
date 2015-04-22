@@ -19,8 +19,18 @@
 
 handlers = function(){
   $("#user_gender_attributes_identity").blur(th.updatePronouns);
+  $("#pronoun-button").click(function(){th.updatePronouns();});
   $("label[for='user_is_provider_true']").first().click(function(){th.updateHelperSeekerStatusText("provider");});
   $("label[for='user_is_provider_false']").first().click(function(){th.updateHelperSeekerStatusText("seeker");});
+
+  $("#binary_genders").blur(function(){th.updateGenderIdentity("#binary_genders");});
+  $("#binary_trans_genders").blur(function(){th.updateGenderIdentity("#binary_trans_genders");});
+  $("#nonbinary_trans_genders").blur(function(){th.updateGenderIdentity("#nonbinary_trans_genders");});
+  
+  $("#user_gender_attributes_trans_true").change(function(){th.setGenderSelectOptions(true);});
+  $("#user_gender_attributes_trans_false").change(function(){th.setGenderSelectOptions(false);});
+
+
 };
 
 $(window).on('page:load', function(){ 

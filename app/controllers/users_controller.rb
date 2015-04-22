@@ -11,11 +11,28 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
+
+    @user.location[:coordinates] = [41.31074,-72.92672]
+
+    if !@user.gender[:cp]
+      @user.gender[:cp] = nil
+      @user.gender[:they] = nil
+      @user.gender[:them] = nil
+      @user.gender[:their] = nil
+    end
+
+    @user.food_resource = params[:user][:food_resource] == 1 ? FoodResource.new : nil
+    @user.shower_resource = params[:user][:shower_resource] == 1 ? ShowerResource.new : nil
+    @user.laundry_resource = params[:user][:laundry_resource] == 1 ? LaundryResource.new : nil
+    @user.housing_resource = params[:user][:housing_resource] == 1 ? HousingResource.new : nil
+    @user.transportation_resource = params[:user][:transportation_resource] == 1 ? TransportationResource.new : nil
+    @user.buddy_resource = params[:user][:buddy_resource] == 1 ? BuddyResource.new : nil
+
     if @user.save
 
       # Send an email upon signup--will go to Stephen's email because of
 			# Fabricator settings, so comment out until the demo.
-      Notifier.welcome(@user).deliver
+      # Notifier.welcome(@user).deliver
 
       sign_in @user
       redirect_to @user
