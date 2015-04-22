@@ -67,24 +67,20 @@ function queryNearbyUsers(lat, lng, map) {
 		data: loc,
 		dataType: 'json',
 		success: function(data) {
-		    $.each($(data), function(k,v) {
-				$.each(v, function(key, val){
-					$.each(val, function(k, userInfo){
-						console.debug(userInfo)
-						addMarkers(map, userInfo)
-					});
-				});
+		    $.each(data, function(k,userInfo) {
+				console.debug(userInfo)
+				addMarkers(map, userInfo)
 			});
 		},
 		error: function() {
-		    alert("Ajax error!")
+		    console.error("Ajax error!")
 			}
 	    });
 	}
 
 function addMarkers(map, usr) {
     // console.log(p)
-	if (usr.coordinates[0] > 41) {
+	if (usr.is_provider) {
 	    var image = {
 		size: new google.maps.Size(32, 32),
 		url: "<%= asset_path 'house_opt.png' %>",
@@ -107,18 +103,21 @@ function addMarkers(map, usr) {
 	type: 'poly'
     };
 
+
     var contentString = '<div id="content">'+ 
 	'<div id="siteNotice">'+
-	'</div>'+ '</div>;'
-	//'<h1 id="firstHeading" class="firstHeading">' + usr.name + '</h1>'+
-	//'<div id="bodyContent"><p>' + usr.gender + '<br><b>' + usr.contact + 
-	//'</b></div>'+'</div>';
+	'</div>'+
+	'<h1 id="firstHeading" class="firstHeading">' + usr.name + '</h1>'+
+	'<div id="bodyContent"><p>' + usr.name + '<br><b>' + usr.name + 
+	'</b></div>'+'</div>';
     
+
+
     //      var infowindow = new google.maps.InfoWindow({
     //            content: contentString
     //        });
     
-    var myLatLng = new google.maps.LatLng(usr.coordinates[0], usr.coordinates[1]);
+    var myLatLng = new google.maps.LatLng(usr.location.c[0], usr.location.c[1]);
 	console.debug(myLatLng);
     var marker = new google.maps.Marker({
 	    position: myLatLng,

@@ -1,30 +1,31 @@
+
+%ul#sign-up-progress-bar
+  %li.active Name
+  %li
+    Gender
+    %ul
+      %li Category
+      %li Identity
+      %li Pronouns
+  %li Location
+  %li 
+    Resources
+    %ul
+      %li Position
+      %li Food
+      %li Shower
+      %li Laundry
+      %li Housing
+      %li Transport
+      %li Buddy
+      %li Misc
+  %li Contact
+  %li Finish
+
 .sign-up-box.sign-up-column
   %h1 Sign up!
 
   = simple_form_for @user do |f|
-
-    %ul#sign-up-progress-bar
-      %li.active Name
-      %li
-        Gender
-        %ul
-          %li Category
-          %li Identity
-          %li Pronouns
-      %li Location
-      %li 
-        Resources
-        %ul
-          %li Position
-          %li Food
-          %li Shower
-          %li Laundry
-          %li Housing
-          %li Transport
-          %li Buddy
-          %li Misc
-      %li Contact
-      %li Finish
 
     %fieldset
       %h2.fs-title What name would you like to be listed by?
@@ -55,6 +56,7 @@
           = g.input :they, label: false, placeholder: '"She/he/they" tense'
           = g.input :their, label: false, placeholder: '"Her/him/them" tense'
           = g.input :them, label: false, placeholder: '"Her/his/their" tense'
+
           = text_field :identity, placeholder: "Gender identity"
 
         %fieldset
@@ -121,10 +123,6 @@
       = f.collection_radio_buttons :is_provider, [[true, 'I can help!'] ,[false, 'I need help!']], :first, :last
       %br
 
-    .page 
-      / To get you started quickly, 
-      / This gets into "resource" data model, also embedded in each user model instance.
-      Resource profiles: Model in progress.
       %br What can you help with/offer?
       /.checkbox [Each is a "checkbox" or radio button for OFFER HELP side, but set up visually so doesnt quite look like checkboxes:
       / Has short descriptions with icons and "Yes/No" mobile-style slider checkbox
@@ -163,9 +161,7 @@
       = f.input :password
       = f.input :password_confirmation
       = f.button :submit, value: "Create my account!", id: "submit_signup"
-
-
-
+      
   /* Once signed up-- redirect to what: preferences, or profile, or matches?
   / Profile probably best, so they can flesh it out more
   / Have a flash: 'You can also set up your site preferences [here]...'

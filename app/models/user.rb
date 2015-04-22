@@ -12,8 +12,8 @@ class User
   embeds_one :gender
   has_one :contact,              dependent: :delete
   has_one :location,             dependent: :delete
-  embeds_one :location
-  
+  #embeds_one :location
+
   # embeds_one :preference_profile # User site/security preferences
   # embeds_one :extended_profile
 
@@ -40,8 +40,6 @@ class User
 	#has_many :messages_sent,		 :class_name => 'Message', :inverse_of => :sender
 	#has_many :messages_received, :class_name => 'Message', :inverse_of => :receiver
 	# END OF messaging system!
-
-
 
   accepts_nested_attributes_for  :gender, :contact, :location #, :resources
   validates_presence_of :name,   :gender, :contact#, :location
@@ -134,7 +132,7 @@ class User
 
   def self.search(search)
     if search
-      any_of({name: /#{search}/i}, {location: /#{search}/i})
+      any_of({name: /#{search}/i}, {city: /#{search}/i})
     else
       self.all.to_a
     end
