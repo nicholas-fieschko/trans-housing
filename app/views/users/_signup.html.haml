@@ -55,6 +55,18 @@
           = g.input :they, label: false, placeholder: '"She/he/they" tense'
           = g.input :their, label: false, placeholder: '"Her/him/them" tense'
           = g.input :them, label: false, placeholder: '"Her/his/their" tense'
+          = text_field :identity, placeholder: "Gender identity"
+
+        %fieldset
+          / Only display this section if "trans" boolean was true
+          / Likely best to have a Gender.they_tense(identity input string), etc to retrieve
+          So, are your pronouns (RETRIEVE STANDARD PRONOUNS FOR IDENTITY SELECTED:) "he", "him", "his"?
+          = g.collection_radio_buttons :cp, [[false, 'Yes'] ,[true, 'No']], :first, :last
+          / -if no->
+          %label Please enter your pronouns.
+          = g.input :they, placeholder: '"She/he/they" tense'
+          = g.input :their, placeholder: '"Her/him/them" tense'
+          = g.input :them, placeholder: '"Her/his/their" tense'
 
         / .page 
         /   /-if custom entered, confirmation page->
@@ -90,6 +102,29 @@
       %h2.fs-title Resources
       / To get you started quickly, 
       / This gets into "resource" data model, also embedded in each user model instance.
+      = f.simple_fields_for :contact do |c|
+        / Implement "preference" selection-- drop down? Checkbox?
+        = c.input :email
+        = c.input :phone
+      %span.help-block
+        You need at least one contact method associated with your account, as it also serves as your login information.
+        %br Note that your contact information is never revealed to other users unless you specifically unlock it for someone.
+
+    .page
+      Location
+      .answer [txt box with pre-filled guess][Change button]
+      .map [map?]
+    %br
+
+    .page 
+      %label Are you seeking help, or can you offer help?
+      = f.collection_radio_buttons :is_provider, [[true, 'I can help!'] ,[false, 'I need help!']], :first, :last
+      %br
+
+    .page 
+      / To get you started quickly, 
+      / This gets into "resource" data model, also embedded in each user model instance.
+      Resource profiles: Model in progress.
       %br What can you help with/offer?
       /.checkbox [Each is a "checkbox" or radio button for OFFER HELP side, but set up visually so doesnt quite look like checkboxes:
       / Has short descriptions with icons and "Yes/No" mobile-style slider checkbox
@@ -128,6 +163,7 @@
       = f.input :password
       = f.input :password_confirmation
       = f.button :submit, value: "Create my account!", id: "submit_signup"
+
 
 
   /* Once signed up-- redirect to what: preferences, or profile, or matches?

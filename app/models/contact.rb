@@ -17,4 +17,12 @@ class Contact
   validates_uniqueness_of :email, unless: ->(contact){contact.email.blank?}
   validates_uniqueness_of :phone, unless: ->(contact){contact.phone.blank?}
 
+  def preferred_contact
+    if self.prefers_email
+      self.email
+    else
+      self.phone
+    end
+  end
+
 end
