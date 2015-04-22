@@ -133,17 +133,40 @@ function addMarkers(map, usr) {
 	if (usr.shower_resource) {
 		showerIcon = '<i class="fa fa-street-view fa-lg"></i>'
 	}
-    
+
+	var averageRating = usr.average_rating;
+	var counter = 0;
+	var rating = "&nbsp&nbsp&nbsp&nbsp"
+
+	while (averageRating > 0.67) {
+		rating += '<i class="fa fa-star" fa-lg></i>'
+		counter++;
+		averageRating--;
+	}
+	if (averageRating > 0.33) {
+		rating += '<i class="fa fa-star-half-o" fa-lg></i>'
+		counter++;
+	}
+    while (counter< 5) {
+		rating += '<i class="fa fa-star-o" fa-lg></i>'
+		counter++;
+	}
 	
+	// Grabing the number of reviews
+	var number_reviews = "&nbsp&nbsp&nbsp&nbsp" + usr.number_reviews + " Reviews"
 	var contentString = '<div id="content">'+ 
+
 	'<div id="siteNotice">'+ '</div>'+
 
-	housingIcon + foodIcon + transportationIcon + laundryIcon + showerIcon + buddyIcon +
+	housingIcon + foodIcon + transportationIcon + laundryIcon + showerIcon + buddyIcon + rating +
 
-	'<div id="firstHeading" class="firstHeading">' + usr.name + '</div>' + '<button type="submit", formmethod="get", formaction="http://localhost:3000/users/' + usr._id.$oid + '>More</button>'
+	'<br>' + usr.name + number_reviews +
 
-	'<div id="bodyContent">' + '<b>' + usr.location.city + 
+	'<form id="GetMoreUserInfo" method="get" action="http://localhost:3000/users/' + usr._id.$oid + '"><input type="submit" value="More"></form>' +
+
+	'<div id="bodyContent">' + '<b>' + usr.location.city +
 	'</b></div>'+'</div>' + "</div>" +  "</div>";
+
     
 
 
