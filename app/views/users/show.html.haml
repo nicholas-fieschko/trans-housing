@@ -6,7 +6,8 @@
     Profile page layout not implemented yet yo. Stay tuned.
     %h1
       = @user.name
-      = link_to "Reach out to #{@user.name}", "#", class: "btn btn-primary"
+      = link_to "Contact #{@user.name}", new_user_conversation_path(@user.id), class: "btn btn-primary" 
+      /= link_to "Reach out to #{@user.name}", "#", class: "btn btn-primary"
     = @user.gender[:identity]
     .temp
       = @user.seeker? ? "Seeking help" : "Offering help"
