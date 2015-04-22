@@ -4,6 +4,12 @@
 
 window.th ?= {}
 
+th.updateHelperSeekerStatusText = (status) ->
+  if status == "seeker"
+    $("#seeker-status-text").text "What could be helpful to you?"  
+  if status == "provider"
+    $("#seeker-status-text").text "What can you do to help?"  
+
 th.updatePronouns = ->
   gender = $("#user_gender_attributes_identity").val()
   $("#they").text("\"#{th.pronoun.they(gender)}\",")
