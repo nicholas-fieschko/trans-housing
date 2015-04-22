@@ -104,13 +104,33 @@ function addMarkers(map, usr) {
     };
 
 
-    var contentString = '<div id="content">'+ 
+	if (usr.gender.food_resource) {
+		var foodIcon = '<i class="fa fa-cutlery fa-lg"></i>'
+	}
+	else {
+		var foodIcon = ""
+	}
+	if (usr.buddy_resource) {
+		var buddyIcon = '<i class="fa fa-users fa-lg"></i>'
+	}
+	else {
+		var buddyIcon = ""
+	}
+    if (usr.housing_resource) {
+		var housingIcon = '<i class="fa fa-bed fa-lg"></i>'
+	}
+	else {
+		var housingIcon = ""
+	}
+    
+	
+	var contentString = '<div id="content">'+ 
 	'<div id="siteNotice">'+
 	'</div>'+
 	'<h1 id="firstHeading" class="firstHeading">' + usr.name + '</h1>'+
-	'<div id="bodyContent"><p>' + usr.name + '<br><b>' + usr.name + 
-	'</b></div>'+'</div>';
-    
+	'<div id="bodyContent"><p>' + usr.gender.identity + '<br><b>' + usr.location.city + 
+	'</b></div>'+'</div>' + "</div>" + housingIcon + foodIcon + buddyIcon + "</div>";
+   
 
 
     //      var infowindow = new google.maps.InfoWindow({
