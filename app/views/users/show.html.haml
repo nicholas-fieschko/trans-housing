@@ -4,8 +4,12 @@
   .pure-u-1-5
   .pure-u-3-5.login-box-positioner
     .sign-up-box.sign-up-column.profile-page
-      - if current_user != @user
+      - if !current_user.nil? && current_user != @user
         = link_to "Contact #{@user.name}", new_user_conversation_path(@user.id), class: "btn btn-primary wizard-forward" 
+
+        - if current_user.seeker? && @user.provider?
+          = link_to "Request help from #{@user.name}", new_user_request_path(@user.id), class: "btn btn-primary wizard-back", id: "request-help-button"
+
       %h1.user-name{class: "header-username-#{gender_category(@user.gender[:identity])}"}
         = @user.name
       .user-resources
@@ -33,11 +37,15 @@
 
 
       %h3.user-rating
+      - if !@user.number_reviews.nil?
         Average Rating
         = @user.average_rating
-      %h3 
-        = "Reviews (#{@user.number_reviews})"
-      %ol.reviews
-        = render @reviews
+        %h3 
+          = "Reviews (#{@user.number_reviews})"
+        %ol.reviews
+          = render @reviews
+      - else
+        %h3 
+          #{@user.name} does not yet have any reviews.
   .pure-u-1-5
 

@@ -4,8 +4,8 @@ class ReviewsController < ApplicationController
     @user = User.find(params[:user_id])
     @review = Review.find(params[:id])
     if @review.update_attributes(review_params)
-      @user.sum_rating = @user.sum_rating + @review.rating
-      @user.number_reviews = @user.number_reviews + 1
+      @user.sum_rating = @user.sum_rating.nil? ? @review.rating : @user.sum_rating + @review.rating
+      @user.number_reviews = @user.number_reviews.nil? ? 1 : @user.number_reviews + 1
       @user.average_rating = (@user.sum_rating / @user.number_reviews).round(1)
       @user.save
       @review.update_attribute(:completed, 1)
