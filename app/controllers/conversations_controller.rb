@@ -34,9 +34,7 @@ class ConversationsController < ApplicationController
 		)
 		
 		@conversation.messages.push(@message)
-		#@user.save
 		@message.save
-		#@receiver.save
 		@conversation.save
 
 		redirect_to user_conversations_path
@@ -67,12 +65,17 @@ class ConversationsController < ApplicationController
 
 	# Delete a conversation (no individual message deletion)
 	def destroy
+		# - Find way to only delete for the current user
+		# - Using destroy vs. delete to also delete child messages
+		@thread = Conversation.find(params[:id])		
+		@thread.destroy
 
+		redirect_to user_conversations_path
 	end
 
 	# Rails 4 Strong Params
 	private
-		# Allow nesting of message model inside conversation
+		# Allow access to message model attributes within conversation
     def conversation_params
       params.require(:conversation).permit(
         :subject,
