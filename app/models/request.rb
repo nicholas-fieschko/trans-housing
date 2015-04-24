@@ -10,7 +10,4 @@ class Request
   field :completed, type: Boolean
 
 
-
-
-
 end

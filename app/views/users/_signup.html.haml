@@ -1,134 +1,118 @@
+-#
+  %ul#sign-up-progress-bar
+    %li.active Name
+    %li
+      Gender
+      %ul
+        %li Category
+        %li Identity
+        %li Pronouns
+    %li Location
+    %li 
+      Resources
+      %ul
+        %li Position
+        %li Food
+        %li Shower
+        %li Laundry
+        %li Housing
+        %li Transport
+        %li Buddy
+        %li Misc
+    %li Contact
+    %li Finish
+
 .sign-up-box.sign-up-column
-  %h1 Sign up!
 
   = simple_form_for @user do |f|
+    .step-1.wizard-page.wizard-current
+      %h1 Welcome!
+      We're so glad to see you here. Let's walk through making your account!
+      %fieldset
+        %h2.fs-title First things first: what's your name?
+        = f.input :name, label: false, placeholder: "I am..."
 
-    %ul#sign-up-progress-bar
-      %li.active Name
-      %li
-        Gender
-        %ul
-          %li Category
-          %li Identity
-          %li Pronouns
-      %li Location
-      %li 
-        Resources
-        %ul
-          %li Position
-          %li Food
-          %li Shower
-          %li Laundry
-          %li Housing
-          %li Transport
-          %li Buddy
-          %li Misc
-      %li Contact
-      %li Finish
-
-    %fieldset
-      %h2.fs-title What name would you like to be listed by?
-      = f.input :name, label: false, placeholder: "Name"
-
+      %button.wizard-forward{type: "button",onclick: "th.advanceWizard(1,2); th.advanceWizard(0,'g-1');"} Next
+    .step-2.wizard-page
       = f.simple_fields_for :gender do |g|
-        %fieldset
-          %h2.fs-title Are you a transgender person, or otherwise under the trans* identity umbrella?
-          = g.collection_radio_buttons :trans, [[true, 'Yes'] ,[false, 'No']], :first, :last
-    
-        %fieldset 
-          %h2.fs-title What is your gender?
-          / JAVASCRIPT TO-DO: if "trans" boolean was true, display this help text. Cis folk don't need the clarification.
-          / Rails to-do: Likely best to move the default selection options into the Gender model itself, and retrieve with a getter.
-          %span.fs-subtitle (Your identified gender, not neccessarily your birth sex.)
-          /- ["Male","Female","Non-binary"], ["Wait, I'm binary, take me back.","Bigender","Agender","Genderqueer","Genderfluid","Just let me type it!"], 
-          = g.input :identity, collection: ["Male","Female","Non-binary"]
-          / / JS: -if Non-binary selected, swap out selection for these options->
-          = g.input :identity, collection: ["Wait, I'm binary, take me back.","Bigender","Agender","Genderqueer","Genderfluid","Just let me type it!"]
-          / / JS: -if "Just let me type it!" is chosen, allow custom text entry->
-          = text_field :identity, placeholder: "Gender identity"
+        %fieldset.step-g-1.wizard-page
+          %h2.fs-title
+            Now, let's talk about gender. Are you a transgender person, or otherwise under the trans* identity umbrella?
+          = g.collection_radio_buttons :trans, [[true, 'Yes!'] ,[false, 'Nope']], :first, :last
+          %button.wizard-back{type: "button",onclick: "th.advanceWizard('g-1',0); th.advanceWizard(2,1);"} Back
+          %button.wizard-forward{type: "button",onclick: "th.advanceWizard('g-1','g-2')"} Next
+  
+        %fieldset.step-g-2.wizard-page
+          %h2.fs-title 
+            What is your gender?
+          = select_tag "binary_genders", options_for_select([ "Male", "Female" ], "Male")
+          = select_tag "binary_trans_genders", options_for_select([ "Male", "Female", "Nonbinary" ], "Male")
+          = select_tag "nonbinary_trans_genders", options_for_select(["Bigender","Agender","Genderqueer","Genderfluid","Just let me type it!"], "Genderqueer")
+          = g.input :identity, label: false, input_html: { value: '', placeholder: "I am..."}
+          %button.wizard-back{type: "button",onclick: "th.advanceWizard('g-2','g-1')"} Back
+          %button.wizard-forward#pronoun-button{type: "button",onclick: "th.advanceWhereDecision('g-2')"} Next
 
-        %fieldset
-          / Only display this section if "trans" boolean was true
-          / Likely best to have a Gender.they_tense(identity input string), etc to retrieve
-          So, are your pronouns (RETRIEVE STANDARD PRONOUNS FOR IDENTITY SELECTED:) "he", "him", "his"?
+        %fieldset.step-g-3.wizard-page
+          %h2.fs-title 
+            So, are your pronouns 
+            %span#they "he",
+            %span#them "him", 
+            %span#their "his"?
           = g.collection_radio_buttons :cp, [[false, 'Yes'] ,[true, 'No']], :first, :last
-          / -if no->
-          %label Please enter your pronouns.
-          = g.input :they, placeholder: '"She/he/they" tense'
-          = g.input :their, placeholder: '"Her/him/them" tense'
-          = g.input :them, placeholder: '"Her/his/their" tense'
-
-        / .page 
-        /   /-if custom entered, confirmation page->
-        /   %div
-        /     So, your pronouns are:
-        /     [They] joined TransHousing on MM/DD/YY.
-        /     I can't wait to see [their] profile!
-        /     I wonder who will get in touch with [them] first?
-        /   .answer [looks good!][oops, not quite]
-
-
-    %fieldset
-      %h2.fs-title Contact methods
+          %button.wizard-back{type: "button",onclick: "th.advanceWizard('g-3','g-2')"} Back
+          %button.wizard-forward{type: "button",onclick: "th.advanceWhereDecision('g-3')"} Next
+        %fieldset.step-g-4.wizard-page
+          %h2.fs-title Please enter your pronouns.
+          = g.input :they, label: false, placeholder: '"She/he/they" tense'
+          = g.input :their, label: false, placeholder: '"Her/him/them" tense'
+          = g.input :them, label: false, placeholder: '"Her/his/their" tense'
+          %button.wizard-back{type: "button",onclick: "th.advanceWizard('g-4','g-3')"} Back
+          %button.wizard-forward{type: "button",onclick: "th.advanceWizard('g-4','3')"} Next
+    .step-3.wizard-page
       = f.simple_fields_for :contact do |c|
-        / Implement "preference" selection-- drop down? Checkbox?
-        = c.input :email
-        = c.input :phone
-      %span.help-block
-        You need at least one contact method associated with your account, as it also serves as your login information.
-        %br Note that your contact information is never revealed to other users unless you specifically unlock it for someone.
+        %fieldset
+          %h2.fs-title Enter your phone, email, or both-- you can login with these later.
+          = c.input :email, label: false, placeholder: "Email"
+          = c.input :phone, label: false, placeholder: "Phone"
+          %button.wizard-back{type: "button",onclick: "th.advanceWhereDecision('3')"} Back
+          %button.wizard-forward{type: "button",onclick: "th.advanceWizard('3','4')"} Next
 
-    .page
-      Location
-      .answer [txt box with pre-filled guess][Change button]
-      .map [map?]
-    %br
+    .step-4.wizard-page
+      = f.simple_fields_for :location do |l|
+        %fieldset
+          %h2.fs-title Enter your location information. 
+          = l.input :zip, label: false, placeholder: "zip"
+          = l.input :city, label: false, placeholder: "city"
+          = l.input :state, label: false, placeholder: "state"
+          %button.wizard-back{type: "button",onclick: "th.advanceWizard('4','3')"} Back
+          %button.wizard-forward{type: "button",onclick: "th.advanceWizard('4','5')"} Next
 
-    .page 
-      %label Are you seeking help, or can you offer help?
-      = f.collection_radio_buttons :is_provider, [[true, 'I can help!'] ,[false, 'I need help!']], :first, :last
-      %br
+    .step-5.wizard-page
+      %fieldset
+        %h2.fs-title Are you seeking help, or can you offer help?
+        = f.collection_radio_buttons :is_provider, [[true, 'I can help!'] ,[false, 'I need help!']], :first, :last
+        %button.wizard-back{type: "button",onclick: "th.advanceWizard('5','4')"} Back
+        %button.wizard-forward{type: "button",onclick: "th.advanceWizard('5','6')"} Next
 
-    .page 
-      / To get you started quickly, 
-      / This gets into "resource" data model, also embedded in each user model instance.
-      Resource profiles: Model in progress.
-      %br What can you help with/offer?
-      /.checkbox [Each is a "checkbox" or radio button for OFFER HELP side, but set up visually so doesnt quite look like checkboxes:
-      / Has short descriptions with icons and "Yes/No" mobile-style slider checkbox
-      .item
-        Be a Buddy
-        .description (Description, description...)
-        .checkbox    [yes/no with no as default]
-      .item
-        Offer Food
-        .description (Description, description...)
-        .checkbox    [yes/no with no as default]
-      .item
-        Help with transportation
-        .description (Description, description...)
-        .checkbox    [yes/no with no as default]
-      .item
-        Help with laundry
-        .description (Description, description...)
-        .checkbox    [yes/no with no as default]
-      .item
-        Offer a clean shower
-        .description (Description, description...)
-        .checkbox    [yes/no with no as default]
-      .item
-        Offer temporary shelter
-        .description (Description, description...)
-        .checkbox    [yes/no with no as default]
-      .item
-        Offer housing
-        .description (Description, description...)
-        .checkbox    [yes/no with no as default]
+    .step-6.wizard-page
+      %fieldset
+        %h2.fs-title#seeker-status-text What can you help with/offer?
+        = f.input :food_resource, as: :boolean, label: "Food"
+        = f.input :shower_resource, as: :boolean, label: "A clean shower"
+        = f.input :laundry_resource, as: :boolean, label: "Access to a laundry machine"
+        = f.input :housing_resource, as: :boolean, label: "Somewhere to sleep"
+        = f.input :transportation_resource, as: :boolean, label: "Transportation from place to place"
+        = f.input :buddy_resource, as: :boolean, label: "A buddy for mentorship and added safety in acquiring resources"
+        =# f.input :misc_resource, as: :boolean, label: "Something else"
+        %button.wizard-back{type: "button",onclick: "th.advanceWizard('6','5')"} Back
+        %button.wizard-forward{type: "button",onclick: "th.advanceWizard('6','7')"} Next
 
-
-    .page
-      Alright! One last step. Create your password, and we're good to go!
-      = f.input :password
-      = f.input :password_confirmation
-      = f.button :submit, value: "Create my account!", id: "submit_signup"
-
+    .step-7.wizard-page
+      %fieldset
+        %h2.fs-title Fantastic!
+        Just choose a password, and you're ready to get started!
+        = f.input :password
+        = f.input :password_confirmation
+        = f.button :submit, value: "Create my account!", id: "submit_signup",class: "wizard-forward"
+        %button.wizard-back{type: "button",onclick: "th.advanceWizard('7','6')"} Back
+      

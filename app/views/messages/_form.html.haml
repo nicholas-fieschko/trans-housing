@@ -4,7 +4,7 @@
       %h2= "#{pluralize(@message.errors.count, "error")} prohibited this message from being saved:"
       %ul
         - @message.errors.full_messages.each do |msg|
-          %li= msg
+          %li.message-body = msg
 
   .actions
     = f.submit 'Save'

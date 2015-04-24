@@ -1,14 +1,14 @@
-%h1 My Conversations
-
-%ul
-= @inbox.each do |f|
-	%li
-	(#{ User.find(f.user_ids[0]).name }, #{ User.find(f.user_ids[1]).name })
-	= f.subject.to_s
-	= link_to 'Expand', user_conversation_path(id: f.id)
-
-%h2 Boilerplate (rendered from _conversations)
-= render "conversations"
-
-/ Create a new conversation (search for user?)
-= link_to 'Send a new message', new_user_conversation_path
+.pure-g.grid-columns-container
+  .pure-u-1-5
+  .pure-u-3-5.login-box-positioner
+    .sign-up-box.sign-up-column
+      %h1 Conversations
+      %ul
+      - @inbox.each do |convo|
+        %li
+          (#{ User.find(convo.user_ids[0]).name }, #{ User.find(convo.user_ids[1]).name })
+          = convo.subject.to_s
+          = link_to 'View >>', user_conversation_path(id: convo.id)
+      - if @inbox.empty?
+        Your inbox is empty.
+        -#=  link_to 'Send a new message', new_user_conversation_path

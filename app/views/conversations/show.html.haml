@@ -1,16 +1,21 @@
-%h1 Re: #{@thread.subject}
+.pure-g.grid-columns-container
+  .pure-u-1-5
+  .pure-u-3-5.login-box-positioner
+    .sign-up-box.sign-up-column
+      = link_to '<< return to inbox', user_conversations_path, id: "inbox-return-link"
+      %h1#message-subject Re: #{@thread.subject}
 
-/ Display each of the messages
-= @thread.messages.each do |f|
-	%p #{ User.find(f.sender).name } 
-	= f.text
+      / Display each of the messages
+      - @thread.messages.each do |f|
+        .message-body 
+          = f.text
+        .message-sender
+          \--#{ User.find(f.sender).name }
 
-/ Give way to add more messages in the thread
-%h3 Add a message
-= form_for @thread.messages.last, url: {controller: "conversations", action: "update"} do |m|
-	= m.text_area :text, size: '24x6'
-	= m.button :submit, value: "Send"
+      / Give way to add more messages in the thread
+      %h3#message-reply-header Reply
+      = form_for @thread.messages.last, url: {controller: "conversations", action: "update"} do |m|
+        = m.text_area :text, id: "message-reply", value: ''
+        %br
+        = m.button :submit, value: "Send", class: "message-reply-button"
 
-/ Otherwise, they can go back to inbox
-%h3 Back to inbox
-= link_to 'Back to inbox', user_conversations_path

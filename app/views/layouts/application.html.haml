@@ -5,7 +5,6 @@
       = full_title(yield(:title))
     = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true
     %script{src: "https://maps.googleapis.com/maps/api/js?key=AIzaSyAPBRFRX1DMSuZk3JyY1UXtlNLrIXLZ8HA&sensor=false"}
-    %script{src: "http://code.jquery.com/jquery-1.9.1.min.js"}
     = stylesheet_link_tag 'http://fonts.googleapis.com/css?family=Source+Sans+Pro:300|Cantata+One', rel: 'stylesheet', type: 'text/css'
     = stylesheet_link_tag 'http://yui.yahooapis.com/pure/0.6.0/pure-min.css', rel: 'stylesheet', type: 'text/css'
     = stylesheet_link_tag 'http://yui.yahooapis.com/pure/0.6.0/grids-responsive-min.css', rel: 'stylesheet', type: 'text/css'
@@ -19,4 +18,4 @@
     = yield
 
     / = debug(params) if Rails.env.development?
-    = console if Rails.env.development?
+    / = console if Rails.env.development?

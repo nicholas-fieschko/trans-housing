@@ -10,7 +10,10 @@ class RequestsController < ApplicationController
   end
 
   def update
-    if (@request = Request.find(params[:id])) && signed_in? && @request.helper.to_s == params[:user_id] && @request.helpee == current_user.id
+    if ((@request = Request.find(params[:id])) && 
+          signed_in? && 
+          @request.helper.to_s == params[:user_id] && 
+          @request.helpee == current_user.id)
       @request.update_attribute(:completed, true)
       @helper = User.find(params[:user_id])
       @review = Review.new(authorID: current_user.id, author: current_user.name)

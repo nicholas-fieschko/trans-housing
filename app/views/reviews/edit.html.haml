@@ -1,0 +1,24 @@
+.pure-g.grid-columns-container
+  .pure-u-1-5
+  .pure-u-3-5.login-box-positioner
+    .sign-up-box.sign-up-column
+      - flash.each do |message_type, message|
+        %div{class:"alert-#{message_type} alert"}
+          = message
+
+
+      %h1 Write a review for #{@user.name}
+      .row
+        .col-md-6.col-md-offset-3
+          = form_for [@user, @review] do |f|
+            %div
+              = f.label :text
+              = f.text_field :text
+            %div
+              = f.label :rating
+              = f.text_field :rating
+
+            = f.submit "Submit review", class: "login-submit-button"
+
+
+

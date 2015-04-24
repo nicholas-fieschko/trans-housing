@@ -32,5 +32,17 @@ module ApplicationHelper
     @ul = options
     render "shared/checkbox_group"
   end
-  
+
+  def select_given_options(options)
+    @options = options
+    render "shared/select_given_options"
+  end
+
+  def select_numerical_given_options(options)
+    @options = options
+    render "shared/select_numerical"
+  end
+
+
+
 end

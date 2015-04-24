@@ -12,18 +12,26 @@ class User
   embeds_one :gender
   has_one :contact,              dependent: :delete
   has_one :location,             dependent: :delete
-  embeds_one :location
-  
+  #embeds_one :location
+
   # embeds_one :preference_profile # User site/security preferences
   # embeds_one :extended_profile
 
-  embeds_one :food_resource
-  embeds_one :shower_resource
-  embeds_one :laundry_resource
-  embeds_one :housing_resource
-  embeds_one :transportation_resource
-  embeds_one :buddy_resource
-  embeds_one :misc_resource
+  # embeds_one :food_resource
+  # embeds_one :shower_resource
+  # embeds_one :laundry_resource
+  # embeds_one :housing_resource
+  # embeds_one :transportation_resource
+  # embeds_one :buddy_resource
+  # embeds_one :misc_resource
+
+  field :food_resource,            type: Boolean
+  field :shower_resource,            type: Boolean
+  field :laundry_resource,            type: Boolean
+  field :housing_resource,            type: Boolean
+  field :transportation_resource,            type: Boolean
+  field :buddy_resource,            type: Boolean
+  field :misc,            type: Boolean
 
   has_many :reviews
   field :number_reviews, type: Integer
@@ -34,8 +42,6 @@ class User
 
 	# Cleaned up after merging with Richard's branch
 	has_many :conversations
-
-  accepts_nested_attributes_for :location, :gender, :contact #, :resources
 
   accepts_nested_attributes_for  :gender, :contact, :location #, :resources
   validates_presence_of :name,   :gender, :contact#, :location
@@ -128,14 +134,19 @@ class User
 
   def self.search(search)
     if search
-      any_of({name: /#{search}/i}, {location: /#{search}/i})
+      any_of({name: /#{search}/i}, {city: /#{search}/i})
     else
       self.all.to_a
     end
   end
 
+  def self.numerical_options
+    ["1","2","3","4","5","6","7","8","9","10"]
+  end
+
   def self.resources_list
-    ["Food",
+    ["Housing",
+     "Food",
      "Shower",
      "Laundry",
      "Transportation",
@@ -158,9 +169,9 @@ class User
 
     filtered_users = User
 
-    if filters[:city] && filters[:city].length > 0
-      filtered_users = filtered_users.near(filters[:city], 30)
-    end
+    # if filters[:city] && filters[:city].length > 0
+    #   filtered_users = filtered_users.near(filters[:city], 30)
+    # end
 
     if filters[:resources]
       resources = User.integer_from_options_list(filters[:resources])
@@ -168,6 +179,18 @@ class User
     end
 
     filtered_users
+  end
+
+  def set_resources_from_options_list!(options_list)
+    self.resources = User.integer_from_options_list(options_list)
+  end
+
+  def boolean_array_from_resources_integer
+    [].tap do |resources_list|
+      User.resources_list.length.times do |order|
+        resources_list << (self.resources & 2 ** order > 0)
+      end
+    end
   end
 
     private

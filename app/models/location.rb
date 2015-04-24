@@ -1,21 +1,18 @@
 class Location
   include Mongoid::Document
-  include Mongoid::Geospatial
   include Mongoid::Attributes::Dynamic
 
   belongs_to :user
   
-
   field :c, as: :coordinates, type: Array             # [longitude, latitude]
   field :zip,                 type: String
   field :city,                type: String
   field :state,               type: String
   field :country,             type: String
 
-
   # Validation: longitude is between -180 and 180
   # Validation: latitude is between -90 and 90
-   validates_presence_of :coordinates
+  validates_presence_of :coordinates
  
   # Create 2D Geospatial Index
   index({ coordinates: "2dsphere" }, { min: -200, max: 200 })
@@ -39,9 +36,8 @@ class Location
 			"$nearSphere"=> {"$geometry"=> {
 			"type"=> "Point",
 			"coordinates"=> [query[0].to_f, query[1].to_f],
-			"$maxDistance"=> @distance.fdiv(111.2)}
-		}})
-
+			"$maxDistance"=> @distance/111.2}
+		}}).to_a.map{|loc| loc.user}
 		#Location.where(:coordinates =>
 		#{ '$near' => [query[0].to_f,query[1].to_f],
 				#{

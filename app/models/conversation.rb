@@ -19,5 +19,9 @@ class Conversation
 
 	# TODO will Mongoid know that a message added is an update?
 
+	# def self.sender
+
+	# def self.receiver
+
 
 end
