@@ -6,6 +6,11 @@ $(document).ready(function() {
 	initialize();
     });
 
+$(document).on('click', '.wizard-forward', function(){
+	var center = map.getCenter();
+	google.maps.event.trigger(map, "resize");
+	map.setCenter(center);
+});
 
 function initialize() {
     var initialLocation;
@@ -163,8 +168,6 @@ function addMarkers(map, usr) {
 
 	'<div id="bodyContent">' + '<b>' + usr.location.city +
 	'</b></div>'+'</div>' + "</div>" +  "</div>";
-
-    
 
 
     //      var infowindow = new google.maps.InfoWindow({
