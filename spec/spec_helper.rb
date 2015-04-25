@@ -21,25 +21,25 @@ require 'database_cleaner'
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 RSpec.configure do |config|
-
+  
   config.before(:suite) do
-    DatabaseCleaner.clean_with(:truncation)
+    DatabaseCleaner[:mongoid].clean_with(:truncation)
   end
 
   config.before(:each) do
-    DatabaseCleaner.strategy = :truncation
+    DatabaseCleaner[:mongoid].strategy = :truncation
   end
 
   config.before(:each, :js => true) do
-    DatabaseCleaner.strategy = :truncation
+    DatabaseCleaner[:mongoid].strategy = :truncation
   end
 
   config.before(:each) do
-    DatabaseCleaner.start
+    DatabaseCleaner[:mongoid].start
   end
 
   config.after(:each) do
-    DatabaseCleaner.clean
+    DatabaseCleaner[:mongoid].clean
   end
   
   # rspec-expectations config goes here. You can use an alternate

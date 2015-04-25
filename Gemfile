@@ -13,9 +13,6 @@ gem 'autoprefixer-rails'
 gem 'haml'
 gem 'font-awesome-sass'
 
-gem 'will_paginate',           '3.0.7'
-gem 'bootstrap-will_paginate', '0.0.10'
-
 gem 'haml-rails'
 gem 'mailgun-ruby', '~> 1.0.2', require: 'mailgun'
 gem 'twilio-ruby', '~> 4.0.0'
@@ -27,7 +24,6 @@ gem 'turbolinks'				 # Turbolinks makes following links in your web application 
 gem 'jbuilder', '~> 2.0'		 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'sdoc', '~> 0.4.0', group: :doc # bundle exec rake doc:rails generates the API under doc/api.
 
-gem 'will_paginate',           '3.0.7'
 gem 'bcrypt', '~> 3.1.7'		 # Use ActiveModel has_secure_password
 gem 'geokit-rails', '~> 2.1.0'   # Geokit for address/GPS coor transformation 
 								 # https://github.com/geokit/geokit-rails
@@ -46,7 +42,7 @@ group :development, :test do
   gem 'web-console', '~> 2.0'	 # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'spring'					 # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'database_cleaner'
-  gem 'rspec-rails', '~> 3.0'
+  gem 'rspec-rails'
   gem 'capybara'
   gem 'fabrication'
   gem 'faker'
