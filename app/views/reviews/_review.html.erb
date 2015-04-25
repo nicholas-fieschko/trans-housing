@@ -1,10 +1,11 @@
 <% if review.completed %>
 
 <li id="review-<%= review.id %>">
-  <span class="author"><%= review.author %></span> <span class="rating"><%= review.rating %></span>
+  <span class="author"><%= link_to review.author, user_path(review.authorID) %></span> 
+  <span class="rating"><%= get_stars(review.rating) %></span>
   <span class="text"><%= review.text %></span>
   <span class="timestamp">
-    Posted <%= time_ago_in_words(review.created_at) %> ago.
+    <%= review.updated_at.strftime("%B %Y") %>
   </span>
 </li>
 
@@ -12,3 +13,11 @@
 
 
 <% end %>
+
+
+
+
+
+
+
+

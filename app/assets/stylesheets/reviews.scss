@@ -22,8 +22,7 @@ $gray-medium-light: #eaeaea;
     }
   }
   .rating {
-    display: block;
-    margin-left: 60px;
+    display: inline;
     img {
       display: block;
       padding: 5px 0;
@@ -32,7 +31,6 @@ $gray-medium-light: #eaeaea;
   .timestamp {
     color: gray-medium-light;
     display: block;
-    margin-left: 60px;
   }
   .gravatar {
     float: left;
