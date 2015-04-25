@@ -5,14 +5,15 @@ class UsersController < ApplicationController
     end
     @user = User.new
     @user.build_contact
-    @user.build_location(zip: "06511",city: "New Haven",state: "CT")
-    @user.build_gender
+    # @user.build_location(zip: "06511",city: "New Haven",state: "CT")
+    @user.build_location(session[:location])
+	@user.build_gender
   end
 
   def create
     @user = User.new(user_params)
 
-    @user.location[:coordinates] = [41.31074,-72.92672]
+    @user.location[:coordinates] = session[:coordinates]
 
     if !@user.gender[:cp]
       @user.gender[:cp] = nil
