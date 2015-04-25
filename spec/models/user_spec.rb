@@ -20,7 +20,7 @@ RSpec.describe User, type: :model do
           expect(Fabricate.build(:user, contact: Fabricate.build(:phone_only))).to be_valid
         end
 
-        it "converts the email address to all lowercase" do
+        it "converts and saves the email address in all lowercase" do
           user = Fabricate(:user, contact: Fabricate.build(:contact, email: "TEST@TEST.com"))
           expect(user.contact.email).to eq("test@test.com")
         end
@@ -29,11 +29,29 @@ RSpec.describe User, type: :model do
       describe "for gender information" do
         context "as a nonbinary trans person" do
           it "is valid with custom pronouns" do
-            expect(Fabricate.build(:nonbinary_user)).to be_valid
+            expect(Fabricate.build(:custom_pronoun_user)).to be_valid
           end
           it "is valid without custom pronouns" do
-            expect(Fabricate.build(:user, gender: Fabricate.build(:nonbinary_gender, cp:false, they: nil, their: nil, them: nil))).to be_valid
+            expect(Fabricate.build(:user, gender: Fabricate.build(:nonbinary_gender, 
+                                     cp: false, they: nil, their: nil, them: nil))).to be_valid
           end
+
+
+          it "converts and saves gender identity in all lowercase" do
+            user = Fabricate(:nonbinary_user, 
+                   gender: Fabricate.build(:nonbinary_gender, identity: "GENDERFLUID"))
+            expect(user.gender[:identity]).to eq("genderfluid")
+          end
+
+          it "converts and saves custom pronouns in all lowercase" do
+            user = Fabricate(:custom_pronoun_user, 
+                   gender: Fabricate.build(:custom_pronoun_gender,
+                            they: "XE", them: "HIR", their: "HIR"))
+            expect(user.gender[:they]).to eq("xe")
+            expect(user.gender[:them]).to eq("hir")
+            expect(user.gender[:their]).to eq("hir")
+          end
+
         end
       end
     end
@@ -97,12 +115,71 @@ RSpec.describe User, type: :model do
   describe "deleting an account" do
     it "destroys contact information" do
       user = Fabricate(:user)
-      expect { user.destroy }.to change {Contact.count}.by(-1)
+      expect { user.destroy }.to change { Contact.count }.by(-1)
     end
     it "destroys location information" do
       user = Fabricate(:user)
-      expect { user.destroy }.to change {Location.count}.by(-1)
+      expect { user.destroy }.to change { Location.count }.by(-1)
     end
+  end
+
+  describe "pronoun getters .they, .them, .their" do
+
+    describe "for a binary male user" do
+      user = Fabricate.build(:user, 
+             gender: Fabricate.build(:binary_gender, identity: "male"))
+      it "returns 'he' as the 'they' tense" do 
+        expect(user.they).to eq "he"
+      end
+      it "returns 'him' as the 'them' tense" do 
+        expect(user.them).to eq "him"
+      end
+      it "returns 'his' as the 'their' tense" do 
+        expect(user.their).to eq "his"
+      end
+    end
+
+    describe "for a binary female user" do
+      user = Fabricate.build(:user, 
+             gender: Fabricate.build(:binary_gender, identity: "female"))
+      it "returns 'she' as the 'they' tense" do 
+        expect(user.they).to eq "she"
+      end
+      it "returns 'her' as the 'them' tense" do 
+        expect(user.them).to eq "her"
+      end
+      it "returns 'her' as the 'their' tense" do 
+        expect(user.their).to eq "her"
+      end
+    end
+
+    describe "for a nonbinary user without custom pronouns" do
+      user = Fabricate.build(:nonbinary_user, 
+             gender: Fabricate.build(:nonbinary_gender, cp: false))
+      it "returns 'they' as the 'they' tense" do 
+        expect(user.they).to eq "they"
+      end
+      it "returns 'them' as the 'them' tense" do 
+        expect(user.them).to eq "them"
+      end
+      it "returns 'their' as the 'their' tense" do 
+        expect(user.their).to eq "their"
+      end
+    end
+
+    # describe "for a nonbinary user with custom pronouns" do
+    #   user = Fabricate.build(:nonbinary_user, 
+    #          gender: Fabricate.build(:nonbinary_gender, cp: false))
+    #   it "returns 'they' as the 'they' tense" do 
+    #     expect(user.they).to eq "they"
+    #   end
+    #   it "returns 'them' as the 'them' tense" do 
+    #     expect(user.them).to eq "them"
+    #   end
+    #   it "returns 'their' as the 'their' tense" do 
+    #     expect(user.their).to eq "their"
+    #   end
+    # end
   end
 
   describe ".provider?" do
