@@ -1,12 +1,12 @@
-Hi, #{@to.name}!
+Hi, #{@reviewer.name}!
 
 %br
 
-Please leave a review for #{@helper.name}.
+Please leave a review for #{@receiver.name}.
 
-= link_to("Click here", edit_user_review_url(@helper.id.to_s, @review.id.to_s))
+= link_to("Click here", edit_user_review_url(@receiver.id.to_s, @review.id.to_s))
 
 %br
 
 Or navigate your browser to the following URL:
-= edit_user_review_url(@helper.id.to_s, @review.id.to_s)
+= edit_user_review_url(@receiver.id.to_s, @review.id.to_s)

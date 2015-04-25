@@ -2,5 +2,5 @@
   .pure-u-1-5
   .pure-u-3-5.login-box-positioner
     .sign-up-box.sign-up-column
-      %h1 Would you like to send a help request to #{@helper.name}?
+      %h1 Would you like to offer help to #{@seeker.name}?
       = button_to "Confirm", user_requests_path, class: "login-submit-button"

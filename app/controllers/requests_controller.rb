@@ -1,27 +1,31 @@
 class RequestsController < ApplicationController
   def new
-    if signed_in?
-      @helpee = current_user
-      @helper = User.find(params[:user_id])
-      check_provider_status
+    if get_provider_seeker == 'provider'
+      render 'new_for_provider'
     else
-      signed_in_user
-    end    
+      render 'new_for_seeker'
+    end
   end
 
   def update
-    if ((@request = Request.find(params[:id])) && 
-          signed_in? && 
-          @request.helper.to_s == params[:user_id] && 
-          @request.helpee == current_user.id)
+    if (@request = Request.find(params[:id])) && signed_in? && (@request.seeker == current_user.id || @request.provider == current_user.id)
+      @provider = User.find(@request.provider)
+      @seeker = User.find(@request.seeker)
       @request.update_attribute(:completed, true)
-      @helper = User.find(params[:user_id])
-      @review = Review.new(authorID: current_user.id, author: current_user.name)
-      @helper.reviews.push(@review)
-      @review.save(validate: false)
-      @request.update_attribute(:review, @review.id)
-      Notifier.new_review(current_user,@helper,@review).deliver
-      redirect_to user_request_path(@helper,@request)
+
+      @seeker_review_for_provider = Review.new(authorID: @seeker.id, author: @seeker.name)
+      @provider.reviews.push(@seeker_review_for_provider)
+      @seeker_review_for_provider.save(validate: false)
+      @request.update_attribute(:seeker_review_for_provider, @seeker_review_for_provider.id)
+      Notifier.new_review(@seeker,@provider,@seeker_review_for_provider).deliver
+
+      @provider_review_for_seeker = Review.new(authorID: @provider.id, author: @provider.name)
+      @seeker.reviews.push(@provider_review_for_seeker)
+      @provider_review_for_seeker.save(validate: false)
+      @request.update_attribute(:provider_review_for_seeker, @provider_review_for_seeker.id)
+      Notifier.new_review(@provider,@seeker,@provider_review_for_seeker).deliver
+
+      redirect_to user_request_path(params[:user_id],@request)
     else
       redirect_to user_path(params[:user_id])
     end
@@ -31,12 +35,19 @@ class RequestsController < ApplicationController
   end
 
   def show
-    if ((@request = Request.find(params[:id])) && signed_in? && @request.helper.to_s == params[:user_id] && @request.helpee == current_user.id)
-      @helper = User.find(params[:user_id])
-      @helpee = current_user
-      if (@request.completed)
-        @review = Review.find(@request.review)
+    if (@request = Request.find(params[:id])) && signed_in?
+      @provider = User.find(@request.provider)
+      @seeker = User.find(@request.seeker)
+      if @request.completed
+        @seeker_review_for_provider = Review.find(@request.seeker_review_for_provider)
+        @provider_review_for_seeker = Review.find(@request.provider_review_for_seeker)
+      end
+      if @request.seeker == current_user.id
+        render 'show_for_seeker'
+      elsif @request.provider == current_user.id
+        render 'show_for_provider'
       else
+        redirect_to user_path(params[:user_id])
       end
     else
       redirect_to user_path(params[:user_id])
@@ -44,27 +55,35 @@ class RequestsController < ApplicationController
   end
 
   def create
-    if signed_in?
-      @helpee = current_user
-      @helper = User.find(params[:user_id])
-      @request = Request.create!(helper: @helper.id, helpee: @helpee.id, completed: false)
-      @helpee.requests.push(@request)
-      @helper.requests.push(@request)
-      redirect_to user_request_path(@helper,@request)
-    else
-      signed_in_user
-    end
+    get_provider_seeker 
+    @request = Request.create!(provider: @provider.id, seeker: @seeker.id, confirmed: false, completed: false)
+    @seeker.requests.push(@request)
+    @provider.requests.push(@request)
+    redirect_to user_request_path(params[:user_id],@request)
   end
 
 
 
   private
 
-    def check_provider_status
-      if @helpee.is_provider || !@helper.is_provider
-        render 'error'
+    def get_provider_seeker
+
+      if signed_in?
+        if current_user.is_provider && !User.find(params[:user_id]).is_provider
+          @provider = current_user
+          @seeker = User.find(params[:user_id])
+          return 'provider'
+        elsif !current_user.is_provider && User.find(params[:user_id]).is_provider
+          @seeker = current_user
+          @provider = User.find(params[:user_id])
+          return 'seeker'
+        else
+          render 'error'
+        end
       else
+        signed_in_user
       end
+
     end
 
 
