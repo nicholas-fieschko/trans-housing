@@ -44,5 +44,24 @@ module ApplicationHelper
   end
 
 
+  def get_stars(rating)
+    counter = 0
+    stars = "&nbsp"
+    while rating > 0.67 do
+      stars += '<i class="fa fa-star" fa-lg></i>'
+      counter = counter + 1
+      rating = rating - 1
+    end
+    if rating > 0.33
+      stars += '<i class="fa fa-star-half-o" fa-lg></i>'
+      counter = counter + 1
+    end
+      while counter< 5 do
+      stars += '<i class="fa fa-star-o" fa-lg></i>'
+      counter = counter + 1
+    end
+    stars.html_safe
+  end
+
 
 end
