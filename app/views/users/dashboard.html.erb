@@ -32,15 +32,15 @@
 <% @user.requests.each do |r| %>
 	<% if @user.is_provider %>
 		<% if r.completed %>
-			Helped <%= User.find(r.helpee).name %> <%= time_ago_in_words(r.updated_at) %> ago. <br>
+			Helped <%= User.find(r.seeker).name %> <%= time_ago_in_words(r.updated_at) %> ago. <br>
 		<% else %>
-			Remember to finish helping <%= User.find(r.helpee).name %>. <br>
+			Remember to <%= link_to "finish helping #{User.find(r.seeker).name}", user_request_path(User.find(r.seeker), r) %>. <br>
 		<% end %>
 	<% else %>
 		<% if r.completed %>
-			Helped by <%= User.find(r.helper).name %> <%= time_ago_in_words(r.updated_at) %> ago. <br>
+			Helped by <%= User.find(r.provider).name %> <%= time_ago_in_words(r.updated_at) %> ago. <br>
 		<% else %>
-			Reminder: You have a <%= link_to "help request", user_request_path(User.find(r.helper), r) %> with <%= User.find(r.helper).name %>. <br>
+			Reminder: You have a <%= link_to "help request", user_request_path(User.find(r.provider), r) %> with <%= User.find(r.provider).name %>. <br>
 		<% end %>
 	<% end %>
 <% end %>

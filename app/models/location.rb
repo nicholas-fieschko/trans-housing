@@ -38,14 +38,7 @@ class Location
 			"coordinates"=> [query[0].to_f, query[1].to_f],
 			"$maxDistance"=> @distance/111.2}
 		}}).to_a.map{|loc| loc.user}
-		#Location.where(:coordinates =>
-		#{ '$near' => [query[0].to_f,query[1].to_f],
-				#{
-				# "$geometry" => {type:"Point",coodinates: query},
-		#	'$maxDistance' => @distance.fdiv(69) # ~10 miles
-			#}
 		
-		#}).to_json
 	# TODO: better error handel here
 	else
 		[].to_a

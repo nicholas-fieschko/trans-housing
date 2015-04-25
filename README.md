@@ -20,4 +20,6 @@ To-do:
 - front end design
 - write tests
 - refactor code and views
+- interactive map to allow user change their locations
+- how to preserver user defined locaitons versus auto-detection
 
