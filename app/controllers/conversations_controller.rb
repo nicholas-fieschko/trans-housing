@@ -68,8 +68,11 @@ class ConversationsController < ApplicationController
 		# - Find way to only delete for the current user
 		# - Using destroy vs. delete to also delete child messages
 		@thread = Conversation.find(params[:id])		
-		@thread.destroy
 
+		# Call Model method to delete current user's owner link
+		@thread.remove_user(current_user)
+
+		# Go back to inbox!
 		redirect_to user_conversations_path
 	end
 
