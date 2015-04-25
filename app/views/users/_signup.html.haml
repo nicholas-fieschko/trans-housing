@@ -86,6 +86,8 @@
           = l.input :state, label: false, placeholder: "state"
           %button.wizard-back{type: "button",onclick: "th.advanceWizard('4','3')"} Back
           %button.wizard-forward{type: "button",onclick: "th.advanceWizard('4','5')"} Next
+          %div.mapcontainer 
+            #map_canvas
 
     .step-5.wizard-page
       %fieldset

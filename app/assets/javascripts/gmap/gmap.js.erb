@@ -4,10 +4,6 @@ var infowindow = new google.maps.InfoWindow();
 $(document).ready(function() {
 	var url = "/location/posts"
 	initialize();
-       	/*function(){
-	    var markerData = <%= raw @hash.to_json %>;
-	    updateMarkers(map, markersData);
-	    });*/
     });
 
 
@@ -29,6 +25,7 @@ function initialize() {
 		initialLocation = new google.maps.LatLng(position.coords.
 							 latitude, position.
 							 coords.longitude);
+		google.maps.event.trigger(map, "resize");
 		map.setCenter(initialLocation);
 		// We want to put a marker on our location
 		var myLatLng = new google.maps.LatLng(initialLocation.lat(), 
@@ -188,7 +185,7 @@ function addMarkers(map, usr) {
 	    infowindow.close();
 	    infowindow.setContent(contentString);
 	    infowindow.open(map,marker);
-        });
+		});
 
 	/*google.maps.event.addListener(map, 'center_changed', function(){
 		var newCenter = map.getCenter();
