@@ -86,31 +86,25 @@ class User
     !self.is_provider
   end
 
-  def offers_food?
+  def food?
     self.food_resource[:currently_offered]
   end
-  def offers_shower?
+  def shower?
     self.shower_resource[:currently_offered]
   end
-  def offers_laundry?
+  def laundry?
     self.laundry_resource[:currently_offered]
   end
-  def offers_housing?
-  describe ".seeker?" do
-    it "returns true if user is a seeker and false if a provider" do
-      expect(Fabricate(:seeker).seeker?).to   eq true
-      expect(Fabricate(:provider).seeker?).to eq false
-    end
-  end
+  def housing?
     self.housing_resource[:currently_offered]
   end
-  def offers_transportation?
+  def transportation?
     self.transportation_resource[:currently_offered]
   end
-  def offers_buddy?
+  def buddy?
     self.buddy_resource[:currently_offered]
   end
-  def offers_misc?
+  def misc?
     self.misc_resource[:currently_offered]
   end
 
