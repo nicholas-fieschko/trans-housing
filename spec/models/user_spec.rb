@@ -167,31 +167,39 @@ RSpec.describe User, type: :model do
       end
     end
 
-    # describe "for a nonbinary user with custom pronouns" do
-    #   user = Fabricate.build(:nonbinary_user, 
-    #          gender: Fabricate.build(:nonbinary_gender, cp: false))
-    #   it "returns 'they' as the 'they' tense" do 
-    #     expect(user.they).to eq "they"
-    #   end
-    #   it "returns 'them' as the 'them' tense" do 
-    #     expect(user.them).to eq "them"
-    #   end
-    #   it "returns 'their' as the 'their' tense" do 
-    #     expect(user.their).to eq "their"
-    #   end
-    # end
+    describe "for a nonbinary user with custom pronouns xe, hir, hir" do
+      user = Fabricate.build(:custom_pronoun_user, 
+             gender: Fabricate.build(:custom_pronoun_gender,
+             they:            "xe",
+             them:            "hir",
+             their:           "hir"))
+      it "returns 'xe' as the 'they' tense" do 
+        expect(user.they).to eq "xe"
+      end
+      it "returns 'hir' as the 'them' tense" do 
+        expect(user.them).to eq "hir"
+      end
+      it "returns 'hir' as the 'their' tense" do 
+        expect(user.their).to eq "hir"
+      end
+    end
   end
 
-  describe ".provider?" do
-    it "returns true if user is a provider and false if a seeker" do
-      expect(Fabricate(:provider).provider?).to eq true
-      expect(Fabricate(:seeker).provider?).to eq false
+  describe "provider/seeker status getters .provider?, .seeker?" do
+    describe ".provider?" do
+      it "returns true if user is a provider and false if a seeker" do
+        expect(Fabricate(:provider).provider?).to eq true
+        expect(Fabricate(:seeker).provider?).to eq false
+      end
+    end
+    describe ".seeker?" do
+      it "returns true if user is a seeker and false if a provider" do
+        expect(Fabricate(:seeker).seeker?).to eq true
+        expect(Fabricate(:provider).seeker?).to eq false
+      end
     end
   end
-  describe ".seeker?" do
-    it "returns true if user is a seeker and false if a provider" do
-      expect(Fabricate(:seeker).seeker?).to eq true
-      expect(Fabricate(:provider).seeker?).to eq false
-    end
-  end
+
+  describe "needed/offered resource getters "
+
 end
