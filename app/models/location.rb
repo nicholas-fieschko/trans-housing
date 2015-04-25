@@ -1,7 +1,6 @@
 class Location
   include Mongoid::Document
   include Mongoid::Attributes::Dynamic
-  include Geokit::Geocoders
 
   belongs_to :user
   

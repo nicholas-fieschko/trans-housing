@@ -114,25 +114,25 @@ function addMarkers(map, usr) {
 	var laundryIcon="";
 	var showerIcon="";
 
-	if (usr.food_resource) {
+	if (usr.food_resource.currently_offered) {
 		foodIcon = '<i class="fa fa-cutlery fa-lg"></i>'
 	}
-	if (usr.buddy_resource) {
+	if (usr.buddy_resource.currently_offered) {
 		buddyIcon = '<i class="fa fa-users fa-lg"></i>'
 	}
-    if (usr.housing_resource) {
+    if (usr.housing_resource.currently_offered) {
 		housingIcon = '<i class="fa fa-bed fa-lg"></i>'
 	}
-    if (usr.transportation_resource){
+    if (usr.transportation_resource.currently_offered){
 		transportationIcon = '<i class="fa fa-car fa-lg"></i>'
 	}
-	if (usr.misc_resource) {
+	if (usr.misc_resource.currently_offered) {
 		miscIcon = '<i class="fa fa-plus fa-lg"></i>'
 	}
-	if (usr.laundry_resource) {
+	if (usr.laundry_resource.currently_offered) {
 		laundryIcon = '<i class="fa fa-tags fa-lg"></i>'
 	}
-	if (usr.shower_resource) {
+	if (usr.shower_resource.currently_offered) {
 		showerIcon = '<i class="fa fa-street-view fa-lg"></i>'
 	}
 
