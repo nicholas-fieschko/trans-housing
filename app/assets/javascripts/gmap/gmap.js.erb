@@ -25,8 +25,8 @@ function initialize() {
 		initialLocation = new google.maps.LatLng(position.coords.
 							 latitude, position.
 							 coords.longitude);
-		google.maps.event.trigger(map, "resize");
 		map.setCenter(initialLocation);
+		google.maps.event.trigger(map, "resize");
 		// We want to put a marker on our location
 		var myLatLng = new google.maps.LatLng(initialLocation.lat(), 
 						      initialLocation.lng());
