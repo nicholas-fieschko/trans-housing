@@ -1,7 +1,7 @@
 .login-box.login-column
   = form_for(:session, url: sessions_path) do |f|
     .login-name-fields
-      = f.label :name, class: "login-name-label"
+      = f.label :name, "Phone or Email", class: "login-name-label"
       = f.text_field :name, class: "login-name-input"
     .login-password-fields
       = f.label :password, class: "login-password-label"
