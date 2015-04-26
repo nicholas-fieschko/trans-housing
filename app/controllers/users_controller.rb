@@ -39,6 +39,14 @@ class UsersController < ApplicationController
   end
 
   def update
+    @user = User.find(params[:id])
+
+    if @user.update_attributes(edit_user_params)
+      flash[:success] = "Successfully updated settings."
+      redirect_to @user
+    else
+      render 'edit'
+    end
   end
 
   def index
@@ -72,15 +80,35 @@ class UsersController < ApplicationController
         :name,
         :is_provider,
         :password, :password_confirmation,
-        gender_attributes:  [:identity, :trans, :cp, :they, :their, :them],
-        contact_attributes: [:email, :phone],
-        location_attributes: [:c,:zip,:city,:state],
-        food_resource_attributes: [:currently_offered],
-        shower_resource_attributes: [:currently_offered],
-        laundry_resource_attributes: [:currently_offered],
-        housing_resource_attributes: [:currently_offered],
+        gender_attributes:                  [:identity, :trans, :cp,
+                                              :they, :their, :them],
+        contact_attributes:                 [:email, :phone],
+        location_attributes:                [:c,:zip,:city,:state],
+        food_resource_attributes:           [:currently_offered],
+        shower_resource_attributes:         [:currently_offered],
+        laundry_resource_attributes:        [:currently_offered],
+        housing_resource_attributes:        [:currently_offered],
         transportation_resource_attributes: [:currently_offered],
-        buddy_resource_attributes: [:currently_offered]
+        buddy_resource_attributes:          [:currently_offered]
+        )
+    end
+
+    def edit_user_params
+      params.require(:user).permit(
+        :name,
+        # :is_provider,
+        :password, :password_confirmation,
+        # gender_attributes:                [:identity, :trans, :cp,
+        #                                     :they, :their, :them],
+        contact_attributes:                 [:email, :phone],
+        location_attributes:                [:c,:zip,:city,:state],
+        food_resource_attributes:           [:currently_offered],
+        shower_resource_attributes:         [:currently_offered],
+        laundry_resource_attributes:        [:currently_offered],
+        housing_resource_attributes:        [:currently_offered],
+        transportation_resource_attributes: [:currently_offered],
+        buddy_resource_attributes:          [:currently_offered],
+        misc_resource_attributes:           [:currently_offered]
         )
     end
 

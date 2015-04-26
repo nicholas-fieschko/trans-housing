@@ -1,5 +1,9 @@
 Reviews
 =======
+To run, please remember to index the database, you should run
+- rake db:seed (or rake db:reset)
+- rake db:create_indexes
+
 
 Implemented:
 - Each review belongs to the user receiving the review and has a authorID corresponding to the ObjectId of the user who is supposed to leave the review. Only this user can leave the review and must be signed in to do so.
