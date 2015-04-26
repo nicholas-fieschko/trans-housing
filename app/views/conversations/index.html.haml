@@ -6,7 +6,7 @@
       %ul
       - @inbox.each do |convo|
         %li
-          (#{ User.find(convo.user_ids[0]).name }, #{ User.find(convo.user_ids[1]).name })
+          [ #{User.find(convo.messages.first.sender).name}] 
           = convo.subject.to_s
           = link_to 'View >>', user_conversation_path(id: convo.id)
       - if @inbox.empty?

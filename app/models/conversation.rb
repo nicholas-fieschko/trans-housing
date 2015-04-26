@@ -9,7 +9,8 @@ class Conversation
 	# Fields
 	field :updated_at, type: Time, default: Time.now	
 	field :subject, type: String
-	field :owners, type: Array
+	field :owners, type: Array, default: []
+	field :readers, type: Array, default: []
 
 	# Relations: owners is all those who haven't deleted
 	has_and_belongs_to_many :users
@@ -18,25 +19,31 @@ class Conversation
 	# Validations
 	validates_length_of :subject, minimum: 1, maximum: 300
 
+
+	### METHODS for manipulating user inbox ###
+	# - Like unix inode, message is hard-deleted once all owners delete it
 	def remove_owner(current_user)
 		self.owners.delete(current_user)
-
-		# Exclamation raises exception on failure
 		if self.owners.empty?
-			self.destroy!
+			self.destroy! # Exclamation raises exception on failure
 		end
-
-		# Otherwise, don't do anything
 	end
-
+	# - Returns true if the current_user has not yet been pushed to readers array
+	def unread_conversation?(current_user)
+		!self.readers.include? current_user
+	end
 
 	# Callbacks
 	before_save {
-		# No deletes yet! Make a copy (only on initial creation)
+		# Owners defaults to everybody
 		self.owners = self.user_ids.dup
+		# Readers defaults to just the creator (set in conversation#new)
 	}
 
-	before_update {}
+	before_update {
+
+
+	}
 
 	#before_remove {}
 

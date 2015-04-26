@@ -3,8 +3,9 @@
   .pure-u-3-5.login-box-positioner
     .sign-up-box.sign-up-column
       = link_to '<< return to inbox', user_conversations_path, id: "inbox-return-link"
-      = link_to '<< delete this thread' conversation, method: :delete
-			%h1#message-subject Re: #{@thread.subject}
+      = link_to('<< delete this thread', user_conversation_path, method: :delete)
+
+      %h1#message-subject Re: #{@thread.subject}
 
       / Display each of the messages
       - @thread.messages.each do |f|
@@ -19,4 +20,3 @@
         = m.text_area :text, id: "message-reply", value: ''
         %br
         = m.button :submit, value: "Send", class: "message-reply-button"
-
