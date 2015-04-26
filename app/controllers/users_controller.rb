@@ -18,7 +18,6 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
-
     @user.location[:coordinates] = session[:coordinates].map &:to_f
 
     if @user.save
