@@ -32,6 +32,7 @@ class User
   has_and_belongs_to_many :requests
 
 	has_many :conversations
+  has_many :messages
 
   accepts_nested_attributes_for  :gender, :contact,
                                  :food_resource, :shower_resource, :laundry_resource,
@@ -194,5 +195,3 @@ class PreferenceProfile
   include Mongoid::Document
   embedded_in :user
 end
-
-
