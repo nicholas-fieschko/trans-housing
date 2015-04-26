@@ -45,7 +45,6 @@ class User
   validates_associated           :gender, :contact#, :location
 
 
-  field :is_admin,               type: Boolean
   field :remember_token,         type: String
   field :password_digest,        type: String
 
