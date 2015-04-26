@@ -11,7 +11,9 @@ Fabricator(:conversation) do
 	# pass a rand count to users and then set a sender in messages; the
 	# receivers will just be everybody else
 	users(count: 3)		{ Fabricate.build(:user) }
-	owners				[]
+
+	# No clue why this stopped working . . . 
+	#owners				{ |attrs| attrs[:users].dup }
 
 	# Pass a block to insert their info into users array
 	#users				{ |attrs| [ attrs[:sender], attrs[:receiver] ] }

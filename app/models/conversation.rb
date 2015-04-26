@@ -26,7 +26,7 @@ class Conversation
 		self.owners.delete(current_user.id)
 		self.save!
 		if self.owners.empty?
-			self.destroy! # Exclamation raises exception on failure
+			self.destroy! # Exclamation point raises exception on failure
 		end
 	end
 	# - Returns true if the current_user has not yet been pushed to readers array
@@ -37,6 +37,7 @@ class Conversation
 	def deleted_conversation?(current_user)
 		self.owners.exclude? current_user.id
 	end
+	# - Prettyprints all the active participants in a convo 
 	def print_owners
 		label = '['
 		self.owners.each do |o|

@@ -49,7 +49,10 @@ class ConversationsController < ApplicationController
 	def show
 		@user   = current_user
 		@thread = Conversation.find(params[:id])
-		@thread.readers.push(@user.id)
+		# Don't push ID if it's already in there
+		if @thread.readers.exclude? @user.id
+			@thread.readers.push(@user.id)
+		end
 		@thread.save
 	end
 
