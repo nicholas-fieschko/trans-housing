@@ -1,4 +1,5 @@
 class RequestsController < ApplicationController
+
   def new
     if get_provider_seeker == 'provider'
       render 'new_for_provider'
@@ -11,28 +12,42 @@ class RequestsController < ApplicationController
     if (@request = Request.find(params[:id])) && signed_in? && (@request.seeker == current_user.id || @request.provider == current_user.id)
       @provider = User.find(@request.provider)
       @seeker = User.find(@request.seeker)
-      @request.update_attribute(:completed, true)
 
-      @seeker_review_for_provider = Review.new(authorID: @seeker.id, author: @seeker.name)
-      @provider.reviews.push(@seeker_review_for_provider)
-      @seeker_review_for_provider.save(validate: false)
-      @request.update_attribute(:seeker_review_for_provider, @seeker_review_for_provider.id)
-      Notifier.new_review(@seeker,@provider,@seeker_review_for_provider).deliver
+      if params[:accept] && !current_user.is_provider
+        @request.update_attribute(:seeker_accept_request, true)
+      elsif params[:accept] && current_user.is_provider
+        @request.update_attribute(:provider_accept_request, true)
+      elsif params[:confirm] && !current_user.is_provider
+        @request.update_attribute(:seeker_confirm_interaction, true)
+      elsif params[:confirm] && current_user.is_provider
+        @request.update_attribute(:provider_confirm_interaction, true)
+      end
 
-      @provider_review_for_seeker = Review.new(authorID: @provider.id, author: @provider.name)
-      @seeker.reviews.push(@provider_review_for_seeker)
-      @provider_review_for_seeker.save(validate: false)
-      @request.update_attribute(:provider_review_for_seeker, @provider_review_for_seeker.id)
-      Notifier.new_review(@provider,@seeker,@provider_review_for_seeker).deliver
+      if !@request.completed && @request.seeker_confirm_interaction && @request.provider_confirm_interaction
+        @request.update_attribute(:completed, true)
+        @request.update_attribute(:expirable_created_at, nil)
+
+        @seeker_review_for_provider = Review.new(authorID: @seeker.id, author: @seeker.name)
+        @provider.reviews.push(@seeker_review_for_provider)
+        @seeker_review_for_provider.save(validate: false)
+        @request.update_attribute(:seeker_review_for_provider, @seeker_review_for_provider.id)
+        #Notifier.new_review(@seeker,@provider,@seeker_review_for_provider).deliver
+
+        @provider_review_for_seeker = Review.new(authorID: @provider.id, author: @provider.name)
+        @seeker.reviews.push(@provider_review_for_seeker)
+        @provider_review_for_seeker.save(validate: false)
+        @request.update_attribute(:provider_review_for_seeker, @provider_review_for_seeker.id)
+        #Notifier.new_review(@provider,@seeker,@provider_review_for_seeker).deliver
+      end
 
       redirect_to user_request_path(params[:user_id],@request)
+
     else
       redirect_to user_path(params[:user_id])
     end
   end
 
-  def index
-  end
+
 
   def show
     if (@request = Request.find(params[:id])) && signed_in?
@@ -54,9 +69,15 @@ class RequestsController < ApplicationController
     end
   end
 
+
   def create
     get_provider_seeker 
-    @request = Request.create!(provider: @provider.id, seeker: @seeker.id, confirmed: false, completed: false)
+    @request = Request.create!(provider: @provider.id, seeker: @seeker.id)
+    if current_user.is_provider
+      @request.update_attribute(:provider_accept_request, true)
+    else
+      @request.update_attribute(:seeker_accept_request, true)
+    end
     @seeker.requests.push(@request)
     @provider.requests.push(@request)
     redirect_to user_request_path(params[:user_id],@request)
