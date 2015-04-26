@@ -48,7 +48,7 @@
           = select_tag "binary_genders", options_for_select([ "Male", "Female" ], "Male")
           = select_tag "binary_trans_genders", options_for_select([ "Male", "Female", "Nonbinary" ], "Male")
           = select_tag "nonbinary_trans_genders", options_for_select(["Bigender","Agender","Genderqueer","Genderfluid","Just let me type it!"], "Genderqueer")
-          = g.input :identity, label: false, input_html: { value: '', placeholder: "I am..."}
+          = g.input :identity, label: false, input_html: { value: 'Male', placeholder: "I am..."}
           %button.wizard-back{type: "button",onclick: "th.advanceWizard('g-2','g-1')"} Back
           %button.wizard-forward#pronoun-button{type: "button",onclick: "th.advanceWhereDecision('g-2')"} Next
 
@@ -99,12 +99,37 @@
     .step-6.wizard-page
       %fieldset
         %h2.fs-title#seeker-status-text What can you help with/offer?
-        = f.input :food_resource, as: :boolean, label: "Food"
-        = f.input :shower_resource, as: :boolean, label: "A clean shower"
-        = f.input :laundry_resource, as: :boolean, label: "Access to a laundry machine"
-        = f.input :housing_resource, as: :boolean, label: "Somewhere to sleep"
-        = f.input :transportation_resource, as: :boolean, label: "Transportation from place to place"
-        = f.input :buddy_resource, as: :boolean, label: "A buddy for mentorship and added safety in acquiring resources"
+        .resource
+          = f.simple_fields_for :food_resource do |fr|
+            %label Food
+            = fr.collection_radio_buttons :currently_offered, [[true, 'Yes'] ,[false, 'No']], 
+                                                    :first, :last, :checked => [false, 'No']
+        .resource
+          = f.simple_fields_for :shower_resource do |sr|
+            %label A clean shower
+            = sr.collection_radio_buttons :currently_offered, [[true, 'Yes'] ,[false, 'No']], 
+                                                    :first, :last, :checked => [false, 'No']
+        .resource
+          = f.simple_fields_for :laundry_resource do |lr|
+            %label Access to a laundry machine
+            = lr.collection_radio_buttons :currently_offered, [[true, 'Yes'] ,[false, 'No']], 
+                                                    :first, :last, :checked => [false, 'No']
+        .resource
+          = f.simple_fields_for :housing_resource do |hr|
+            %label Somewhere to sleep
+            = hr.collection_radio_buttons :currently_offered, [[true, 'Yes'] ,[false, 'No']], 
+                                                    :first, :last, :checked => [false, 'No']
+        .resource
+          = f.simple_fields_for :transportation_resource do |tr|
+            %label Transportation from place to place
+            = tr.collection_radio_buttons :currently_offered, [[true, 'Yes'] ,[false, 'No']], 
+                                                    :first, :last, :checked => [false, 'No']
+        .resource
+          = f.simple_fields_for :buddy_resource do |br|
+            %label A buddy for mentorship and added safety in acquiring resources
+            = br.collection_radio_buttons :currently_offered, [[true, 'Yes'] ,[false, 'No']], 
+                                                    :first, :last, :checked => [false, 'No']
+
         =# f.input :misc_resource, as: :boolean, label: "Something else"
         %button.wizard-back{type: "button",onclick: "th.advanceWizard('6','5')"} Back
         %button.wizard-forward{type: "button",onclick: "th.advanceWizard('6','7')"} Next

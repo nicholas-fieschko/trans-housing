@@ -31,6 +31,7 @@ th.updateGenderIdentity = (id) ->
   if newGender == "Nonbinary"
     $("#binary_trans_genders").hide()
     $("#nonbinary_trans_genders").show()
+    newGender = $("#nonbinary_trans_genders").val()
   if newGender == "Just let me type it!"
     newGender = ''
     $("#nonbinary_trans_genders").hide()
@@ -42,8 +43,16 @@ th.setGenderSelectOptions = (is_trans) ->
     $("#binary_genders").hide()
     $("#binary_trans_genders").show()
   else
+    th.clearPronouns()
+    $("#nonbinary_trans_genders").hide()
+    $("#user_gender_attributes_identity").val($("#binary_genders").val())
     $("#binary_genders").show()
     $("#binary_trans_genders").hide()
+
+th.clearPronouns = ->
+  $("#user_gender_attributes_they").val('')
+  $("#user_gender_attributes_them").val('')
+  $("#user_gender_attributes_their").val('')
 
 th.advanceWizard = (from,to) -> 
   $(".step-#{from}").removeClass "wizard-current"

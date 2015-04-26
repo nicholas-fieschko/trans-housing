@@ -130,7 +130,7 @@ function addMarkers(map, usr) {
     if (usr.transportation_resource.currently_offered){
 		transportationIcon = '<i class="fa fa-car fa-lg"></i>'
 	}
-	if (usr.misc_resource.currently_offered) {
+	if (usr.misc && usr.misc_resource.currently_offered) {
 		miscIcon = '<i class="fa fa-plus fa-lg"></i>'
 	}
 	if (usr.laundry_resource.currently_offered) {

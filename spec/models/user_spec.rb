@@ -292,7 +292,7 @@ RSpec.describe User, type: :model do
                          currently_offered: true))
         expect(user.misc?).to eq true
       end
-      it "returns false for a user not needing a or offering to be a misc" do
+      it "returns false for a user not needing or offering miscellaneous help" do
         user = Fabricate.build(:user, 
                          misc_resource: Fabricate.build(:misc_resource,
                          currently_offered: false))
