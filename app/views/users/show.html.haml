@@ -39,7 +39,7 @@
       %h3.user-rating
       - if !@user.number_reviews.nil?
         Average Rating
-        = @user.average_rating
+        = get_stars(@user.average_rating)
         %h3 
           = "Reviews (#{@user.number_reviews})"
         %ol.reviews
