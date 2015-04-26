@@ -1,0 +1,34 @@
+.pure-g.login-column
+  .pure-u-1-5
+  .pure-u-3-5.login-box-positioner
+    .login-box.login-column
+      %h3 Pending Reviews
+
+      - if @reviews.any?
+        Reminder: please complete the following reviews:
+
+        - @reviews.each do |r|
+          Review for #{User.find(r.user_id).name}: 
+          = link_to "Click here", edit_user_review_url(r.user_id.to_s, r.id.to_s)
+
+      - else
+        All reviews completed.
+
+      %h3 History
+
+      - @user.requests.each do |r|
+        - if @user.is_provider
+          - if r.completed
+            Helped #{User.find(r.seeker).name} #{time_ago_in_words(r.updated_at)} ago.
+          - else
+            Remember to 
+            = link_to "finish helping #{User.find(r.seeker).name}.", user_request_path(User.find(r.seeker), r)
+        - else
+          - if r.completed
+            Helped by #{User.find(r.provider).name} #{time_ago_in_words(r.updated_at)} ago.
+          - else
+            Reminder: You have a 
+            = link_to "help request", user_request_path(User.find(r.provider), r)
+            with #{User.find(r.provider).name}. 
+
+  .pure-u-1-5
