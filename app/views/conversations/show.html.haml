@@ -2,8 +2,11 @@
   .pure-u-1-5
   .pure-u-3-5.login-box-positioner
     .sign-up-box.sign-up-column
+      =# Deletes must be done with button_to per W3
       = link_to '<< return to inbox', user_conversations_path, id: "inbox-return-link"
-      %h1#message-subject Re: #{@thread.subject}
+      = button_to('delete this thread', user_conversation_path(id: @thread.id), method: :delete)
+
+      %h1#message-subject #{@thread.subject}
 
       / Display each of the messages
       - @thread.messages.each do |f|
@@ -18,4 +21,3 @@
         = m.text_area :text, id: "message-reply", value: ''
         %br
         = m.button :submit, value: "Send", class: "message-reply-button"
-

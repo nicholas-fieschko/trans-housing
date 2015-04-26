@@ -1,6 +1,42 @@
 .pure-g.login-column
   .pure-u-1-5
   .pure-u-3-5.login-box-positioner
-    .sign-up-box.sign-up-column
-      Hi.
+    .account-settings-box.account-settings-column
+      %h1 Account Settings
+      = simple_form_for @user do |f|
+        = f.input :name
+        = f.simple_fields_for :contact do |c|
+          = c.input :email
+          = c.input :phone
+          = f.simple_fields_for :location do |l|
+            = l.input :zip
+            = l.input :city
+            = l.input :state
+            .resource
+            = f.simple_fields_for :food_resource do |fr|
+              %label Food
+              = fr.collection_radio_buttons :currently_offered, [[true, 'Yes'] ,[false, 'No']],  :first, :last, :checked => [false, 'No']
+            .resource
+            = f.simple_fields_for :shower_resource do |sr|
+              %label A clean shower
+              = sr.collection_radio_buttons :currently_offered, [[true, 'Yes'] ,[false, 'No']], :first, :last, :checked => [false, 'No']
+            .resource
+            = f.simple_fields_for :laundry_resource do |lr|
+              %label Access to a laundry machine
+              = lr.collection_radio_buttons :currently_offered, [[true, 'Yes'] ,[false, 'No']], :first, :last, :checked => [false, 'No']
+            .resource
+            = f.simple_fields_for :housing_resource do |hr|
+              %label Somewhere to sleep
+              = hr.collection_radio_buttons :currently_offered, [[true, 'Yes'] ,[false, 'No']], :first, :last, :checked => [false, 'No']
+            .resource
+            = f.simple_fields_for :transportation_resource do |tr|
+              %label Transportation from place to place
+              = tr.collection_radio_buttons :currently_offered, [[true, 'Yes'] ,[false, 'No']], :first, :last, :checked => [false, 'No']
+            .resource
+            = f.simple_fields_for :buddy_resource do |br|
+              %label A buddy for mentorship and added safety in acquiring resources
+              = br.collection_radio_buttons :currently_offered, [[true, 'Yes'] ,[false, 'No']], :first, :last, :checked => [false, 'No']
+            = f.input :password, label: "Change Password"
+            = f.input :password_confirmation
+            = f.button :submit, value: "Update", class: "wizard-forward"
   .pure-u-1-5
