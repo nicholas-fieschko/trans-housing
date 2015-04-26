@@ -10,7 +10,7 @@
         = c.text_field :subject
 
         %p Message
-        = fields_for @conversation.messages.first do |m|
+        = fields_for @conversation.messages.last do |m|
           = m.text_area :text, size: '24x6'
 
         = c.button :submit, value: "Send message"

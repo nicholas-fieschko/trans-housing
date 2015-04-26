@@ -27,6 +27,7 @@ class UsersController < ApplicationController
       # Notifier.welcome(@user).deliver
 
       sign_in @user
+
       redirect_to @user
     else
       render 'new'
