@@ -5,12 +5,13 @@
       %h1 Conversations
       %ul
       - @inbox.each do |c|
-        %li
-          =# c.owners.inspect
-          - if !c.deleted_conversation?(current_user)
-            = c.print_owners
-            = c.subject.to_s
-            = link_to 'View >>', user_conversation_path(id: c.id)
+        - if !c.deleted_conversation?(current_user)
+          %li
+          - if c.unread_conversation?(current_user)
+            = "[UNREAD] " 
+          = c.print_owners
+          = c.subject.to_s
+          = link_to 'View >>', user_conversation_path(id: c.id)
       - if @inbox.empty?
         Your inbox is empty.
         -#=  link_to 'Send a new message', new_user_conversation_path (check if trashed or not!)
