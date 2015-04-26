@@ -2,6 +2,7 @@
   .pure-u-1-5
   .pure-u-3-5.login-box-positioner
     .sign-up-box.sign-up-column
+
       - if @request.completed
         %h1
           Your help request to #{@provider.name} is completed.
@@ -14,14 +15,42 @@
             If you have time, please write a review about your experience with #{@provider.name}. This helps other people like you navigate TransHousing safely.
           = link_to "Write a review", edit_user_review_url(@provider.id.to_s, @seeker_review_for_provider.id.to_s), class: "login-submit-button"
 
-      - else
+
+      - elsif !@request.seeker_accept_request
+        %h1
+          #{@provider.name} has offered to help!
+
+        %div
+          Click the button below to accept #{@provider.name}'s offer.
+
+        %div
+          = link_to "Accept offer", user_request_path(@provider, @request, accept: true), method: :patch, class: "login-submit-button"
 
 
+      - elsif !@request.provider_accept_request 
         %h1
           You have submitted a help request to #{@provider.name}.
 
         %div
-          Once you have completed your exchange with #{@provider.name}, please come back to confirm your interaction occurred, and leave a review of your experience!
+          The next step is for #{@provider.name} to confirm your request. You will receive a notification at that time.
+
+
+      - elsif !@request.seeker_confirm_interaction
+
+        %h1
+          You have an active help request with #{@provider.name}.
 
         %div
-          = link_to "Confirm Interaction", user_request_path(@provider, @request), method: :patch, class: "login-submit-button"
+          Once you have completed your exchange with #{@provider.name}, please come back to confirm your interaction occurred. Once both parties have confirmed the interaction, you will be able to leave reviews for each other.
+
+        %div
+          = link_to "Confirm Interaction", user_request_path(@provider, @request, confirm: true), method: :patch, class: "login-submit-button"
+
+
+      - elsif !@request.provider_confirm_interaction
+
+        %h1
+          You have confirmed your interaction with #{@provider.name}.
+
+        %div
+          Once #{@provider.name} confirms your interaction, you will be able to leave reviews for each other.
