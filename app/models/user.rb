@@ -49,7 +49,7 @@ class User
   field :password_digest,        type: String
 
   has_secure_password
-  before_create :create_remember_token
+  before_create :create_remember_token, :initialization
 
   def pronoun(tense)
     standard_pronouns = { "male" => 
@@ -180,6 +180,12 @@ class User
 
     def create_remember_token
       self.remember_token = User.digest(User.new_remember_token)
+    end
+
+    def initialization
+      self.number_reviews = 0
+      self.average_rating = 0
+      self.sum_rating = 0
     end
 
 end
