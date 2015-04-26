@@ -4,11 +4,13 @@
     .sign-up-box.sign-up-column
       %h1 Conversations
       %ul
-      - @inbox.each do |convo|
+      - @inbox.each do |c|
         %li
-          [ #{User.find(convo.messages.first.sender).name}] 
-          = convo.subject.to_s
-          = link_to 'View >>', user_conversation_path(id: convo.id)
+          =# c.owners.inspect
+          - if !c.deleted_conversation?(current_user)
+            = c.print_owners
+            = c.subject.to_s
+            = link_to 'View >>', user_conversation_path(id: c.id)
       - if @inbox.empty?
         Your inbox is empty.
-        -#=  link_to 'Send a new message', new_user_conversation_path
+        -#=  link_to 'Send a new message', new_user_conversation_path (check if trashed or not!)

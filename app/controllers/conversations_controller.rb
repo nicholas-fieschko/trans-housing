@@ -28,6 +28,7 @@ class ConversationsController < ApplicationController
 			readers: [@sender.id],
 			subject: params[:conversation][:subject]
 		)
+		@conversation.owners = @conversation.user_ids.dup
 
 		@message = Message.new(
 			sender: @sender.id,
@@ -78,7 +79,8 @@ class ConversationsController < ApplicationController
 		# Delete current user's owner link; callback will hard delete
 		# if it was the last link.
 		@thread.remove_owner(current_user)
-		@thread.save
+
+		#@thread.destroy!
 
 		# Go back to inbox!
 		redirect_to user_conversations_path
