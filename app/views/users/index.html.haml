@@ -1,0 +1,27 @@
+- provide(:title, 'Find Users')
+
+.pure-g.login-column
+  .pure-u-1-5
+  .pure-u-3-5.login-box-positioner
+    .page-content-box
+      %h1 All Users
+      %form#space-index-filter-form.sidebar-filters
+        %h4.sidebar-section-header Resources
+        .sidebar-section.group
+          = checkbox_group collection: User.resources_list,
+                               ul_class:   "checkbox-li",
+                               html_name:  "users_filters[resources]"
+
+        %input#user-index-sidebar-filter-button{ "type" => "submit", "value" => "Filter"}
+
+      = form_tag users_path, :method => 'get' do
+        = text_field_tag :search
+        = submit_tag "Search"
+
+      %ul.users
+        - @users.each do |user|
+          %li
+            = link_to user.name, user
+
+    
+  .pure-u-1-5
