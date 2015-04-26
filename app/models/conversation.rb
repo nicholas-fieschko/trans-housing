@@ -15,7 +15,7 @@ class Conversation
 	#	means they have NOT deleted their link to convo)
 	# field :visible_to, type: Hash
 
-	# Relations
+	# Relations: owners is all those who haven't deleted
 	has_and_belongs_to_many :users
 	has_and_belongs_to_many :owners, class_name: 'User', inverse_of: nil
 	has_many :messages, order: :updated_at.desc

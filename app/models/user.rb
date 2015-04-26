@@ -41,7 +41,7 @@ class User
   has_and_belongs_to_many :requests
 
 	# Cleaned up after merging with Richard's branch
-	has_many :conversations
+	has_and_belongs_to_many :conversations
 
   accepts_nested_attributes_for  :gender, :contact, :location #, :resources
   validates_presence_of :name,   :gender, :contact#, :location
