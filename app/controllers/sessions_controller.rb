@@ -3,8 +3,11 @@ class SessionsController < ApplicationController
   end
 
   def create
-    # Todo: change to allow signing in through alternative contact than email as well
-    user = Contact.where(email: params[:session][:email].downcase).first.user
+    if params[:session][:name].include? '@'
+      user = Contact.where(email: params[:session][:name].downcase).first.user
+    else
+      user = Contact.where(phone: params[:session][:name].downcase).first.user
+    end
     if user && user.authenticate(params[:session][:password])
       sign_in user
       redirect_back_or user

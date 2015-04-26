@@ -40,7 +40,7 @@ class User
   validates_presence_of          :gender, :contact, :name,
                                  :food_resource, :shower_resource, :laundry_resource,
                                  :housing_resource, :transportation_resource,
-                                 :buddy_resource, :misc_resource #, :location
+                                 :buddy_resource #, :location
   validates_associated           :gender, :contact#, :location
 
 
