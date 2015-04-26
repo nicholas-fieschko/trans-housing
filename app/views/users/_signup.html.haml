@@ -79,67 +79,61 @@
 
     .step-4.wizard-page
       = f.simple_fields_for :location do |l|
-        %fieldset
-          %h2.fs-title Enter your location information. 
-          = l.input :zip, label: false, placeholder: "zip"
-          = l.input :city, label: false, placeholder: "city"
-          = l.input :state, label: false, placeholder: "state"
-          %button.wizard-back{type: "button",onclick: "th.advanceWizard('4','3')"} Back
-          %button.wizard-forward{type: "button",onclick: "th.advanceWizard('4','5')"} Next
-          %div.mapcontainer 
-            #map_canvas
 
-    .step-5.wizard-page
-      %fieldset
-        %h2.fs-title Are you seeking help, or can you offer help?
-        = f.collection_radio_buttons :is_provider, [[true, 'I can help!'] ,[false, 'I need help!']], :first, :last
-        %button.wizard-back{type: "button",onclick: "th.advanceWizard('5','4')"} Back
-        %button.wizard-forward{type: "button",onclick: "th.advanceWizard('5','6')"} Next
+        = l.input :zip, label: false, placeholder: "zip"
+        = l.input :city, label: false, placeholder: "city"
+        = l.input :state, label: false, placeholder: "state"
 
-    .step-6.wizard-page
-      %fieldset
-        %h2.fs-title#seeker-status-text What can you help with/offer?
-        .resource
-          = f.simple_fields_for :food_resource do |fr|
-            %label Food
-            = fr.collection_radio_buttons :currently_offered, [[true, 'Yes'] ,[false, 'No']], 
-                                                    :first, :last, :checked => [false, 'No']
-        .resource
-          = f.simple_fields_for :shower_resource do |sr|
-            %label A clean shower
-            = sr.collection_radio_buttons :currently_offered, [[true, 'Yes'] ,[false, 'No']], 
-                                                    :first, :last, :checked => [false, 'No']
-        .resource
-          = f.simple_fields_for :laundry_resource do |lr|
-            %label Access to a laundry machine
-            = lr.collection_radio_buttons :currently_offered, [[true, 'Yes'] ,[false, 'No']], 
-                                                    :first, :last, :checked => [false, 'No']
-        .resource
-          = f.simple_fields_for :housing_resource do |hr|
-            %label Somewhere to sleep
-            = hr.collection_radio_buttons :currently_offered, [[true, 'Yes'] ,[false, 'No']], 
-                                                    :first, :last, :checked => [false, 'No']
-        .resource
-          = f.simple_fields_for :transportation_resource do |tr|
-            %label Transportation from place to place
-            = tr.collection_radio_buttons :currently_offered, [[true, 'Yes'] ,[false, 'No']], 
-                                                    :first, :last, :checked => [false, 'No']
-        .resource
-          = f.simple_fields_for :buddy_resource do |br|
-            %label A buddy for mentorship and added safety in acquiring resources
-            = br.collection_radio_buttons :currently_offered, [[true, 'Yes'] ,[false, 'No']], 
-                                                    :first, :last, :checked => [false, 'No']
+    %fieldset
+      %h2.fs-title Are you seeking help, or can you offer help?
+      = f.collection_radio_buttons :is_provider, [[true, 'I can help!'] ,[false, 'I need help!']], :first, :last
+      %br
 
-        =# f.input :misc_resource, as: :boolean, label: "Something else"
-        %button.wizard-back{type: "button",onclick: "th.advanceWizard('6','5')"} Back
-        %button.wizard-forward{type: "button",onclick: "th.advanceWizard('6','7')"} Next
+    %fieldset
+      %h2.fs-title Resources
+      / To get you started quickly, 
+      / This gets into "resource" data model, also embedded in each user model instance.
+      /.checkbox [Each is a "checkbox" or radio button for OFFER HELP side, but set up visually so doesnt quite look like checkboxes:
+      / Has short descriptions with icons and "Yes/No" mobile-style slider checkbox
+      .item
+        Be a Buddy
+        .description (Description, description...)
+        .checkbox    [yes/no with no as default]
+      .item
+        Offer Food
+        .description (Description, description...)
+        .checkbox    [yes/no with no as default]
+      .item
+        Help with transportation
+        .description (Description, description...)
+        .checkbox    [yes/no with no as default]
+      .item
+        Help with laundry
+        .description (Description, description...)
+        .checkbox    [yes/no with no as default]
+      .item
+        Offer a clean shower
+        .description (Description, description...)
+        .checkbox    [yes/no with no as default]
+      .item
+        Offer temporary shelter
+        .description (Description, description...)
+        .checkbox    [yes/no with no as default]
+      .item
+        Offer housing
+        .description (Description, description...)
+        .checkbox    [yes/no with no as default]
+        
+    %fieldset
+      %h2.fs-title
+      Alright! One last step. Create your password, and we're good to go!
+      = f.input :password
+      = f.input :password_confirmation
+      = f.button :submit, value: "Create my account!", id: "submit_signup"
 
-    .step-7.wizard-page
-      %fieldset
-        %h2.fs-title Fantastic!
-        Just choose a password, and you're ready to get started!
-        = f.input :password
-        = f.input :password_confirmation
-        = f.button :submit, value: "Create my account!", id: "submit_signup",class: "wizard-forward"
-        %button.wizard-back{type: "button",onclick: "th.advanceWizard('7','6')"} Back
-      
+
+
+  /* Once signed up-- redirect to what: preferences, or profile, or matches?
+  / Profile probably best, so they can flesh it out more
+  / Have a flash: 'You can also set up your site preferences [here]...'
+  /
