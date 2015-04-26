@@ -112,7 +112,7 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe "deleting an account" do
+  describe "deleting a user" do
     it "destroys contact information" do
       user = Fabricate(:user)
       expect { user.destroy }.to change { Contact.count }.by(-1)
@@ -188,18 +188,116 @@ RSpec.describe User, type: :model do
   describe "provider/seeker status getters .provider?, .seeker?" do
     describe ".provider?" do
       it "returns true if user is a provider and false if a seeker" do
-        expect(Fabricate(:provider).provider?).to eq true
-        expect(Fabricate(:seeker).provider?).to eq false
+        expect(Fabricate.build(:provider).provider?).to eq true
+        expect(Fabricate.build(:seeker).provider?).to eq false
       end
     end
     describe ".seeker?" do
       it "returns true if user is a seeker and false if a provider" do
-        expect(Fabricate(:seeker).seeker?).to eq true
-        expect(Fabricate(:provider).seeker?).to eq false
+        expect(Fabricate.build(:seeker).seeker?).to eq true
+        expect(Fabricate.build(:provider).seeker?).to eq false
       end
     end
   end
 
-  describe "needed/offered resource getters "
-
+  describe "needed/offered resource getters" do 
+    describe ".food?" do
+      it "returns true for a user needing or offering food" do
+        user = Fabricate.build(:user, 
+                         food_resource: Fabricate.build(:food_resource,
+                         currently_offered: true))
+        expect(user.food?).to eq true
+      end
+      it "returns false for a user not needing or offering food" do
+        user = Fabricate.build(:user, 
+                         food_resource: Fabricate.build(:food_resource,
+                         currently_offered: false))
+        expect(user.food?).to eq false
+      end
+    end
+    describe ".shower?" do
+      it "returns true for a user needing or offering shower access" do
+        user = Fabricate.build(:user, 
+                         shower_resource: Fabricate.build(:shower_resource,
+                         currently_offered: true))
+        expect(user.shower?).to eq true
+      end
+      it "returns false for a user not needing or offering shower access" do
+        user = Fabricate.build(:user, 
+                         shower_resource: Fabricate.build(:shower_resource,
+                         currently_offered: false))
+        expect(user.shower?).to eq false
+      end
+    end
+    describe ".laundry?" do
+      it "returns true for a user needing or offering laundry service" do
+        user = Fabricate.build(:user, 
+                         laundry_resource: Fabricate.build(:laundry_resource,
+                         currently_offered: true))
+        expect(user.laundry?).to eq true
+      end
+      it "returns false for a user not needing or offering laundry service" do
+        user = Fabricate.build(:user, 
+                         laundry_resource: Fabricate.build(:laundry_resource,
+                         currently_offered: false))
+        expect(user.laundry?).to eq false
+      end
+    end
+    describe ".housing?" do
+      it "returns true for a user needing or offering housing" do
+        user = Fabricate.build(:user, 
+                         housing_resource: Fabricate.build(:housing_resource,
+                         currently_offered: true))
+        expect(user.housing?).to eq true
+      end
+      it "returns false for a user not needing or offering housing" do
+        user = Fabricate.build(:user, 
+                         housing_resource: Fabricate.build(:housing_resource,
+                         currently_offered: false))
+        expect(user.housing?).to eq false
+      end
+    end
+    describe ".transportation?" do
+      it "returns true for a user needing or offering transportation help" do
+        user = Fabricate.build(:user, 
+                         transportation_resource: Fabricate.build(:transportation_resource,
+                         currently_offered: true))
+        expect(user.transportation?).to eq true
+      end
+      it "returns false for a user not needing or offering transportation help" do
+        user = Fabricate.build(:user, 
+                         transportation_resource: Fabricate.build(:transportation_resource,
+                         currently_offered: false))
+        expect(user.transportation?).to eq false
+      end
+    end
+    describe ".buddy?" do
+      it "returns true for a user needing a or offering to be a buddy" do
+        user = Fabricate.build(:user, 
+                         buddy_resource: Fabricate.build(:buddy_resource,
+                         currently_offered: true))
+        expect(user.buddy?).to eq true
+      end
+      it "returns false for a user not needing a or offering to be a buddy" do
+        user = Fabricate.build(:user, 
+                         buddy_resource: Fabricate.build(:buddy_resource,
+                         currently_offered: false))
+        expect(user.buddy?).to eq false
+      end
+    end
+    describe ".misc?" do
+      it "returns true for a user needing or offering miscellaneous help" do
+        user = Fabricate.build(:user, 
+                         misc_resource: Fabricate.build(:misc_resource,
+                         currently_offered: true))
+        expect(user.misc?).to eq true
+      end
+      it "returns false for a user not needing a or offering to be a misc" do
+        user = Fabricate.build(:user, 
+                         misc_resource: Fabricate.build(:misc_resource,
+                         currently_offered: false))
+        expect(user.misc?).to eq false
+      end
+    end
+  end
 end

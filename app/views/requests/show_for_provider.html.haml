@@ -1,0 +1,27 @@
+.pure-g.grid-columns-container
+  .pure-u-1-5
+  .pure-u-3-5.login-box-positioner
+    .sign-up-box.sign-up-column
+      - if @request.completed
+        %h1
+          You have finished helping #{@seeker.name}.
+
+        - if @provider_review_for_seeker.completed
+          %h1
+            You have left #{@seeker.name} a review. Thank you!
+        - else
+          %div
+            If you have time, please write a review about your experience with #{@seeker.name}. This helps other people like you navigate TransHousing safely.
+          = link_to "Write a review", edit_user_review_url(@seeker.id.to_s, @provider_review_for_seeker.id.to_s), class: "login-submit-button"
+
+      - else
+
+
+        %h1
+          You have offered to help #{@seeker.name}.
+
+        %div
+          Once you have completed your exchange with #{@seeker.name}, please come back to confirm your interaction occurred, and leave a review of your experience!
+
+        %div
+          = link_to "Confirm Interaction", user_request_path(@seeker, @request), method: :patch, class: "login-submit-button"
