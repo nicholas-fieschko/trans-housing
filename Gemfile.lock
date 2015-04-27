@@ -219,6 +219,7 @@ GEM
     rb-inotify (0.9.5)
       ffi (>= 0.5.0)
     rdoc (4.2.0)
+    recaptcha (0.4.0)
     rest-client (1.8.0)
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 3.0)
@@ -327,6 +328,7 @@ DEPENDENCIES
   mongoid-geospatial (~> 4.0)
   rack-livereload
   rails (= 4.2.0)
+  recaptcha
   rspec-rails (~> 3.0)
   sass-rails
   sdoc (~> 0.4.0)

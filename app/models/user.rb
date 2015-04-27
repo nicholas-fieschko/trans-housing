@@ -57,14 +57,17 @@ class User
   before_create :create_remember_token
 
 
-  # Mailgun API for email validation (from Ruby MG docs)
-  # (No support in Ruby 2+ for Multimap)
-  def mailgun_validate(email)
+  # Returns true if JSON from mailgun API call contains true "is_valid" field
+  # Description of validator in Mailgun docs; multimap doesn't work for Ruby 2
+  def mailgun_valid?(email)
     #url_params = Multimap.new
     url_params = {}
     url_params[:address] = email
     query = url_params.collect {|k,v| "#{k.to_s}=#{CGI::escape(v.to_s)}"}.join("&")
-    RestClient.get "https://api:pubkey-d005c8be2308c95c34d7b9924a2b7fa7@api.mailgun.net/v3/address/validate?#{query}"
+    response = 
+      RestClient.get "https://api:pubkey-d005c8be2308c95c34d7b9924a2b7fa7@api.mailgun.net/v3/address/validate?#{query}"
+    hash = JSON.parse response
+    hash["is_valid"]
   end
 
   #Pronoun getters to be refactored
