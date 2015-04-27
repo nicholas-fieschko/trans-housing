@@ -150,7 +150,7 @@ class User
 
   def self.find_with_filters(filters)
 
-    filtered_users = User
+    filtered_users = User.all
 
     # if filters[:city] && filters[:city].length > 0
     #   filtered_users = filtered_users.near(filters[:city], 30)
@@ -158,7 +158,7 @@ class User
 
     if filters[:resources]
       resources = User.integer_from_options_list(filters[:resources])
-      filtered_users = filtered_users.where("resources & ? = ?", resources, resources)
+      # filtered_users = filtered_users.where({"resources & ? = ?", resources, resources})
     end
 
     filtered_users
