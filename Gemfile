@@ -20,6 +20,7 @@ gem 'haml-rails'
 gem 'mailgun-ruby', '~> 1.0.2', require: 'mailgun'
 gem 'twilio-ruby', '~> 4.0.0'
 gem 'figaro'
+gem 'multimap'
 
 gem 'jquery-rails'				 # Use jquery as the JavaScript library
 gem 'jquery-turbolinks'

@@ -56,6 +56,17 @@ class User
   has_secure_password
   before_create :create_remember_token
 
+
+  # Mailgun API for email validation (from Ruby MG docs)
+  # (No support in Ruby 2+ for Multimap)
+  def mailgun_validate(email)
+    #url_params = Multimap.new
+    url_params = {}
+    url_params[:address] = email
+    query = url_params.collect {|k,v| "#{k.to_s}=#{CGI::escape(v.to_s)}"}.join("&")
+    RestClient.get "https://api:pubkey-d005c8be2308c95c34d7b9924a2b7fa7@api.mailgun.net/v3/address/validate?#{query}"
+  end
+
   #Pronoun getters to be refactored
   def they
     identity = self.gender[:identity].to_s.downcase
