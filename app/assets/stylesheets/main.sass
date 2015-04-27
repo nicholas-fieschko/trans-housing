@@ -65,12 +65,13 @@ li.pure-menu-item
 a#header-username
   text-decoration:    none
 
-.header-username-male
-  color:            $trans-blue
-.header-username-female
-  color:            $trans-pink
-.header-username-nb
-  color:            $trans-purple
+a#header-username,h1#user-name
+  &.header-username-male
+    color:            $trans-blue
+  &.header-username-female
+    color:            $trans-pink
+  &.header-username-nb
+    color:            $trans-purple
 
 i.settings-icon
   vertical-align:      middle
@@ -98,7 +99,7 @@ body
   height:             100%
   font-family:        'Source Sans Pro', sans-serif
 
-.user-profile-column
+.user-profile-column,.account-settings-column
   background-color:   white
   padding:            20px
 
@@ -198,10 +199,10 @@ div fieldset
 .login-column
   height: 100%
 
-.login-email-label
+.login-name-label
   @include            login-field-label(white,$trans-blue)
 
-.login-email-input
+.login-name-input
   @include            login-field-input($trans-blue)
 
 .login-password-label
@@ -218,7 +219,7 @@ div fieldset
   width:              100%
   margin:             20px 0px 0px 0px
 
-.login-box,.sign-up-box
+.login-box,.sign-up-box,.account-settings-box,.page-content-box
   background-color:   white
   padding:            15px
   border-radius:      10px

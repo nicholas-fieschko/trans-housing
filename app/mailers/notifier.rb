@@ -21,11 +21,11 @@ class Notifier < ApplicationMailer
 	end
 
 
-	def new_review(helpee, helper, review)
-		@to = helpee
-		@helper = helper
+	def new_review(reviewer, receiver, review)
+		@reviewer = reviewer
+		@receiver = receiver
 		@review = review
-		mail(to: "richang11@gmail.com", subject: "[TransHousing] Please leave a review for #{helper.name}")
+		mail(to: "richang11@gmail.com", subject: "[TransHousing] Please leave a review for #{receiver.name}")
 	end
 
 	# - We will need more of these!

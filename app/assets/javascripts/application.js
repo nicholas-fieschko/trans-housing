@@ -18,7 +18,7 @@
 //= require_tree .
 
 handlers = function(){
-  $("#user_gender_attributes_identity").blur(th.updatePronouns);
+  $("#user_gender_attributes_identity").click(function(){th.updatePronouns();});
   $("#pronoun-button").click(function(){th.updatePronouns();});
   $("label[for='user_is_provider_true']").first().click(function(){th.updateHelperSeekerStatusText("provider");});
   $("label[for='user_is_provider_false']").first().click(function(){th.updateHelperSeekerStatusText("seeker");});

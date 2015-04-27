@@ -28,7 +28,7 @@ seekers = Fabricate.times(50,:seeker)
 
 
 User.all.each do |u| 
-	number_reviews = rand(20)
+	number_reviews = rand(5)
 	sum_rating = 0
 	for i in 1..number_reviews
 		author = User.all.sample

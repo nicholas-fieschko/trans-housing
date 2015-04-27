@@ -10,20 +10,23 @@
         - if current_user.seeker? && @user.provider?
           = link_to "Request help from #{@user.name}", new_user_request_path(@user.id), class: "btn btn-primary wizard-back", id: "request-help-button"
 
-      %h1.user-name{class: "header-username-#{gender_category(@user.gender[:identity])}"}
+        - if current_user.provider? && @user.seeker?
+          = link_to "Offer help to #{@user.name}", new_user_request_path(@user.id), class: "btn btn-primary wizard-back", id: "request-help-button"
+
+      %h1#user-name.user-name{class: "header-username-#{gender_category(@user.gender[:identity])}"}
         = @user.name
       .user-resources
-        - if @user.offers_food?
+        - if @user.food?
           = icon("fa fa-cutlery fa-2x")
-        - if @user.offers_shower?
+        - if @user.shower?
           = icon("fa fa-street-view fa-2x")
-        - if @user.offers_laundry?
+        - if @user.laundry?
           = icon("fa fa-tags fa-2x")
-        - if @user.offers_housing?
+        - if @user.housing?
           = icon("fa fa-bed fa-2x")
-        - if @user.offers_transportation?
+        - if @user.transportation?
           = icon("fa fa-car fa-2x")
-        - if @user.offers_buddy?
+        - if @user.buddy?
           = icon("fa fa-users fa-2x")
 
         /= link_to "Reach out to #{@user.name}", "#", class: "btn btn-primary"

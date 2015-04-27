@@ -5,29 +5,20 @@ class UsersController < ApplicationController
     end
     @user = User.new
     @user.build_contact
-    # @user.build_location(zip: "06511",city: "New Haven",state: "CT")
     @user.build_location(session[:location])
-	@user.build_gender
+    @user.build_gender
+
+    @user.build_food_resource
+    @user.build_shower_resource
+    @user.build_laundry_resource
+    @user.build_housing_resource
+    @user.build_transportation_resource
+    @user.build_buddy_resource
   end
 
   def create
     @user = User.new(user_params)
-
-    @user.location[:coordinates] = session[:coordinates]
-
-    if !@user.gender[:cp]
-      @user.gender[:cp] = nil
-      @user.gender[:they] = nil
-      @user.gender[:them] = nil
-      @user.gender[:their] = nil
-    end
-
-    @user.food_resource = params[:user][:food_resource] == "1" ? true : false
-    @user.shower_resource = params[:user][:shower_resource] == "1" ? true : false
-    @user.laundry_resource = params[:user][:laundry_resource] == "1" ? true : false
-    @user.housing_resource = params[:user][:housing_resource] == "1" ? true : false
-    @user.transportation_resource = params[:user][:transportation_resource] == "1" ? true : false
-    @user.buddy_resource = params[:user][:buddy_resource] == "1" ? true : false
+    @user.location[:coordinates] = session[:coordinates].map &:to_f
 
     if @user.save
 
@@ -36,18 +27,31 @@ class UsersController < ApplicationController
       # Notifier.welcome(@user).deliver
 
       sign_in @user
+
       redirect_to @user
     else
       render 'new'
     end
   end
 
+  def edit
+    @user = User.find(params[:id])
+  end
+
   def update
+    @user = User.find(params[:id])
+
+    if @user.update_attributes(edit_user_params)
+      flash[:success] = "Successfully updated settings."
+      redirect_to @user
+    else
+      render 'edit'
+    end
   end
 
   def index
     @users = User.all
-    @users = User.search(params[:search])
+    # @users = User.search(params[:search])
 
     if params[:users_filters]
       @users = User.find_with_filters(params[:users_filters])
@@ -76,9 +80,35 @@ class UsersController < ApplicationController
         :name,
         :is_provider,
         :password, :password_confirmation,
-        gender_attributes:  [:identity, :trans, :cp, :they, :their, :them],
-        contact_attributes: [:email, :phone],
-        location_attributes: [:coordinates,:zip,:city,:state]
+        gender_attributes:                  [:identity, :trans, :cp,
+                                              :they, :their, :them],
+        contact_attributes:                 [:email, :phone],
+        location_attributes:                [:c,:zip,:city,:state],
+        food_resource_attributes:           [:currently_offered],
+        shower_resource_attributes:         [:currently_offered],
+        laundry_resource_attributes:        [:currently_offered],
+        housing_resource_attributes:        [:currently_offered],
+        transportation_resource_attributes: [:currently_offered],
+        buddy_resource_attributes:          [:currently_offered]
+        )
+    end
+
+    def edit_user_params
+      params.require(:user).permit(
+        :name,
+        # :is_provider,
+        :password, :password_confirmation,
+        # gender_attributes:                [:identity, :trans, :cp,
+        #                                     :they, :their, :them],
+        contact_attributes:                 [:email, :phone],
+        location_attributes:                [:c,:zip,:city,:state],
+        food_resource_attributes:           [:currently_offered],
+        shower_resource_attributes:         [:currently_offered],
+        laundry_resource_attributes:        [:currently_offered],
+        housing_resource_attributes:        [:currently_offered],
+        transportation_resource_attributes: [:currently_offered],
+        buddy_resource_attributes:          [:currently_offered],
+        misc_resource_attributes:           [:currently_offered]
         )
     end
 

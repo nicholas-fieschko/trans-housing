@@ -20,7 +20,7 @@ RSpec.describe User, type: :model do
           expect(Fabricate.build(:user, contact: Fabricate.build(:phone_only))).to be_valid
         end
 
-        it "converts the email address to all lowercase" do
+        it "converts and saves the email address in all lowercase" do
           user = Fabricate(:user, contact: Fabricate.build(:contact, email: "TEST@TEST.com"))
           expect(user.contact.email).to eq("test@test.com")
         end
@@ -29,11 +29,29 @@ RSpec.describe User, type: :model do
       describe "for gender information" do
         context "as a nonbinary trans person" do
           it "is valid with custom pronouns" do
-            expect(Fabricate.build(:nonbinary_user)).to be_valid
+            expect(Fabricate.build(:custom_pronoun_user)).to be_valid
           end
           it "is valid without custom pronouns" do
-            expect(Fabricate.build(:user, gender: Fabricate.build(:nonbinary_gender, cp:false, they: nil, their: nil, them: nil))).to be_valid
+            expect(Fabricate.build(:user, gender: Fabricate.build(:nonbinary_gender, 
+                                     cp: false, they: nil, their: nil, them: nil))).to be_valid
           end
+
+
+          it "converts and saves gender identity in all lowercase" do
+            user = Fabricate(:nonbinary_user, 
+                   gender: Fabricate.build(:nonbinary_gender, identity: "GENDERFLUID"))
+            expect(user.gender[:identity]).to eq("genderfluid")
+          end
+
+          it "converts and saves custom pronouns in all lowercase" do
+            user = Fabricate(:custom_pronoun_user, 
+                   gender: Fabricate.build(:custom_pronoun_gender,
+                            they: "XE", them: "HIR", their: "HIR"))
+            expect(user.gender[:they]).to eq("xe")
+            expect(user.gender[:them]).to eq("hir")
+            expect(user.gender[:their]).to eq("hir")
+          end
+
         end
       end
     end
@@ -94,27 +112,192 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe "deleting an account" do
+  describe "deleting a user" do
     it "destroys contact information" do
       user = Fabricate(:user)
-      expect { user.destroy }.to change {Contact.count}.by(-1)
+      expect { user.destroy }.to change { Contact.count }.by(-1)
     end
     it "destroys location information" do
       user = Fabricate(:user)
-      expect { user.destroy }.to change {Location.count}.by(-1)
+      expect { user.destroy }.to change { Location.count }.by(-1)
     end
   end
 
-  describe ".provider?" do
-    it "returns true if user is a provider and false if a seeker" do
-      expect(Fabricate(:provider).provider?).to eq true
-      expect(Fabricate(:seeker).provider?).to eq false
+  describe "pronoun getters .they, .them, .their" do
+
+    describe "for a binary male user" do
+      user = Fabricate.build(:user, 
+             gender: Fabricate.build(:binary_gender, identity: "male"))
+      it "returns 'he' as the 'they' tense" do 
+        expect(user.they).to eq "he"
+      end
+      it "returns 'him' as the 'them' tense" do 
+        expect(user.them).to eq "him"
+      end
+      it "returns 'his' as the 'their' tense" do 
+        expect(user.their).to eq "his"
+      end
+    end
+
+    describe "for a binary female user" do
+      user = Fabricate.build(:user, 
+             gender: Fabricate.build(:binary_gender, identity: "female"))
+      it "returns 'she' as the 'they' tense" do 
+        expect(user.they).to eq "she"
+      end
+      it "returns 'her' as the 'them' tense" do 
+        expect(user.them).to eq "her"
+      end
+      it "returns 'her' as the 'their' tense" do 
+        expect(user.their).to eq "her"
+      end
+    end
+
+    describe "for a nonbinary user without custom pronouns" do
+      user = Fabricate.build(:nonbinary_user, 
+             gender: Fabricate.build(:nonbinary_gender, cp: false))
+      it "returns 'they' as the 'they' tense" do 
+        expect(user.they).to eq "they"
+      end
+      it "returns 'them' as the 'them' tense" do 
+        expect(user.them).to eq "them"
+      end
+      it "returns 'their' as the 'their' tense" do 
+        expect(user.their).to eq "their"
+      end
+    end
+
+    describe "for a nonbinary user with custom pronouns xe, hir, hir" do
+      user = Fabricate.build(:custom_pronoun_user, 
+             gender: Fabricate.build(:custom_pronoun_gender,
+             they:            "xe",
+             them:            "hir",
+             their:           "hir"))
+      it "returns 'xe' as the 'they' tense" do 
+        expect(user.they).to eq "xe"
+      end
+      it "returns 'hir' as the 'them' tense" do 
+        expect(user.them).to eq "hir"
+      end
+      it "returns 'hir' as the 'their' tense" do 
+        expect(user.their).to eq "hir"
+      end
     end
   end
-  describe ".seeker?" do
-    it "returns true if user is a seeker and false if a provider" do
-      expect(Fabricate(:seeker).seeker?).to eq true
-      expect(Fabricate(:provider).seeker?).to eq false
+
+  describe "provider/seeker status getters .provider?, .seeker?" do
+    describe ".provider?" do
+      it "returns true if user is a provider and false if a seeker" do
+        expect(Fabricate.build(:provider).provider?).to eq true
+        expect(Fabricate.build(:seeker).provider?).to eq false
+      end
+    end
+    describe ".seeker?" do
+      it "returns true if user is a seeker and false if a provider" do
+        expect(Fabricate.build(:seeker).seeker?).to eq true
+        expect(Fabricate.build(:provider).seeker?).to eq false
+      end
+    end
+  end
+
+  describe "needed/offered resource getters" do 
+    describe ".food?" do
+      it "returns true for a user needing or offering food" do
+        user = Fabricate.build(:user, 
+                         food_resource: Fabricate.build(:food_resource,
+                         currently_offered: true))
+        expect(user.food?).to eq true
+      end
+      it "returns false for a user not needing or offering food" do
+        user = Fabricate.build(:user, 
+                         food_resource: Fabricate.build(:food_resource,
+                         currently_offered: false))
+        expect(user.food?).to eq false
+      end
+    end
+    describe ".shower?" do
+      it "returns true for a user needing or offering shower access" do
+        user = Fabricate.build(:user, 
+                         shower_resource: Fabricate.build(:shower_resource,
+                         currently_offered: true))
+        expect(user.shower?).to eq true
+      end
+      it "returns false for a user not needing or offering shower access" do
+        user = Fabricate.build(:user, 
+                         shower_resource: Fabricate.build(:shower_resource,
+                         currently_offered: false))
+        expect(user.shower?).to eq false
+      end
+    end
+    describe ".laundry?" do
+      it "returns true for a user needing or offering laundry service" do
+        user = Fabricate.build(:user, 
+                         laundry_resource: Fabricate.build(:laundry_resource,
+                         currently_offered: true))
+        expect(user.laundry?).to eq true
+      end
+      it "returns false for a user not needing or offering laundry service" do
+        user = Fabricate.build(:user, 
+                         laundry_resource: Fabricate.build(:laundry_resource,
+                         currently_offered: false))
+        expect(user.laundry?).to eq false
+      end
+    end
+    describe ".housing?" do
+      it "returns true for a user needing or offering housing" do
+        user = Fabricate.build(:user, 
+                         housing_resource: Fabricate.build(:housing_resource,
+                         currently_offered: true))
+        expect(user.housing?).to eq true
+      end
+      it "returns false for a user not needing or offering housing" do
+        user = Fabricate.build(:user, 
+                         housing_resource: Fabricate.build(:housing_resource,
+                         currently_offered: false))
+        expect(user.housing?).to eq false
+      end
+    end
+    describe ".transportation?" do
+      it "returns true for a user needing or offering transportation help" do
+        user = Fabricate.build(:user, 
+                         transportation_resource: Fabricate.build(:transportation_resource,
+                         currently_offered: true))
+        expect(user.transportation?).to eq true
+      end
+      it "returns false for a user not needing or offering transportation help" do
+        user = Fabricate.build(:user, 
+                         transportation_resource: Fabricate.build(:transportation_resource,
+                         currently_offered: false))
+        expect(user.transportation?).to eq false
+      end
+    end
+    describe ".buddy?" do
+      it "returns true for a user needing a or offering to be a buddy" do
+        user = Fabricate.build(:user, 
+                         buddy_resource: Fabricate.build(:buddy_resource,
+                         currently_offered: true))
+        expect(user.buddy?).to eq true
+      end
+      it "returns false for a user not needing a or offering to be a buddy" do
+        user = Fabricate.build(:user, 
+                         buddy_resource: Fabricate.build(:buddy_resource,
+                         currently_offered: false))
+        expect(user.buddy?).to eq false
+      end
+    end
+    describe ".misc?" do
+      it "returns true for a user needing or offering miscellaneous help" do
+        user = Fabricate.build(:user, 
+                         misc_resource: Fabricate.build(:misc_resource,
+                         currently_offered: true))
+        expect(user.misc?).to eq true
+      end
+      it "returns false for a user not needing or offering miscellaneous help" do
+        user = Fabricate.build(:user, 
+                         misc_resource: Fabricate.build(:misc_resource,
+                         currently_offered: false))
+        expect(user.misc?).to eq false
+      end
     end
   end
 end

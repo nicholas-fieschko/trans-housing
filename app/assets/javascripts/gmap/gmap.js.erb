@@ -1,4 +1,3 @@
-var map;
 var infowindow = new google.maps.InfoWindow();
 
 $(document).ready(function() {
@@ -49,6 +48,11 @@ function initialize() {
 	browserSupportFlag = false;
 	handleNoGeolocation(browserSupportFlag);
     }
+	google.maps.event.addListener(map, 'dragend', function(){
+		var newCenter = map.getCenter();
+		console.debug(newCenter);
+		queryNearbyUsers(newCenter.lat(), newCenter.lng());
+	});
 }
 
 
@@ -114,26 +118,26 @@ function addMarkers(map, usr) {
 	var laundryIcon="";
 	var showerIcon="";
 
-	if (usr.food_resource) {
-		foodIcon = '<i class="fa fa-cutlery fa-lg"></i>'
+	if (usr.food_resource.currently_offered) {
+		foodIcon = '<i class="fa fa-cutlery fa-lg" title="Food"></i>'
 	}
-	if (usr.buddy_resource) {
-		buddyIcon = '<i class="fa fa-users fa-lg"></i>'
+	if (usr.buddy_resource.currently_offered) {
+		buddyIcon = '<i class="fa fa-users fa-lg" title="Buddy"></i>'
 	}
-    if (usr.housing_resource) {
-		housingIcon = '<i class="fa fa-bed fa-lg"></i>'
+    if (usr.housing_resource.currently_offered) {
+		housingIcon = '<i class="fa fa-bed fa-lg" title="Housing"></i>'
 	}
-    if (usr.transportation_resource){
-		transportationIcon = '<i class="fa fa-car fa-lg"></i>'
+    if (usr.transportation_resource.currently_offered){
+		transportationIcon = '<i class="fa fa-car fa-lg" title="Transportation"></i>'
 	}
-	if (usr.misc_resource) {
-		miscIcon = '<i class="fa fa-plus fa-lg"></i>'
+	if (usr.misc && usr.misc_resource.currently_offered) {
+		miscIcon = '<i class="fa fa-plus fa-lg" title="Miscellaneous"></i>'
 	}
-	if (usr.laundry_resource) {
-		laundryIcon = '<i class="fa fa-tags fa-lg"></i>'
+	if (usr.laundry_resource.currently_offered) {
+		laundryIcon = '<i class="fa fa-tags fa-lg" title="Laundry"></i>'
 	}
-	if (usr.shower_resource) {
-		showerIcon = '<i class="fa fa-street-view fa-lg"></i>'
+	if (usr.shower_resource.currently_offered) {
+		showerIcon = '<i class="fa fa-street-view fa-lg" title="Shower"></i>'
 	}
 
 	var averageRating = usr.average_rating;
@@ -188,13 +192,8 @@ function addMarkers(map, usr) {
 	    infowindow.close();
 	    infowindow.setContent(contentString);
 	    infowindow.open(map,marker);
-		});
+	});
 
-	/*google.maps.event.addListener(map, 'center_changed', function(){
-		var newCenter = map.getCenter();
-		console.debug(newCenter);
-		queryNearbyUsers(newCenter.lat(), newCenter.lng());
-	});*/
 }
 google.maps.event.addListener(window, 'click', function() {
 	infowindow.close();
