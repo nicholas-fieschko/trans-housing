@@ -183,6 +183,8 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
+    puma (2.11.1)
+      rack (>= 1.1, < 2.0)
     rack (1.6.0)
     rack-livereload (0.3.15)
       rack
@@ -207,7 +209,7 @@ GEM
       rails-deprecated_sanitizer (>= 1.0.1)
     rails-html-sanitizer (1.0.2)
       loofah (~> 2.0)
-    rails_12factor (0.0.3)
+    rails_12factor (0.0.2)
       rails_serve_static_assets
       rails_stdout_logging
     rails_serve_static_assets (0.0.4)
@@ -326,9 +328,10 @@ DEPENDENCIES
   mailgun-ruby (~> 1.0.2)
   mongoid (~> 4.0.0)
   mongoid-geospatial (~> 4.0)
+  puma (= 2.11.1)
   rack-livereload
   rails (= 4.2.0)
-  rails_12factor
+  rails_12factor (= 0.0.2)
   rspec-rails
   sass-rails
   sdoc (~> 0.4.0)
