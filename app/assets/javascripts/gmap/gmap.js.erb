@@ -182,8 +182,8 @@ function addMarkers(map, usr) {
     //            content: contentString
     //        });
     
-    var myLatLng = new google.maps.LatLng(usr.location.c[0], usr.location.c[1]);
-	console.debug(myLatLng);
+    var myLatLng = new google.maps.LatLng(usr.location.c[1], usr.location.c[0]);
+	// console.debug(myLatLng);
     var marker = new google.maps.Marker({
 	    position: myLatLng,
 	    icon: image,
