@@ -1,7 +1,15 @@
-= simple_fields_for :session, url: sessions_path, class: "pure-form" do |f|
+/= simple_fields_for :session, url: sessions_path, class: "pure-form" do |f|
+/  %h2 Sign in
+/  .login-name-fields
+/  = f.input :username, label: false, class: "login-username-input"
+/  .login-password-fields
+/    = f.input :password, label: false, class: "login-password-input"
+/  = f.button :submit, value: "Go!", class: "login-submit-button"
+
+= form_for(:session, url: sessions_path, html: { class: "pure-form" } ) do |f|
   %h2 Sign in
-  .login-name-fields
-    = f.input :name, label: false, class: "login-name-input", placeholder: "Phone or Email"
+  .login-username-fields
+    = f.text_field :username, placeholder: "Phone or Email", class: "login-username-input"
   .login-password-fields
-    = f.input :password, label: false, class: "login-password-input", placeholder: "Password"
-  = f.button :submit, value: "Go!", class: "login-submit-button"
+    = f.password_field :password, placeholder: "Password", class: "login-password-input"
+  = f.submit "Go!", class: "login-submit-button"
