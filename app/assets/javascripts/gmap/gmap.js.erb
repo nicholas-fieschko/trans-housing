@@ -1,4 +1,5 @@
 var infowindow = new google.maps.InfoWindow();
+var markers = [];
 
 $(document).ready(function() {
 	var url = "/location/posts"
@@ -41,7 +42,7 @@ function initialize() {
 		queryNearbyUsers(initialLocation.lat(), 
 			initialLocation.lng(), map);
 	    },function (){
-		handleNoGeolocation(browerSupportFlag);
+			handleNoGeolocation(browerSupportFlag);
 	    });
     }
     else {
@@ -51,7 +52,11 @@ function initialize() {
 	google.maps.event.addListener(map, 'dragend', function(){
 		var newCenter = map.getCenter();
 		console.debug(newCenter);
-		queryNearbyUsers(newCenter.lat(), newCenter.lng());
+		for (var i = 0; i < markers.length; i++) {
+			markers[i].setMap(null);
+		}
+		markers = [];
+		queryNearbyUsers(newCenter.lat(), newCenter.lng(), map);
 	});
 }
 
@@ -173,7 +178,6 @@ function addMarkers(map, usr) {
 	'<div id="bodyContent">' + '<b>' + usr.location.city +
 	'</b></div>'+'</div>' + "</div>" +  "</div>";
 
-
     //      var infowindow = new google.maps.InfoWindow({
     //            content: contentString
     //        });
@@ -188,12 +192,14 @@ function addMarkers(map, usr) {
 	    //      shape: shape
 	    // zIndex: parseInt(p[5])
 	});
+
+	markers.push(marker);
+
     google.maps.event.addListener(marker, 'click', function() {
 	    infowindow.close();
 	    infowindow.setContent(contentString);
 	    infowindow.open(map,marker);
 	});
-
 }
 google.maps.event.addListener(window, 'click', function() {
 	infowindow.close();
