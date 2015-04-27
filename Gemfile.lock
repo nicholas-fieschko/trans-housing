@@ -325,7 +325,7 @@ DEPENDENCIES
   rack-livereload
   rails (= 4.2.0)
   recaptcha
-  rspec-rails (~> 3.0)
+  rspec-rails
   sass-rails
   sdoc (~> 0.4.0)
   simple_form
