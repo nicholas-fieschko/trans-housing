@@ -1,6 +1,6 @@
 Fabricator(:contact) do 
-  email           { Fabricate.sequence(:email) {|i| "#{i}@internet.com" } }
-  phone           { Fabricate.sequence(:phone) {|i| "#{i}-#{Faker::PhoneNumber.phone_number}" } }
+  email           { "#{Faker::Name.last_name}#{User.count}@yale.edu}" }
+  phone           { "#{Faker::PhoneNumber.phone_number} ext #{User.count}" }
 end
 
 Fabricator(:phone_only, from: :contact) do 
