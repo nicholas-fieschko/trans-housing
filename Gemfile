@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-
+ruby '2.2.0'
 gem 'rails', '4.2.0'			 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'sass-rails'
 gem 'uglifier', '>= 1.3.0'		 # Use Uglifier as compressor for JavaScript assets
@@ -32,6 +32,8 @@ gem 'mongoid-geospatial', '~>4.0'	# Mongoid Geospatial
 
 
 gem 'simple_form'
+gem 'fabrication'
+ gem 'faker'
 
 # gem 'unicorn' # Use Unicorn as the app server
 
@@ -44,8 +46,7 @@ group :development, :test do
   gem 'database_cleaner'
   gem 'rspec-rails'
   gem 'capybara'
-  gem 'fabrication'
-  gem 'faker'
+
 
 
   gem 'guard'
@@ -53,4 +54,10 @@ group :development, :test do
   gem "rack-livereload", :group => :development
   gem 'guard-rspec', require: false
 
+end
+
+
+group :production do
+  gem 'rails_12factor', '0.0.2'
+  gem 'puma',           '2.11.1'
 end
