@@ -6,7 +6,11 @@ class LocationsController < ApplicationController
 
   def search
     location = Location.new
-	@nearbyUsers = location.search(params[:loc])
+	if session[:location]
+		@nearbyUsers = location.search(session[:location])
+	else
+		@nearbyUsers = location.search(params[:loc])
+	end
 	if @nearbyUsers
 	  #if @params[:loc].is_a?(Hash)
 	  #	print @params[:loc]
@@ -18,16 +22,18 @@ class LocationsController < ApplicationController
 	  #end
 	  # TODO: there should be more checking wrapping around zip/city/state
 	  # or move the checking to model 
-	  if @location && @location.street_address && @location.city
-		  session[:location] = { zip: @location.zip,
-								 city: @location.street_address + ", " + 
-									   @location.city,
-								 state: @location.state }
-		  session[:coordinates] = params[:loc].reverse
-	  else 
-		  session[:location] = { zip: 000000, city: "Unknown Location", 
-								 state: "Unknown"}
-		  session[:coordinates] = [-72.9267, 41.3111]
+	  if not session[:location]
+		if @location && @location.street_address && @location.city
+			  session[:location] = { zip: @location.zip,
+									 city: @location.street_address + ", " + 
+										   @location.city,
+									 state: @location.state }
+			  session[:coordinates] = params[:loc].reverse
+		  else 
+			  session[:location] = { zip: 000000, city: "Unknown Location", 
+									 state: "Unknown"}
+			  session[:coordinates] = [-72.9267, 41.3111]
+		end
 	  end
 
 	  # TODO: can we think of other things to hide?
@@ -39,10 +45,10 @@ class LocationsController < ApplicationController
       end
 	  render:json => Hash[@nearbyUsers.collect { |v| [v.id, v.as_document.as_json.
 			merge!("location"=> v.location.as_document.as_json, 
-				   "loginflag"=> @usrLogInFlg)] }]
+				   "loginflag"=> @usrLogInFlg, 
+				   "usrnewloc"=> session[:coordinates])] }]
 
-	else
-		flash.now[:error] = "Location error..."
-	end			 	
+	 else
+	 	flash.now[:error] = "Location error..."
+	 end			 	
   end
-end

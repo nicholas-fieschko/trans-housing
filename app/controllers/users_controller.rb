@@ -18,6 +18,9 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
+	session[:coordinates] = Geokit::Geocoders::GoogleGeocoder.geocode(
+			session[:location].city)
+
     @user.location[:coordinates] = session[:coordinates].map &:to_f
 
     if verify_recaptcha(model: @user, message: "Robot!!") && @user.save
