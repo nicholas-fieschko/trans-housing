@@ -125,6 +125,11 @@ function handleNoGeolocation(errorFlag, map) {
 	alert("Geolocation service failed...we will put you in Yale");
     } 
 	var myLatLng = yale;
+	var marker = new google.maps.Marker ({
+		position:myLatLng,
+		map: map,	
+	});
+
 	queryNearbyUsers(myLatLng.lat(),
 	            myLatLng.lng(), map, 1);
 }
