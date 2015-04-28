@@ -14,7 +14,7 @@ class User
   has_one    :location,                     dependent: :delete
 
   embeds_one :preference_profile
-  # embeds_one :extended_profile
+  embeds_one :extended_profile
 
   embeds_one :food_resource
   embeds_one :shower_resource
@@ -109,6 +109,14 @@ class User
 
   def prefs
     self.preference_profile
+  end
+
+  def email
+    self.contact.email
+  end
+
+  def phone
+    self.contact.phone
   end
 
   # Retrieve whether or not a user has enabled receipt of 

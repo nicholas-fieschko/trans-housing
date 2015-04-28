@@ -100,6 +100,24 @@ input:-webkit-autofill
   &:focus
     -webkit-box-shadow: 0 0 0px 1000px white inset !important
 
+.notice-container
+  padding:            15px
+  text-align:         center
+  font-family:        "Source Sans Pro", sans-serif
+
+.notice-error-container
+  @extend             .notice-container
+  color:              white
+  font-weight:        bolder
+  background-color:   #E74C3C
+
+span.notice-text
+  height:             100%
+  vertical-align:     super
+  display:            inline-block
+  padding:            0px 15px
+
+
 // User Profile SASS
 .grid-columns-container,.user-profile-column,.sign-up-column,.gen-column
   height:             100%
@@ -244,7 +262,7 @@ div fieldset
 
 .login-box-positioner
   position:           relative
-  top:                10%
+  top:                5%
   border-radius:      6px
 
 
