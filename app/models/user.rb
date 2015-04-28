@@ -240,10 +240,15 @@ class User
       self.remember_token = User.digest(User.new_remember_token)
     end
 
-    def initialization
+    def init_reviews
       self.number_reviews = 0
       self.average_rating = 0
       self.sum_rating = 0
+    end
+
+    def initialization
+      init_reviews
+      self.preference_profile ||= PreferenceProfile.new
     end
 
 end
