@@ -5,6 +5,7 @@ class LocationsController < ApplicationController
   end
 
   def search
+  	@root = request.domain.to_s
     location = Location.new
 	@nearbyUsers = location.search(params[:loc])
 	if @nearbyUsers
