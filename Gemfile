@@ -32,6 +32,8 @@ gem 'mongoid-geospatial', '~>4.0'	# Mongoid Geospatial
 
 
 gem 'simple_form'
+gem 'fabrication'
+ gem 'faker'
 
 # gem 'unicorn' # Use Unicorn as the app server
 
@@ -44,8 +46,7 @@ group :development, :test do
   gem 'database_cleaner'
   gem 'rspec-rails'
   gem 'capybara'
-  gem 'fabrication'
-  gem 'faker'
+
 
 
   gem 'guard'
