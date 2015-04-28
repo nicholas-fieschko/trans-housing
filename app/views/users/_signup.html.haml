@@ -140,5 +140,11 @@
         Just choose a password, and you're ready to get started!
         = f.input :password
         = f.input :password_confirmation
+        / Adding a reCAPTCHA
+        = recaptcha_tags
+        /= verify_recaptcha
+
+
         = f.button :submit, value: "Create my account!", id: "submit_signup",class: "wizard-forward"
+
         %button.wizard-back{type: "button",onclick: "th.advanceWizard('7','6')"} Back

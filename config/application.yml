@@ -26,9 +26,9 @@ account_sid: 'AC829c62c86b2172157b9e0fd898118f63'
 auth_token:  '718491a6199e42faff449704b61bfc9e'
 twilio_num:  '+15015022331'
 
-# Recaptcha (ambethia's gem)
-rc_site_key:   '6Ld1TwUTAAAAAOgV0Vm8UIT7zn-kEiF-Sa3gX6gK'
-rc_secret_key: '6Ld1TwUTAAAAAD2mUqF3B-n35QsxoUEd1UPJsAte'
+# Recaptcha (ambethia's gem); the names are required by the gem
+RECAPTCHA_PUBLIC_KEY:  '6Ld1TwUTAAAAAOgV0Vm8UIT7zn-kEiF-Sa3gX6gK'
+RECAPTCHA_PRIVATE_KEY: '6Ld1TwUTAAAAAD2mUqF3B-n35QsxoUEd1UPJsAte'
 
 
 
