@@ -1,5 +1,5 @@
 require 'spec_helper'
-require 'support/pages/signin_page'
+require 'support/pages/session_pages'
 
 RSpec.feature "Sign In", :type => :feature do
   before do 
@@ -44,10 +44,12 @@ RSpec.feature "Sign In", :type => :feature do
   end
 
   context "with invalid credentials" do
-    it "does not successfully log in with the wrong password" do
+    before :each do
       @signin_page.username_field.set @phone
       @signin_page.password_field.set "wrong! #{@password}"
       @signin_page.signin_button.click
+    end
+    it "does not successfully log in with the wrong password" do
       expect(page).to_not have_content "Signed in as #{@user.name}"
     end
   end

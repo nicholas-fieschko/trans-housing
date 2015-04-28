@@ -14,26 +14,28 @@ Rails.application.routes.draw do
 
   resources :sessions, only: [:new, :create, :destroy]
   
-	resources :users do
+  resources :users do
     resources :reviews, only: [:edit, :update, :show]
     resources :requests
-		resources :conversations, path: 'mail'
+    resources :conversations, path: 'mail'
   end
 
+  match '/signup',      to: 'users#new',                via: 'get'
+  # match '/settings',    to: 'users#edit',               via: 'get'
 
+  match '/signin',      to: 'sessions#new',             via: 'get'
+  match '/signout',     to: 'sessions#destroy',         via: 'delete'
 
-  match '/signup',			to: 'users#new',				via: 'get'
-  match '/signin',			to: 'sessions#new',				via: 'get'
-  match '/signout',			to: 'sessions#destroy',			via: 'delete'
 
   match '/location/posts',	to: 'locations#search',			via: 'post'   
+  #match '/location/posts_range', to: 'location#search_range', via: 'post'
   
 
-  match '/dashboard', to: 'users#dashboard',    via: 'get'
+  match '/dashboard', to: 'users#dashboard',            via: 'get'
 
  
-	# Basic Twilio webhooks; need to integrate with user profile
-	get 'twilio/sms' => 'twilio#sms'
+  # Basic Twilio webhooks; need to integrate with user profile
+  get 'twilio/sms' => 'twilio#sms'
  
 
   # The priority is based upon order of creation: first created -> highest priority.

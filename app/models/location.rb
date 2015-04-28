@@ -30,15 +30,15 @@ class Location
 	
 
   def search(query)
-	@distance = 100
+	@distance = 5
 	if query
 		Location.where("coordinates" => {
-			"$nearSphere"=> {"$geometry"=> {
-			"type"=> "Point",
-			"coordinates"=> [query[0].to_f, query[1].to_f],
-			"$maxDistance"=> @distance/111.2}
-		}}).to_a.map{|loc| loc.user}
-		
+			"$nearSphere" => {"$geometry" => {
+				"type" => "Point",
+				"coordinates"=> [query[1].to_f, query[0].to_f]
+			},
+			"$maxDistance"=> @distance*1609}}
+		).to_a.map{|loc| loc.user}
 	# TODO: better error handel here
 	else
 		[].to_a
