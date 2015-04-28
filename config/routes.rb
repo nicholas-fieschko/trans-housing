@@ -17,7 +17,7 @@ Rails.application.routes.draw do
 	resources :users do
     resources :reviews, only: [:edit, :update, :show]
     resources :requests
-		resources :conversations, except: :edit, path: 'mail'
+		resources :conversations, path: 'mail'
   end
 
 
