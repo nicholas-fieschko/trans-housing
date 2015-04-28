@@ -13,7 +13,7 @@ class User
   has_one    :contact,                      dependent: :delete
   has_one    :location,                     dependent: :delete
 
-  # embeds_one :preference_profile # User site/security preferences
+  embeds_one :preference_profile
   # embeds_one :extended_profile
 
   embeds_one :food_resource
@@ -107,6 +107,64 @@ class User
     self.misc_resource[:currently_offered]
   end
 
+  def prefs
+    self.preference_profile
+  end
+
+  # Retrieve whether or not a user has enabled receipt of 
+  # new message notifications by text message.
+  # Default is false. 
+  def receives_message_notifs_by_text?
+    if self.prefs.nil? || self.prefs.message_notifs.nil? ||
+       self.prefs.message_notifs[:text].blank? ||
+       self.prefs.message_notifs[:text] == false
+      false
+     elsif self.prefs.message_notifs[:text] == true
+      true
+    end
+  end
+
+  # Retrieve whether or not a user has enabled receipt of 
+  # new message notifications by email message.
+  # Default is true. 
+  def receives_message_notifs_by_email?
+    if self.prefs.nil? || self.prefs.message_notifs.nil? ||
+       self.prefs.message_notifs[:email].blank? ||
+       self.prefs.message_notifs[:email] == true
+      true
+     elsif self.prefs.message_notifs[:email] == false
+      false
+    end
+  end
+
+  # Retrieve whether or not a user has enabled receipt of 
+  # new dashboard (request/offers/reviews) notifications by 
+  # text message.
+  # Default is false. 
+  def receives_dashboard_notifs_by_text?
+    if self.prefs.nil? || self.prefs.dashboard_notifs.nil? ||
+       self.prefs.dashboard_notifs[:text].blank? ||
+       self.prefs.dashboard_notifs[:text] == false
+      false
+     elsif self.prefs.dashboard_notifs[:text] == true
+      true
+    end
+  end
+
+  # Retrieve whether or not a user has enabled receipt of 
+  # new dashboard (request/offers/reviews) notifications by 
+  # email message.
+  # Default is true. 
+  def receives_dashboard_notifs_by_email?
+    if self.prefs.nil? || self.prefs.dashboard_notifs.nil? ||
+       self.prefs.dashboard_notifs[:email].blank? ||
+       self.prefs.dashboard_notifs[:email] == true
+      true
+     elsif self.prefs.dashboard_notifs[:email] == false
+      false
+    end
+  end
+
   def User.new_remember_token
     SecureRandom.urlsafe_base64
   end
@@ -188,9 +246,4 @@ class User
       self.sum_rating = 0
     end
 
-end
-
-class PreferenceProfile
-  include Mongoid::Document
-  embedded_in :user
 end

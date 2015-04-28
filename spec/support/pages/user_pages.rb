@@ -1,0 +1,30 @@
+# IDs of 'edit' form elements.
+
+# user_name
+# user_contact_attributes_email
+# user_contact_attributes_phone
+# user_location_attributes_zip
+# user_location_attributes_city
+# user_location_attributes_state
+# user_food_resource_attributes_currently_offered_true
+# user_food_resource_attributes_currently_offered_false
+# user_food_resource_attributes_id
+# user_shower_resource_attributes_currently_offered_true
+# user_shower_resource_attributes_currently_offered_false
+# user_shower_resource_attributes_id
+# user_laundry_resource_attributes_currently_offered_true
+# user_laundry_resource_attributes_currently_offered_false
+# user_laundry_resource_attributes_id
+# user_housing_resource_attributes_currently_offered_true
+# user_housing_resource_attributes_currently_offered_false
+# user_housing_resource_attributes_id
+# user_transportation_resource_attributes_currently_offered_true
+# user_transportation_resource_attributes_currently_offered_false
+# user_transportation_resource_attributes_id
+# user_buddy_resource_attributes_currently_offered_true
+# user_buddy_resource_attributes_currently_offered_false
+# user_buddy_resource_attributes_id
+# user_password
+# user_password_confirmation
+# user_location_attributes_id
+# user_contact_attributes_id 
