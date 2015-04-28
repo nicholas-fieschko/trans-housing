@@ -6,9 +6,15 @@ $(document).ready(function() {
     });
 
 $(document).on('click', '.wizard-forward', function(){
-	var center = map.getCenter();
-	google.maps.event.trigger(map, "resize");
-	map.setCenter(center);
+  var center = map.getCenter();
+  google.maps.event.trigger(map, "resize");
+  map.setCenter(center);
+});
+
+$(document).on('click', '.wizard-back', function(){
+  var center = map.getCenter();
+  google.maps.event.trigger(map, "resize");
+  map.setCenter(center);
 });
 
 function initialize() {

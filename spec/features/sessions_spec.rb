@@ -13,11 +13,9 @@ RSpec.feature "Sign In", :type => :feature do
         Fabricate.build(:contact, 
         email:             @email,
         phone:             @phone))
-    @id = @user.id.to_s
-    @user_profile = ProfilePage.new
     @signin_page = SignInPage.new
-    @user_profile.load(id: @id)
     @signin_page.load
+
   end
 
   context "User navigates to the sign in page" do
@@ -46,11 +44,24 @@ RSpec.feature "Sign In", :type => :feature do
   end
 
   context "with invalid credentials" do
-    it "does not successfully log with the wrong password" do
+    it "does not successfully log in with the wrong password" do
       @signin_page.username_field.set @phone
       @signin_page.password_field.set "wrong! #{@password}"
       @signin_page.signin_button.click
       expect(page).to_not have_content "Signed in as #{@user.name}"
+    end
+  end
+
+
+  context "after signing in" do
+    it "redirects the user to their profile" do
+      @user_profile = ProfilePage.new
+
+      @signin_page.username_field.set @phone
+      @signin_page.password_field.set @password
+      @signin_page.signin_button.click
+
+      expect(@user_profile).to be_displayed(id: @user.id.to_s)
     end
   end
 end
