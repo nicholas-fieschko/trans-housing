@@ -46,8 +46,10 @@ group :development, :test do
   gem 'database_cleaner'
   gem 'rspec-rails'
   gem 'capybara'
-
-
+  gem 'selenium-webdriver'
+  gem 'site_prism'
+  gem 'fabrication'
+  gem 'faker'
 
   gem 'guard'
   gem 'guard-livereload', '~> 2.4', require: false

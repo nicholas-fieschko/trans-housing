@@ -94,6 +94,12 @@ i.settings-icon
   
 body
   font-family:        'Source Sans Pro', sans-serif
+
+input:-webkit-autofill
+  -webkit-box-shadow: 0 0 0px 1000px white inset !important
+  &:focus
+    -webkit-box-shadow: 0 0 0px 1000px white inset !important
+
 // User Profile SASS
 .grid-columns-container,.user-profile-column,.sign-up-column,.gen-column
   height:             100%
@@ -102,6 +108,7 @@ body
 .user-profile-column,.account-settings-column
   background-color:   white
   padding:            20px
+  overflow:           auto
 
 .user-rating,.user-name
   float: left
@@ -124,14 +131,14 @@ body
 form 
   @include transition(all 1s ease-in-out)
 
-.sign-up-column
+.sign-up-column,.login-box
   text-align:         center
   overflow:           auto
-  & input[type='text']
-    margin-top: 30px
+  & input[type]
+    margin: 15px 0px
     text-align:       center
     font-size:        25px
-    height:           100%
+    // height:           100%
     line-height:      100%
     @include placeholder
       color:            #ccc
@@ -199,10 +206,10 @@ div fieldset
 .login-column
   height: 100%
 
-.login-name-label
+.login-username-label
   @include            login-field-label(white,$trans-blue)
 
-.login-name-input
+.login-username-input
   @include            login-field-input($trans-blue)
 
 .login-password-label
@@ -214,15 +221,26 @@ div fieldset
 .login-submit-button
   @extend             .btn
   @extend             .btn-header
-  @include            btn-hover-invert($trans-blue, white)
-  font-size:          150%
+  @include            btn-hover-invert($trans-pink, white)
+  font-size:          17px
+  padding:            10px
   width:              100%
-  margin:             20px 0px 0px 0px
 
-.login-box,.sign-up-box,.account-settings-box
+.pure-form input[type].login-submit-button
+  @extend             .login-submit-button
+  margin:             0
+  margin-top:         10px
+
+
+
+
+.login-box,.sign-up-box,.account-settings-box,.page-content-box
   background-color:   white
   padding:            15px
   border-radius:      10px
+  text-align:         center
+  font-family:        'Source Sans Pro', sans-serif
+
 
 .login-box-positioner
   position:           relative
