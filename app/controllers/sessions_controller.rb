@@ -3,10 +3,10 @@ class SessionsController < ApplicationController
   end
 
   def create
-    if params[:session][:name].include? '@'
-      user = Contact.where(email: params[:session][:name].downcase).first.user
+    if params[:session][:username].include? '@'
+      user = Contact.where(email: params[:session][:username].downcase).first.user
     else
-      user = Contact.where(phone: params[:session][:name].downcase).first.user
+      user = Contact.where(phone: params[:session][:username].downcase).first.user
     end
     if user && user.authenticate(params[:session][:password])
       sign_in user

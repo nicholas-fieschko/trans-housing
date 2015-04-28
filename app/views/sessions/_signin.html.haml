@@ -1,9 +1,7 @@
-.login-box.login-column
-  = form_for(:session, url: sessions_path) do |f|
-    .login-name-fields
-      = f.label :name, "Phone or Email", class: "login-name-label"
-      = f.text_field :name, class: "login-name-input"
-    .login-password-fields
-      = f.label :password, class: "login-password-label"
-      = f.password_field :password, class: "login-password-input"
-    = f.submit "Sign in", class: "login-submit-button"
+= form_for(:session, url: sessions_path, html: { class: "pure-form" } ) do |f|
+  %h2 Sign in
+  .login-username-fields
+    = f.text_field :username, placeholder: "Phone or Email", class: "login-username-input"
+  .login-password-fields
+    = f.password_field :password, placeholder: "Password", class: "login-password-input"
+  = f.submit "Go!", class: "login-submit-button", id: "session_submit"
