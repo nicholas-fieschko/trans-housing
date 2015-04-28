@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby '2.2.0'
+#ruby '2.2.0'
 gem 'rails', '4.2.0'			 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'sass-rails'
 gem 'uglifier', '>= 1.3.0'		 # Use Uglifier as compressor for JavaScript assets
@@ -17,6 +17,8 @@ gem 'haml-rails'
 gem 'mailgun-ruby', '~> 1.0.2', require: 'mailgun'
 gem 'twilio-ruby', '~> 4.0.0'
 gem 'figaro'
+gem 'recaptcha', require: 'recaptcha/rails'
+gem 'globalphone'
 
 gem 'jquery-rails'				 # Use jquery as the JavaScript library
 gem 'jquery-turbolinks'

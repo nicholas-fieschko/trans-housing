@@ -20,7 +20,7 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
     @user.location[:coordinates] = session[:coordinates].map &:to_f
 
-    if @user.save
+    if verify_recaptcha(model: @user, message: "Robot!!") && @user.save
 
       # Send an email upon signup--will go to Stephen's email because of
 			# Fabricator settings, so comment out until the demo.

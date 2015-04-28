@@ -25,6 +25,7 @@
 # Ignore .DS_Store
 *.DS_Store
 
+# Leave this in until in prodution!
 # Ignore application configuration
-/config/application.yml
+#/config/application.yml
 

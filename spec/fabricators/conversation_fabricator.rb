@@ -11,13 +11,11 @@ Fabricator(:conversation) do
 	# pass a rand count to users and then set a sender in messages; the
 	# receivers will just be everybody else
 	users(count: 3)		{ Fabricate.build(:user) }
+	#transient copy:		[1,2,3]
 
-	# No clue why this stopped working . . . 
-	#owners				{ |attrs| attrs[:users].dup }
-
-	# Pass a block to insert their info into users array
-	#users				{ |attrs| [ attrs[:sender], attrs[:receiver] ] }
-
+	# attrs can't get us into user_ids :(
+	owners(count: 3)	{ Fabricate.build(:user).id }
+	
 	messages(rand: 4)	{ |attrs|
 							x = rand( attrs[:users].length )
 							Fabricate(

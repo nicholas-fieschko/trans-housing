@@ -2,6 +2,7 @@ var infowindow = new google.maps.InfoWindow();
 var userAround = [];
 var curUsers = [];
 var markers = [];
+var yale = new google.maps.LatLng(41.31845, -72.92226);
 
 
 $(document).ready(function() {
@@ -24,7 +25,6 @@ $(document).on('click', '.wizard-back', function(){
 
 function initialize() {
     var initialLocation;
-    var yale = new google.maps.LatLng(41.31845, -72.92226);
     var browserSupportFlag = new Boolean();
     var map_canvas = document.getElementById('map_canvas');
     var map_options = {
@@ -32,6 +32,8 @@ function initialize() {
 	mapTypeId: google.maps.MapTypeId.ROADMAP
     }
 	var map = new google.maps.Map(map_canvas, map_options);
+    initialLocation = yale;
+    map.setCenter(initialLocation);
     // Try W3C Geolocation 
     // (https://developers.google.com/maps/articles/geolocation)
     if (navigator.geolocation) {
@@ -41,7 +43,6 @@ function initialize() {
 							 latitude, position.
 							 coords.longitude);
 		map.setCenter(initialLocation);
-		google.maps.event.trigger(map, "resize");
 		// We want to put a marker on our location
 		var myLatLng = new google.maps.LatLng(initialLocation.lat(), 
 						      initialLocation.lng());
@@ -52,12 +53,12 @@ function initialize() {
 		queryNearbyUsers(initialLocation.lat(), 
 			initialLocation.lng(), map, 1);
 	    },function (){
-			handleNoGeolocation(browerSupportFlag);
+			handleNoGeolocation(browserSupportFlag, map);
 	    });
     }
     else {
 	browserSupportFlag = false;
-	handleNoGeolocation(browserSupportFlag);
+	handleNoGeolocation(browserSupportFlag, map);
     }
 	google.maps.event.addListener(map, 'dragend', function(){
 		var newCenter = map.getCenter();
@@ -119,12 +120,18 @@ function filterCurUser(usrInfo, map) {
 	console.debug(curUsers);
 }
 
-function handleNoGeolocation(errorFlag) {
+function handleNoGeolocation(errorFlag, map) {
     if (errorFlag == true) {
-	alert("Geolocation service failed...");
+	alert("Geolocation service failed...we will put you in Yale");
     } 
-    initialLocation = yale;
-    map.setCenter(initialLocation)
+	var myLatLng = yale;
+	var marker = new google.maps.Marker ({
+		position:myLatLng,
+		map: map,	
+	});
+
+	queryNearbyUsers(myLatLng.lat(),
+	            myLatLng.lng(), map, 1);
 }
 
 function queryNearbyUsers(lat, lng, map, flg) {
@@ -274,9 +281,9 @@ function addMarkers(map, usr) {
 	});
 
 	// This listener doesn't help...
-	google.maps.event.addListener(map, 'click', function(event){
-		infowindow.close();
-	});
+	//google.maps.event.addListener(map, 'click', function(event){
+	//	infowindow.close();
+	//});
 	return marker;
 }
 //   google.maps.event.addDomListener(window, 'load', initialize);

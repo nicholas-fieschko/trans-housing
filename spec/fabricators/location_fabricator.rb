@@ -13,6 +13,8 @@ Fabricator(:location) do
   state                 "Connecticut"     #{ Faker::Address.state }
   country               "USA"           #{ Faker::Address.country }
 
-  coordinates           { [ (rand * 0.3) - 73.1, (rand * 0.2) + 41.3 ] }
+  coordinates           { [ (rand * 1) - 73.1, (rand * 0.2) + 41.3 ] }
+  # Below is Albany...or change it to something else...try to seed twice
+  # using two different coordinate for demo
+  #coordinates           { [ (rand * 1) - 73.76, (rand * 0.3) + 42.65 ] }
 end
-
