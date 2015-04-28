@@ -8,15 +8,37 @@ class LocationsController < ApplicationController
     location = Location.new
 	@nearbyUsers = location.search(params[:loc])
 	if @nearbyUsers
-	  @location = Geokit::Geocoders::GoogleGeocoder.reverse_geocode params[:loc]
-      session[:location] = { zip: @location.zip,
-                             city: @location.street_address + ", " + 
-								   @location.city,
-                             state: @location.state }
-	  session[:coordinates] = params[:loc]
+	  #if @params[:loc].is_a?(Hash)
+	  #	print @params[:loc]
+	  #	@location = Geokit::Geocoders::GoogleGeocoder.reverse_geocode 
+	  #				[(params[:loc][:"0"][0].to_f+params[:loc][:"0"][1].to_f)/2, 
+	  #				(params[:loc][:"1"][0].to_f+params[:loc][:"1"][1].to_f)/2]
+	  #else
+	  	@location = Geokit::Geocoders::GoogleGeocoder.reverse_geocode params[:loc]
+	  #end
+	  # TODO: there should be more checking wrapping around zip/city/state
+	  # or move the checking to model 
+	  if @location && @location.street_address && @location.city
+		  session[:location] = { zip: @location.zip,
+								 city: @location.street_address + ", " + 
+									   @location.city,
+								 state: @location.state }
+		  session[:coordinates] = params[:loc]
+	  else 
+		  session[:location] = { zip: 000000, city: "Unknown Location", 
+								 state: "Unknown"}
+	  end
 
+	  # TODO: can we think of other things to hide?
+	  @usrLogInFlg = 1;
+	  if !signed_in?
+		@idx = 0
+		@usrLogInFlg = 0
+        @nearbyUsers.map{|usr| @idx+=1; usr.name = usr.name[0] + "."; usr._id = @idx }
+      end
 	  render:json => Hash[@nearbyUsers.collect { |v| [v.id, v.as_document.as_json.
-			merge!("location"=> v.location.as_document.as_json)] }]
+			merge!("location"=> v.location.as_document.as_json, 
+				   "loginflag"=> @usrLogInFlg)] }]
 
 	else
 		flash.now[:error] = "Location error..."

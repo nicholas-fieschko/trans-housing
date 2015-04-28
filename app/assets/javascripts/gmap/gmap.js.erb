@@ -40,7 +40,7 @@ function initialize() {
 			map: map,	
 		});
 		queryNearbyUsers(initialLocation.lat(), 
-			initialLocation.lng(), map);
+			initialLocation.lng(), map, 1);
 	    },function (){
 			handleNoGeolocation(browerSupportFlag);
 	    });
@@ -56,7 +56,7 @@ function initialize() {
 			markers[i].setMap(null);
 		}
 		markers = [];
-		queryNearbyUsers(newCenter.lat(), newCenter.lng(), map);
+		queryNearbyUsers(newCenter.lat(), newCenter.lng(), map, 0);
 	});
 }
 
@@ -69,7 +69,7 @@ function handleNoGeolocation(errorFlag) {
     map.setCenter(initialLocation)
 }
 
-function queryNearbyUsers(lat, lng, map) {
+function queryNearbyUsers(lat, lng, map, flg) {
     var url = "/location/posts";
     var loc = { loc: [lat, lng]};
         $.ajax({
@@ -79,8 +79,8 @@ function queryNearbyUsers(lat, lng, map) {
 		dataType: 'json',
 		success: function(data) {
 		    $.each(data, function(k,userInfo) {
-				console.debug(userInfo)
-				addMarkers(map, userInfo)
+				console.debug(userInfo);
+				addMarkers(map, userInfo, flg);
 			});
 		},
 		error: function() {
@@ -89,7 +89,7 @@ function queryNearbyUsers(lat, lng, map) {
 	    });
 	}
 
-function addMarkers(map, usr) {
+function addMarkers(map, usr, flg) {
     // console.log(p)
 	if (usr.is_provider) {
 	    var image = {
@@ -164,16 +164,21 @@ function addMarkers(map, usr) {
 	}
 	
 	// Grabing the number of reviews
-	var number_reviews = "&nbsp&nbsp&nbsp&nbsp" + usr.number_reviews + " Reviews"
+	var number_reviews = "&nbsp&nbsp&nbsp&nbsp" + 
+						  usr.number_reviews + " Reviews"
+
+	var moreinfo_button = '<form id="GetMoreUserInfo" method="get" action="http://localhost:3000/users/' + usr._id.$oid + '"><input type="submit" value="More"></form>'
+	if (usr.loginflag == 0){
+		moreinfo_button = "";
+	}
+
 	var contentString = '<div id="content">'+ 
 
 	'<div id="siteNotice">'+ '</div>'+
 
 	housingIcon + foodIcon + transportationIcon + laundryIcon + showerIcon + buddyIcon + rating +
 
-	'<br>' + usr.name + number_reviews +
-
-	'<form id="GetMoreUserInfo" method="get" action="http://localhost:3000/users/' + usr._id.$oid + '"><input type="submit" value="More"></form>' +
+	'<br>' + usr.name + number_reviews + moreinfo_button + 
 
 	'<div id="bodyContent">' + '<b>' + usr.location.city +
 	'</b></div>'+'</div>' + "</div>" +  "</div>";
@@ -193,8 +198,9 @@ function addMarkers(map, usr) {
 	    // zIndex: parseInt(p[5])
 	});
 
-	markers.push(marker);
-
+	if (flg == 0) {
+		markers.push(marker);
+	}
     google.maps.event.addListener(marker, 'click', function() {
 	    infowindow.close();
 	    infowindow.setContent(contentString);
