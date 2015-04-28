@@ -167,7 +167,7 @@ function addMarkers(map, usr, flg) {
 	var number_reviews = "&nbsp&nbsp&nbsp&nbsp" + 
 						  usr.number_reviews + " Reviews"
 
-	var moreinfo_button = '<form id="GetMoreUserInfo" method="get" action="http://' +  @root  + '/users/' + usr._id.$oid + '"><input type="submit" value="More"></form>'
+	var moreinfo_button = '<form id="GetMoreUserInfo" method="get" action="' +  url_protocol_domain_port()   + '/users/' + usr._id.$oid + '"><input type="submit" value="More"></form>'
 	if (usr.loginflag == 0){
 		moreinfo_button = "";
 	}
@@ -211,3 +211,12 @@ google.maps.event.addListener(window, 'click', function() {
 	infowindow.close();
     });
 //   google.maps.event.addDomListener(window, 'load', initialize);
+
+
+
+function url_protocol_domain_port() {
+	var url = window.location.href;
+	var arr = url.split("/");
+	var result = arr[0] + "//" + arr[2];
+	return result;
+}
