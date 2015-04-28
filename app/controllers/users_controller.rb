@@ -20,7 +20,19 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
     @user.location[:coordinates] = session[:coordinates].map &:to_f
 
+   
+    
     if verify_recaptcha(model: @user, message: "Robot!!") && @user.save
+
+       # Iff phone # given, make sure it's correct (but let continue)
+      if @user.contact[:phone]
+        @user.contact[:phone] = GlobalPhone.normalize(@user.contact[:phone])
+        @phone = @user.contact[:phone]
+        if !GlobalPhone.validate(@phone)
+          # Put in flash alert about invalid United States phone #
+          flash[:error] = "Invalid US (+1) phone number"
+        end
+      end
 
       # Send an email upon signup--will go to Stephen's email because of
 			# Fabricator settings, so comment out until the demo.
@@ -30,6 +42,7 @@ class UsersController < ApplicationController
 
       redirect_to @user
     else
+      # Put in a flash alert with the captcha error message
       render 'new'
     end
   end

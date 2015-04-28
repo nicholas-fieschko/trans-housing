@@ -1,5 +1,6 @@
 module ApplicationHelper
 
+
   def full_title(page_title)
     base_title = "TransHousing"
     if page_title.blank?

@@ -4,7 +4,6 @@ class User
   include Mongoid::Attributes::Dynamic
   include ActiveModel::SecurePassword
 
-
   field :name,                              type: String
   field :is_provider,                       type: Boolean
 
