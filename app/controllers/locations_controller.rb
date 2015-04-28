@@ -27,6 +27,7 @@ class LocationsController < ApplicationController
 	  else 
 		  session[:location] = { zip: 000000, city: "Unknown Location", 
 								 state: "Unknown"}
+		  session[:coordinates] = [-72.9267, 41.3111]
 	  end
 
 	  # TODO: can we think of other things to hide?
