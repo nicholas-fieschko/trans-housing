@@ -17,7 +17,7 @@ Rails.application.routes.draw do
 	resources :users do
     resources :reviews, only: [:edit, :update, :show]
     resources :requests
-		resources :conversations, except: :edit, path: 'mail'
+		resources :conversations, path: 'mail'
   end
 
 
@@ -27,6 +27,7 @@ Rails.application.routes.draw do
   match '/signout',			to: 'sessions#destroy',			via: 'delete'
 
   match '/location/posts',	to: 'locations#search',			via: 'post'   
+  #match '/location/posts_range', to: 'location#search_range', via: 'post'
   
 
   match '/dashboard', to: 'users#dashboard',    via: 'get'

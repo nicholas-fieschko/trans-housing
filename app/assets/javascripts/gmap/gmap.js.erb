@@ -1,4 +1,5 @@
 var infowindow = new google.maps.InfoWindow();
+var markers = [];
 
 $(document).ready(function() {
 	var url = "/location/posts"
@@ -39,9 +40,9 @@ function initialize() {
 			map: map,	
 		});
 		queryNearbyUsers(initialLocation.lat(), 
-			initialLocation.lng(), map);
+			initialLocation.lng(), map, 1);
 	    },function (){
-		handleNoGeolocation(browerSupportFlag);
+			handleNoGeolocation(browerSupportFlag);
 	    });
     }
     else {
@@ -51,7 +52,11 @@ function initialize() {
 	google.maps.event.addListener(map, 'dragend', function(){
 		var newCenter = map.getCenter();
 		console.debug(newCenter);
-		queryNearbyUsers(newCenter.lat(), newCenter.lng());
+		for (var i = 0; i < markers.length; i++) {
+			markers[i].setMap(null);
+		}
+		markers = [];
+		queryNearbyUsers(newCenter.lat(), newCenter.lng(), map, 0);
 	});
 }
 
@@ -64,7 +69,7 @@ function handleNoGeolocation(errorFlag) {
     map.setCenter(initialLocation)
 }
 
-function queryNearbyUsers(lat, lng, map) {
+function queryNearbyUsers(lat, lng, map, flg) {
     var url = "/location/posts";
     var loc = { loc: [lat, lng]};
         $.ajax({
@@ -74,8 +79,8 @@ function queryNearbyUsers(lat, lng, map) {
 		dataType: 'json',
 		success: function(data) {
 		    $.each(data, function(k,userInfo) {
-				console.debug(userInfo)
-				addMarkers(map, userInfo)
+				console.debug(userInfo);
+				addMarkers(map, userInfo, flg);
 			});
 		},
 		error: function() {
@@ -84,7 +89,7 @@ function queryNearbyUsers(lat, lng, map) {
 	    });
 	}
 
-function addMarkers(map, usr) {
+function addMarkers(map, usr, flg) {
     // console.log(p)
 	if (usr.is_provider) {
 	    var image = {
@@ -119,25 +124,25 @@ function addMarkers(map, usr) {
 	var showerIcon="";
 
 	if (usr.food_resource.currently_offered) {
-		foodIcon = '<i class="fa fa-cutlery fa-lg"></i>'
+		foodIcon = '<i class="fa fa-cutlery fa-lg" title="Food"></i>'
 	}
 	if (usr.buddy_resource.currently_offered) {
-		buddyIcon = '<i class="fa fa-users fa-lg"></i>'
+		buddyIcon = '<i class="fa fa-users fa-lg" title="Buddy"></i>'
 	}
     if (usr.housing_resource.currently_offered) {
-		housingIcon = '<i class="fa fa-bed fa-lg"></i>'
+		housingIcon = '<i class="fa fa-bed fa-lg" title="Housing"></i>'
 	}
     if (usr.transportation_resource.currently_offered){
-		transportationIcon = '<i class="fa fa-car fa-lg"></i>'
+		transportationIcon = '<i class="fa fa-car fa-lg" title="Transportation"></i>'
 	}
 	if (usr.misc && usr.misc_resource.currently_offered) {
-		miscIcon = '<i class="fa fa-plus fa-lg"></i>'
+		miscIcon = '<i class="fa fa-plus fa-lg" title="Miscellaneous"></i>'
 	}
 	if (usr.laundry_resource.currently_offered) {
-		laundryIcon = '<i class="fa fa-tags fa-lg"></i>'
+		laundryIcon = '<i class="fa fa-tags fa-lg" title="Laundry"></i>'
 	}
 	if (usr.shower_resource.currently_offered) {
-		showerIcon = '<i class="fa fa-street-view fa-lg"></i>'
+		showerIcon = '<i class="fa fa-street-view fa-lg" title="Shower"></i>'
 	}
 
 	var averageRating = usr.average_rating;
@@ -159,27 +164,31 @@ function addMarkers(map, usr) {
 	}
 	
 	// Grabing the number of reviews
-	var number_reviews = "&nbsp&nbsp&nbsp&nbsp" + usr.number_reviews + " Reviews"
+	var number_reviews = "&nbsp&nbsp&nbsp&nbsp" + 
+						  usr.number_reviews + " Reviews"
+
+	var moreinfo_button = '<form id="GetMoreUserInfo" method="get" action="http://localhost:3000/users/' + usr._id.$oid + '"><input type="submit" value="More"></form>'
+	if (usr.loginflag == 0){
+		moreinfo_button = "";
+	}
+
 	var contentString = '<div id="content">'+ 
 
 	'<div id="siteNotice">'+ '</div>'+
 
 	housingIcon + foodIcon + transportationIcon + laundryIcon + showerIcon + buddyIcon + rating +
 
-	'<br>' + usr.name + number_reviews +
-
-	'<form id="GetMoreUserInfo" method="get" action="http://localhost:3000/users/' + usr._id.$oid + '"><input type="submit" value="More"></form>' +
+	'<br>' + usr.name + number_reviews + moreinfo_button + 
 
 	'<div id="bodyContent">' + '<b>' + usr.location.city +
 	'</b></div>'+'</div>' + "</div>" +  "</div>";
-
 
     //      var infowindow = new google.maps.InfoWindow({
     //            content: contentString
     //        });
     
-    var myLatLng = new google.maps.LatLng(usr.location.c[0], usr.location.c[1]);
-	console.debug(myLatLng);
+    var myLatLng = new google.maps.LatLng(usr.location.c[1], usr.location.c[0]);
+	// console.debug(myLatLng);
     var marker = new google.maps.Marker({
 	    position: myLatLng,
 	    icon: image,
@@ -188,12 +197,15 @@ function addMarkers(map, usr) {
 	    //      shape: shape
 	    // zIndex: parseInt(p[5])
 	});
+
+	if (flg == 0) {
+		markers.push(marker);
+	}
     google.maps.event.addListener(marker, 'click', function() {
 	    infowindow.close();
 	    infowindow.setContent(contentString);
 	    infowindow.open(map,marker);
 	});
-
 }
 google.maps.event.addListener(window, 'click', function() {
 	infowindow.close();
