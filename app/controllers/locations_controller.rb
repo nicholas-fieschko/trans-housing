@@ -23,7 +23,7 @@ class LocationsController < ApplicationController
 								 city: @location.street_address + ", " + 
 									   @location.city,
 								 state: @location.state }
-		  session[:coordinates] = params[:loc]
+		  session[:coordinates] = params[:loc].reverse
 	  else 
 		  session[:location] = { zip: 000000, city: "Unknown Location", 
 								 state: "Unknown"}
