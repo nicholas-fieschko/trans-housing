@@ -1,0 +1,283 @@
+var infowindow = new google.maps.InfoWindow();
+var userAround = [];
+var curUsers = [];
+var markers = [];
+
+
+$(document).ready(function() {
+	var url = "/location/posts"
+	initialize();
+});
+
+$(document).on('click', '.wizard-forward', function(){
+	var center = map.getCenter();
+	google.maps.event.trigger(map, "resize");
+	map.setCenter(center);
+});
+
+
+function initialize() {
+    var initialLocation;
+    var yale = new google.maps.LatLng(41.31845, -72.92226);
+    var browserSupportFlag = new Boolean();
+    var map_canvas = document.getElementById('map_canvas');
+    var map_options = {
+	zoom: 14,	  
+	mapTypeId: google.maps.MapTypeId.ROADMAP
+    }
+	var map = new google.maps.Map(map_canvas, map_options);
+    // Try W3C Geolocation 
+    // (https://developers.google.com/maps/articles/geolocation)
+    if (navigator.geolocation) {
+	browserSupportFlag = true;
+	navigator.geolocation.getCurrentPosition(function(position) {
+		initialLocation = new google.maps.LatLng(position.coords.
+							 latitude, position.
+							 coords.longitude);
+		map.setCenter(initialLocation);
+		google.maps.event.trigger(map, "resize");
+		// We want to put a marker on our location
+		var myLatLng = new google.maps.LatLng(initialLocation.lat(), 
+						      initialLocation.lng());
+		var marker = new google.maps.Marker ({
+			position:myLatLng,
+			map: map,	
+		});
+		queryNearbyUsers(initialLocation.lat(), 
+			initialLocation.lng(), map, 1);
+	    },function (){
+			handleNoGeolocation(browerSupportFlag);
+	    });
+    }
+    else {
+	browserSupportFlag = false;
+	handleNoGeolocation(browserSupportFlag);
+    }
+	google.maps.event.addListener(map, 'dragend', function(){
+		var newCenter = map.getCenter();
+		queryNearbyUsers(newCenter.lat(), newCenter.lng(), map, 0);
+	});
+}
+
+function filterCurUser(usrInfo, map) {
+	var curUsersKeep = []
+	var newUsers = []
+	var newM = []
+	var templist = []
+	var templist2 = []
+	for (var i = 0; i < usrInfo.length; i++) {
+		for (var j=0; j < curUsers.length; j++) {
+			// Move to keep list of current markers
+			if (usrInfo[i]._id.$oid == curUsers[j]) {
+				curUsersKeep.push(j);
+				templist.push(curUsers[j]);
+				break;
+			}
+		}
+		
+		if (j >= curUsers.length){
+			for (var k=0; k < userAround.length; k++) {
+				if (usrInfo[i]._id.$oid == userAround[k]) {
+					break;
+				}
+			}
+			// Only add if it is not in the keep list either
+			if (k >= userAround.length) {
+				newUsers.push(usrInfo[i]._id.$oid);
+				console.debug(usrInfo[i]);
+				var newMarker = addMarkers(map, usrInfo[i]);
+				newM.push(newMarker);
+			}
+		}
+	}
+
+	console.debug(newM);	
+	var newmarkerlist = []
+	for (var i = 0; i < markers.length; i++) {
+		// Check if it is in the keeping list
+		for (var j = 0; j < curUsersKeep.length; j++) {
+			if (curUsersKeep[j] == i) {
+				newmarkerlist.push(markers[i]);
+				templist2.push(templist[j]);
+				break;
+			}
+		}
+		if (j >= curUsersKeep.length) {
+			markers[i].setMap(null);
+		}
+	}
+	curUsers = templist2.concat(newUsers);
+	markers = newmarkerlist.concat(newM);
+	console.debug(curUsers);
+}
+
+function handleNoGeolocation(errorFlag) {
+    if (errorFlag == true) {
+	alert("Geolocation service failed...");
+    } 
+    initialLocation = yale;
+    map.setCenter(initialLocation)
+}
+
+function queryNearbyUsers(lat, lng, map, flg) {
+    var url = "/location/posts";
+    var loc = { loc: [lat, lng]};
+        $.ajax({
+		type: "POST",
+		url: url,
+		data: loc,
+		dataType: 'json',
+		success: function(data) {
+			var curUsr = [];
+		    $.each(data, function(k,userInfo) {
+				console.debug(userInfo);
+				if (flg == 1) {
+					userAround.push(userInfo._id.$oid);
+					addMarkers(map,userInfo);
+					curUsers = userAround;
+				}
+				else {
+					curUsr.push(userInfo)
+				}
+			});
+			if (flg == 0) {
+				filterCurUser(curUsr,map);
+			}
+		},
+		error: function() {
+		    console.error("Ajax error!")
+			}
+	    });
+	}
+
+function addMarkers(map, usr) {
+    // console.log(p)
+	if (usr.is_provider) {
+	    var image = {
+		size: new google.maps.Size(32, 32),
+		url: "<%= asset_path 'house_opt.png' %>",
+		// icon: '/images/house.png',
+		origin: new google.maps.Point(0, 0),
+		anchor: new google.maps.Point(12,12)
+                };
+        }
+    
+	else {
+	    var image = {
+		url: "<%= asset_path 'people_opt.png' %>",
+		size: new google.maps.Size(32, 45),
+		origin: new google.maps.Point(0, 0),
+		anchor: new google.maps.Point(12,12)
+                };    
+        }
+    var shape = {
+	coords: [1, 1, 1, 20, 18, 18, 1], 
+	type: 'poly'
+    };
+
+
+	var foodIcon="";
+	var buddyIcon="";
+	var housingIcon="";
+	var transportationIcon="";
+	var miscIcon="";
+	var laundryIcon="";
+	var showerIcon="";
+
+	if (usr.food_resource.currently_offered) {
+		foodIcon = '<i class="fa fa-cutlery fa-lg" title="Food"></i>'
+	}
+	if (usr.buddy_resource.currently_offered) {
+		buddyIcon = '<i class="fa fa-users fa-lg" title="Buddy"></i>'
+	}
+    if (usr.housing_resource.currently_offered) {
+		housingIcon = '<i class="fa fa-bed fa-lg" title="Housing"></i>'
+	}
+    if (usr.transportation_resource.currently_offered){
+		transportationIcon = '<i class="fa fa-car fa-lg" title="Transportation"></i>'
+	}
+	if (usr.misc && usr.misc_resource.currently_offered) {
+		miscIcon = '<i class="fa fa-plus fa-lg" title="Miscellaneous"></i>'
+	}
+	if (usr.laundry_resource.currently_offered) {
+		laundryIcon = '<i class="fa fa-tags fa-lg" title="Laundry"></i>'
+	}
+	if (usr.shower_resource.currently_offered) {
+		showerIcon = '<i class="fa fa-street-view fa-lg" title="Shower"></i>'
+	}
+
+	var averageRating = usr.average_rating;
+	var counter = 0;
+	var rating = "&nbsp&nbsp&nbsp&nbsp"
+
+	while (averageRating > 0.67) {
+		rating += '<i class="fa fa-star" fa-lg></i>'
+		counter++;
+		averageRating--;
+	}
+	if (averageRating > 0.33) {
+		rating += '<i class="fa fa-star-half-o" fa-lg></i>'
+		counter++;
+	}
+    while (counter< 5) {
+		rating += '<i class="fa fa-star-o" fa-lg></i>'
+		counter++;
+	}
+	
+	// Grabing the number of reviews
+	var number_reviews = "&nbsp&nbsp&nbsp&nbsp" + 
+						  usr.number_reviews + " Reviews"
+
+	var moreinfo_button = '<form id="GetMoreUserInfo" method="get" action="' +  url_protocol_domain_port()   + '/users/' + usr._id.$oid + '"><input type="submit" value="More"></form>'
+	if (usr.loginflag == 0){
+		moreinfo_button = "";
+	}
+
+	var contentString = '<div id="content">'+ 
+
+	'<div id="siteNotice">'+ '</div>'+
+
+	housingIcon + foodIcon + transportationIcon + laundryIcon + showerIcon + buddyIcon + rating +
+
+	'<br>' + usr.name + number_reviews + moreinfo_button + 
+
+	'<div id="bodyContent">' + '<b>' + usr.location.city +
+	'</b></div>'+'</div>' + "</div>" +  "</div>";
+
+    //      var infowindow = new google.maps.InfoWindow({
+    //            content: contentString
+    //        });
+    
+    var myLatLng = new google.maps.LatLng(usr.location.c[1], usr.location.c[0]);
+	// console.debug(myLatLng);
+    var marker = new google.maps.Marker({
+	    position: myLatLng,
+	    icon: image,
+	    map: map,
+	    title: usr.name,
+	    //      shape: shape
+	    // zIndex: parseInt(p[5])
+	});
+
+    google.maps.event.addListener(marker, 'click', function() {
+	    infowindow.close();
+	    infowindow.setContent(contentString);
+	    infowindow.open(map,marker);
+	});
+
+	// This listener doesn't help...
+	google.maps.event.addListener(map, 'click', function(event){
+		infowindow.close();
+	});
+	return marker;
+}
+//   google.maps.event.addDomListener(window, 'load', initialize);
+
+
+
+function url_protocol_domain_port() {
+	var url = window.location.href;
+	var arr = url.split("/");
+	var result = arr[0] + "//" + arr[2];
+	return result;
+}
