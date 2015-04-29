@@ -16,19 +16,22 @@ class LocationsController < ApplicationController
 	if params[:iniflag] == "1" && 
 		session[:location] && session[:location]["state"] != "Unknown"
 		if session[:coordinate]
-			@nearbyUsers = location.search(session[:coordinate].reverse, filters_array)
+			@nearbyUsers = location.search(session[:coordinate].reverse, 
+											filters_array, params[:zoom])
 		else 
 			@cor = Geokit::Geocoders::GoogleGeocoder.geocode(
 				session[:location]["city"] + session[:location]["state"])
 			if @cor.success
 				session[:coordinate] = [@cor.lng, @cor.lat]
-				@nearbyUsers = location.search(session[:coordinate], filters_array)
+				@nearbyUsers = location.search(session[:coordinate], 
+												filters_array, params[:zoom])
 			else 
-				@nearbyUsers = location.search(params[:loc], filters_array)
+				@nearbyUsers = location.search(params[:loc], 
+												filters_array, params[:zoom])
 			end
 		end
 	else
-		@nearbyUsers = location.search(params[:loc], filters_array)
+		@nearbyUsers = location.search(params[:loc], filters_array, params[:zoom])
 	end
 
 	if @nearbyUsers
@@ -63,6 +66,7 @@ class LocationsController < ApplicationController
 		@idx = 0
 		@usrLogInFlg = 0
 		# We need unique ids....so keep user id exposed...
+		# can use a hash function in the future
         @nearbyUsers.map{|usr| usr.name = usr.name[0] + "." }
       end
 	  @returnArray = @nearbyUsers.collect { |v| [v.id, v.as_document.as_json.
@@ -87,6 +91,4 @@ class LocationsController < ApplicationController
 	def filters_array
   		cookies[:filters] ? cookies[:filters].split(",") : []
 	end
-
-
 end

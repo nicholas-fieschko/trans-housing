@@ -20,13 +20,16 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
+	session[:location] = @user.location
 	if session[:location] && session[:location]["city"] != "Unknown Location"
-		session[:coordinates] = Geokit::Geocoders::GoogleGeocoder.geocode(
-			session[:location]["city"])
+		@geokitResult = Geokit::Geocoders::GoogleGeocoder.geocode(
+			session[:location]["city"]+ " " + session[:location]["state"])
+		if @geokitResult.success
+			session[:coordinates] = [@geokitResult.lng, @geokitResult.lat]
+		end
 	end
 
     @user.location[:coordinates] = session[:coordinates].map &:to_f
-
    
     
     if verify_recaptcha(model: @user, message: "Robot!!") && @user.save
