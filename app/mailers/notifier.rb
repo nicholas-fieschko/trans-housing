@@ -44,15 +44,6 @@ class Notifier < ApplicationMailer
 		@message  = message
 		@thread   = message.conversation_id
 
-		# Link sender with rotp counter
-		#secret_key = ROTP::Base32.random_base32
-		#hotp = ROTP::HOTP.new(secret_key)
-
-		# Append to message body
-		#ret_code = @message
-		#ret_code << "Reply by including this code: "
-		#ret_code << hotp.at(0)
-
 		ret_link = user_conversation_path(
 			user_id: @receiver.id.to_s,
 			id: @thread.to_s
