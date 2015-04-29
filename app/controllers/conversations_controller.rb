@@ -82,7 +82,7 @@ class ConversationsController < ApplicationController
 		)
 		
 		# Reset the unread list; add the message; persist
-		@thread.readers = [current_user.id]
+		@thread.readers.push(@receiver)
 		@thread.messages.push(@message)
 		@thread.save
 
