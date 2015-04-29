@@ -19,8 +19,6 @@ gem 'twilio-ruby', '~> 4.0.0'
 gem 'figaro'
 gem 'recaptcha', require: 'recaptcha/rails'
 gem 'globalphone'
-gem 'sanitize'
-gem 'rotp'
 
 gem 'jquery-rails'				 # Use jquery as the JavaScript library
 gem 'jquery-turbolinks'

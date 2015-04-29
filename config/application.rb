@@ -27,6 +27,14 @@ module TransHousing
     # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
+
+    # Change root_url to the Heroku site
+    # Need to run RAILS_ENV=production in Heroku's config
+    if Rails.env.production?
+      config.action_controller.default_url_options host: ENV['heroku_app']
+      config.action_mailer.default_url_options host: ENV['heroku_app']
+    end
+
     config.generators do |g|
       g.test_framework      :rspec, fixture: true
       g.fixture_replacement :fabrication

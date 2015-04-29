@@ -54,9 +54,10 @@ class UsersController < ApplicationController
         end
       end
 
-      # Send an email upon signup--will go to Stephen's email because of
-			# Fabricator settings, so comment out until the demo.
-      # Notifier.welcome(@user).deliver
+      # Send a welcome email if we're in production
+			if Rails.env.production?
+        Notifier.welcome(@user).deliver
+      end
 
       sign_in @user
 
