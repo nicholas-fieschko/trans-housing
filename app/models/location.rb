@@ -29,8 +29,10 @@ class Location
   end
 	
 
-  def search(query, filters)
-  	@distance = 5
+  def search(query, filters, zoomlevel)
+    # Little hack here...should use lnglatRange() 
+    @zoom = zoomlevel.to_i
+  	@distance = 2*(2**(15-@zoom))
   	if query
   		nearbyUsers = Location.where("coordinates" => {
                 			"$nearSphere" => {"$geometry" => {

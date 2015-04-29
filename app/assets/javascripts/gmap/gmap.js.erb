@@ -60,6 +60,10 @@ function initialize() {
 		var newCenter = map.getCenter();
 		queryNearbyUsers(newCenter.lat(), newCenter.lng(), map, 0);
 	});
+	google.maps.event.addListener(map, 'zoom_changed', function() {
+		var newCenter = map.getCenter();
+		queryNearbyUsers(newCenter.lat(), newCenter.lng(), map, 0);
+	});
 }
 
 // TODO: improvement
@@ -135,9 +139,10 @@ function handleNoGeolocation(errorFlag, map) {
 	            myLatLng.lng(), map, 1);
 }
 
-function queryNearbyUsers(lat, lng, map, flg) {
+function queryNearbyUsers(lat, lng, map, flg, zl) {
     var url = "/location/posts";
-    var loc = { loc: [lat, lng], iniflag: flg};
+	var zoomlevel = map.getZoom();
+    var loc = { loc: [lat, lng], iniflag: flg, zoom: zoomlevel};
         $.ajax({
 		type: "POST",
 		url: url,
