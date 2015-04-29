@@ -2,7 +2,14 @@ class LocationsController < ApplicationController
   include Geokit::Geocoders
 
   def index
+  	@all_user_type_filters = User.all_user_type_filters
+  	@all_resource_filters = User.all_resource_filters
+  	if !cookies[:filters] 
+  		save_filters(@all_user_type_filters + @all_resource_filters)
+  	end
+  	@filters = filters_array
   end
+
 
   def search
     location = Location.new
@@ -45,4 +52,14 @@ class LocationsController < ApplicationController
 		flash.now[:error] = "Location error..."
 	end			 	
   end
+
+  private
+  	def save_filters(filters)
+  		cookies.permanent[:filters] = (filters.class == Array) ? filters.join(',') : ''
+	end
+
+	def filters_array
+  		cookies[:filters] ? cookies[:filters].split(",") : []
+	end
+
 end

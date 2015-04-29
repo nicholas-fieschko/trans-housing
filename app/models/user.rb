@@ -131,6 +131,14 @@ class User
     self.contact.phone
   end
 
+  def self.all_user_type_filters
+    return ['provider','seeker']
+  end
+
+  def self.all_resource_filters
+    return ['housing','laundry','food','buddy','shower','transportation','misc']
+  end
+
   # Retrieve whether or not a user has enabled receipt of 
   # new message notifications by text message.
   # Default is false. 
