@@ -13,7 +13,7 @@ class LocationsController < ApplicationController
 
   def search
     location = Location.new
-	if params[:iniflag] == "1" && 
+	if params[:iniflag] == "2" && 
 		session[:location] && session[:location]["state"] != "Unknown"
 		if session[:coordinate]
 			@nearbyUsers = location.search(session[:coordinate].reverse, filters_array)
