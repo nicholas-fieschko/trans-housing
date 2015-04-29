@@ -1,4 +1,6 @@
 class UsersController < ApplicationController
+	include Geokit::Geocoders
+	
   def new
     if signed_in?
       redirect_to root_url
@@ -18,6 +20,11 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
+	if session[:location] && session[:location]["city"] != "Unknown Location"
+		session[:coordinates] = Geokit::Geocoders::GoogleGeocoder.geocode(
+			session[:location]["city"])
+	end
+
     @user.location[:coordinates] = session[:coordinates].map &:to_f
 
    
