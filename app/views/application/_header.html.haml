@@ -15,6 +15,9 @@
           = link_to user_conversations_path(current_user) do
             = icon 'fa fa-lg fa-envelope-o'
         %li.pure-menu-item
+          = link_to '/dashboard' do
+            = icon 'fa fa-lg fa-briefcase'
+        %li.pure-menu-item
           = link_to "Sign out", signout_path, method: "delete", id: 'sign-out-button', class: "btn btn-header btn-sign-out"
       - else                             
         - # Signed in user Navbar

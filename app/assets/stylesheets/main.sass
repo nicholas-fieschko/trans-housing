@@ -31,6 +31,8 @@ $error-red:           #E74C3C
     @content
   &:-ms-input-placeholder 
     @content
+li
+  list-style: none
 
 li.pure-menu-item
   margin:             0px 3px
@@ -49,7 +51,6 @@ header
   color:              $trans-blue
 #logo-trans
   color:              $trans-pink
-
 
 h2
   font-size:          1.5em
@@ -145,6 +146,16 @@ select
   vertical-align:     middle
   padding:            .5em .6em
 
+.control-label
+  width:             25%
+  text-align: right
+  padding-right: 2em
+  vertical-align: super
+
+.pure-form-aligned input.input-field[type]
+  width:             50%
+
+
 .notice-container
   padding:            15px
   text-align:         center
@@ -178,6 +189,19 @@ span.notice-text
   background-color:   white
   padding:            20px
   overflow:           auto
+  height:             100%
+
+#profile-page
+  text-align:         left
+
+#profile-left-column
+  text-align:         center
+
+#profile-right-column
+  padding-left:       2.5em
+
+#profile-bottom-section
+  text-align:         center
 
 .user-rating,.user-name
   float: left
@@ -189,8 +213,8 @@ span.notice-text
   clear: both
 
 .user-resources
-  float: left
-  clear: both
+  // float: left
+  // clear: both
 
 #request-help-button
   float: right
@@ -314,6 +338,17 @@ div fieldset
   margin:             0
   margin-top:         10px
 
+.pure-form input[type=radio]
+  width:              inherit !important
+
+.pure-form input[type=radio] ~ label
+  padding: .5em
+  vertical-align: super
+
+.pure-form input[type=submit]
+  width:              inherit !important
+  border:             inherit !important
+
 
 
 
@@ -333,6 +368,7 @@ div fieldset
   border-color:       $light-trans-pink
   border-style:       solid
   border-width:       2em
+  overflow:           auto
 
 
 .map-bg
@@ -373,3 +409,11 @@ html,body
 #message-reply
   width: 70%
   margin: 30px
+
+
+#thread-delete-button
+  color: $error-red
+  font-size: 1em
+  background-color: white
+  float: right
+  border: none

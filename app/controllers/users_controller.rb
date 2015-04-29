@@ -134,6 +134,7 @@ class UsersController < ApplicationController
         :password, :password_confirmation,
         # gender_attributes:                [:identity, :trans, :cp,
         #                                     :they, :their, :them],
+        extended_profile_attributes:        [:profile_summary],
         contact_attributes:                 [:email, :phone],
         location_attributes:                [:c,:zip,:city,:state],
         food_resource_attributes:           [:currently_offered],

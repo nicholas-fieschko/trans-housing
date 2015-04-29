@@ -8,7 +8,7 @@
         - if !c.deleted_conversation?(current_user)
           %li
           - if c.unread_conversation?(current_user)
-            = "[UNREAD] " 
+            = icon("fa fa-asterisk") 
           = c.print_owners
           = c.subject.to_s
           = link_to 'View >>', user_conversation_path(id: c.id)

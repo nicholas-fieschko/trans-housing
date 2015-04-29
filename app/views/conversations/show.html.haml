@@ -4,7 +4,7 @@
     .sign-up-box.sign-up-column
       =# Deletes must be done with button_to per W3
       = link_to '<< return to inbox', user_conversations_path, id: "inbox-return-link"
-      = button_to('delete this thread', user_conversation_path(id: @thread.id), method: :delete)
+      = button_to 'Delete', user_conversation_path(id: @thread.id), method: :delete, id: "thread-delete-button"
 
       %h1#message-subject #{@thread.subject}
 

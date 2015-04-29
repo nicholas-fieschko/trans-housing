@@ -1,12 +1,10 @@
-Hi, #{@sender.name}!
+%h1 Hi, #{@sender.name}!
 
-%br
+%h2 Please leave a review for #{@receiver.name}.
 
-Please leave a review for #{@receiver.name}.
+%div
+  = link_to("Click here to post your review.", edit_user_review_url(@receiver.id.to_s, @review.id.to_s))
 
-= link_to("Click here", edit_user_review_url(@receiver.id.to_s, @review.id.to_s))
-
-%br
-
-Or navigate your browser to the following URL:
-= edit_user_review_url(@receiver.id.to_s, @review.id.to_s)
+%div
+  Or navigate your browser to the following URL:
+  = edit_user_review_url(@receiver.id.to_s, @review.id.to_s)

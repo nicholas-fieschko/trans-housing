@@ -1,46 +1,51 @@
 .pure-g.login-column
   .pure-u-1-8.side-columns
-    %ul
-      %li Profile
-      %li Notifications
-      %li Security
+    -#%ul.pure-menu-list
+      %li.pure-menu-item Profile - General
+      %li.pure-menu-item Profile - Resources
   .pure-u-3-4.login-box-positioner
     .account-settings-box.account-settings-column
       %h1 Account Settings
-      = simple_form_for @user do |f|
-        = f.input :name
+      = simple_form_for @user, html: {class: "pure-form pure-form-aligned pure-control-group"} do |f|
+        %h2 Edit Profile Summary
+        = f.simple_fields_for :extended_profile do |ep|
+          = ep.input :profile_summary, as: :text, html: {class: "pure-control-group"}
+        %h2 General
+        = f.input :name, html: {class: "pure-control-group"}
         = f.simple_fields_for :contact do |c|
           = c.input :email
           = c.input :phone
-          = f.simple_fields_for :location do |l|
-            = l.input :zip
-            = l.input :city
-            = l.input :state
-            .resource
-            = f.simple_fields_for :food_resource do |fr|
-              %label Food
+        = f.simple_fields_for :location do |l|
+          = l.input :zip
+          = l.input :city
+          = l.input :state
+        %h2 Resources #{@user.seeker? ? "needed" : "offered"}
+        .resource
+          = f.simple_fields_for :food_resource do |fr|
+            %label.control-label.control-label Food
+            %span.collection-wrap
               = fr.collection_radio_buttons :currently_offered, [[true, 'Yes'] ,[false, 'No']],  :first, :last, :checked => [false, 'No']
-            .resource
-            = f.simple_fields_for :shower_resource do |sr|
-              %label A clean shower
-              = sr.collection_radio_buttons :currently_offered, [[true, 'Yes'] ,[false, 'No']], :first, :last, :checked => [false, 'No']
-            .resource
-            = f.simple_fields_for :laundry_resource do |lr|
-              %label Access to a laundry machine
-              = lr.collection_radio_buttons :currently_offered, [[true, 'Yes'] ,[false, 'No']], :first, :last, :checked => [false, 'No']
-            .resource
-            = f.simple_fields_for :housing_resource do |hr|
-              %label Somewhere to sleep
-              = hr.collection_radio_buttons :currently_offered, [[true, 'Yes'] ,[false, 'No']], :first, :last, :checked => [false, 'No']
-            .resource
-            = f.simple_fields_for :transportation_resource do |tr|
-              %label Transportation from place to place
-              = tr.collection_radio_buttons :currently_offered, [[true, 'Yes'] ,[false, 'No']], :first, :last, :checked => [false, 'No']
-            .resource
-            = f.simple_fields_for :buddy_resource do |br|
-              %label A buddy for mentorship and added safety in acquiring resources
-              = br.collection_radio_buttons :currently_offered, [[true, 'Yes'] ,[false, 'No']], :first, :last, :checked => [false, 'No']
-            = f.input :password, label: "Change Password"
-            = f.input :password_confirmation
-            = f.button :submit, value: "Update", class: "wizard-forward"
+        .resource
+          = f.simple_fields_for :shower_resource do |sr|
+            %label.control-label A clean shower
+            = sr.collection_radio_buttons :currently_offered, [[true, 'Yes'] ,[false, 'No']], :first, :last, :checked => [false, 'No']
+        .resource
+          = f.simple_fields_for :laundry_resource do |lr|
+            %label.control-label Access to a laundry machine
+            = lr.collection_radio_buttons :currently_offered, [[true, 'Yes'] ,[false, 'No']], :first, :last, :checked => [false, 'No']
+        .resource
+          = f.simple_fields_for :housing_resource do |hr|
+            %label.control-label Somewhere to sleep
+            = hr.collection_radio_buttons :currently_offered, [[true, 'Yes'] ,[false, 'No']], :first, :last, :checked => [false, 'No']
+        .resource
+          = f.simple_fields_for :transportation_resource do |tr|
+            %label.control-label Transportation from place to place
+            = tr.collection_radio_buttons :currently_offered, [[true, 'Yes'] ,[false, 'No']], :first, :last, :checked => [false, 'No']
+        .resource
+          = f.simple_fields_for :buddy_resource do |br|
+            %label.control-label A buddy for mentorship and added safety in acquiring resources
+            = br.collection_radio_buttons :currently_offered, [[true, 'Yes'] ,[false, 'No']], :first, :last, :checked => [false, 'No']
+          = f.input :password, label: "Change Password"
+          = f.input :password_confirmation
+        = f.button :submit, value: "Update", class: "wizard-forward"
   .pure-u-1-8.side-columns
