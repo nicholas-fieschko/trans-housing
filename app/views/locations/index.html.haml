@@ -1,14 +1,16 @@
-Filter by user type:
-.pure-g
-  .pure-u-1
+.pure-g.filters
+  .pure-u-1-24
+  .pure-u-1-6
+    Filter by user type:
     - @all_user_type_filters.each do |f|
       = f
       = check_box_tag "#{f}", @filters.include?(f), @filters.include?(f), onclick: 'OnFilterChange(this)'
-
+  .pure-u-3-4
     Filter by resource:
     - @all_resource_filters.each do |f|
       = f
       = check_box_tag "#{f}", @filters.include?(f), @filters.include?(f), onclick: 'OnFilterChange(this)'
+  .pure-u-1-24
 
-
+.pure-u-1-4
 #map_canvas
