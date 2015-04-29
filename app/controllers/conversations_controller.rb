@@ -66,7 +66,7 @@ class ConversationsController < ApplicationController
 			Notifier.new_message(sender, receiver, message).deliver
 		end
 		if sender.receives_message_notifs_by_text?
-			#Twilio.new_sms()
+			Notifier.new_sms(sender, receiver, message).deliver
 		end
 	end
 

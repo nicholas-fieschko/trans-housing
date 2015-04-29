@@ -1,3 +1,5 @@
+require 'twilio-ruby'
+
 class Notifier < ApplicationMailer
 
 	# - Sends an email to the user upon signup (set in users_controller)
@@ -16,10 +18,10 @@ class Notifier < ApplicationMailer
 		@receiver = receiver
 		@message  = message
 		mail(
-				to: 	 receiver.contact.email,
-				subject: "[TransHousing] New message from #{sender.name}",
-				text:    message.text
-			)
+			to: 	 receiver.contact.email,
+			subject: "[TransHousing] New message from #{sender.name}",
+			text:    message.text
+		)
 	end
 
 	def new_review(sender, receiver, review)
@@ -27,9 +29,22 @@ class Notifier < ApplicationMailer
 		@receiver = receiver
 		@review   = review
 		mail(
-				to:      "stephen.krewson@gmail.com", 
-				subject: "[TransHousing] Please leave a review for #{receiver.name}",
-			)
+			to:      "stephen.krewson@gmail.com", 
+			subject: "[TransHousing] Please leave a review for #{receiver.name}",
+		)
+	end
+
+	def new_sms(sender, receiver, message)
+		@sender   = sender
+		@receiver = receiver
+		@message  = message
+
+		@client = Twilio::REST::Client.new
+		@client.messages.create(
+			from: ENV['twilio_num'],
+			to:   @receiver.contact.phone,
+			body: @message.text
+		)
 	end
 
 	# - We will need more of these!
