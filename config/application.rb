@@ -39,5 +39,6 @@ module TransHousing
       g.test_framework      :rspec, fixture: true
       g.fixture_replacement :fabrication
     end
+    
   end
 end
