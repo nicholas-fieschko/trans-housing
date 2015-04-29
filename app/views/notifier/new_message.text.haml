@@ -3,13 +3,11 @@ Hi, #{@receiver.name}!
 You have a new message from #{@sender.name}.
 
 ***
-
 #{@message.text}
-
 ***
 
-Click the link to
-= link_to("Reply", host: ENV['heroku_app'], user_conversation_url(user_id: @receiver.id.to_s, id: @thread.to_s))
+Click to
+= link_to("reply", user_conversation_url(user_id: @receiver.id.to_s, id: @thread.to_s))
 
-Visit your 
-= link_to("User Account", host: ENV['heroku_app'], user_url(id: @receiver.id.to_s))
+Visit your
+= link_to("account", user_url(id: @receiver.id.to_s))

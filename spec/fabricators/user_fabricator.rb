@@ -6,6 +6,7 @@ Fabricator(:user) do
   gender                       { Fabricate.build(:binary_gender)              }
   contact                      { Fabricate.build(:contact)                    }
   preference_profile           { Fabricate.build(:preference_profile)         }
+  extended_profile             { Fabricate.build(:extended_profile)           }
 
   password                     "test123"
   password_confirmation        "test123"

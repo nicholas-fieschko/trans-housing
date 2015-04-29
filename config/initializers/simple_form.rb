@@ -84,10 +84,10 @@ SimpleForm.setup do |config|
   # config.collection_value_methods = [ :id, :to_s ]
 
   # You can wrap a collection of radio/check boxes in a pre-defined tag, defaulting to none.
-  # config.collection_wrapper_tag = nil
+  # config.collection_wrapper_tag = :div
 
   # You can define the class to use on all collection wrappers. Defaulting to none.
-  # config.collection_wrapper_class = nil
+  # config.collection_wrapper_class = "collection-wrap"
 
   # You can wrap each item in a collection of radio/check boxes with a tag,
   # defaulting to :span. Please note that when using :boolean_style = :nested,
@@ -102,6 +102,7 @@ SimpleForm.setup do |config|
 
   # You can define the class to use on all labels. Default is nil.
   # config.label_class = nil
+  config.label_class = 'control-label'
 
   # You can define the default class to be used on forms. Can be overriden
   # with `html: { :class }`. Defaulting to none.
@@ -152,7 +153,7 @@ SimpleForm.setup do |config|
   # config.cache_discovery = !Rails.env.development?
 
   # Default class for inputs
-  # config.input_class = nil
+  config.input_class = 'input-field'
 
   # Define the default class of the input wrapper of the boolean input.
   config.boolean_label_class = 'checkbox'

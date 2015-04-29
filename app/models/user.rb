@@ -36,6 +36,7 @@ class User
   accepts_nested_attributes_for  :gender, :contact,
                                  :food_resource, :shower_resource, :laundry_resource,
                                  :housing_resource, :transportation_resource,
+                                 :extended_profile, #:preference_profile,
                                  :buddy_resource, :misc_resource, :location
   validates_presence_of          :gender, :contact, :name,
                                  :food_resource, :shower_resource, :laundry_resource,
@@ -277,6 +278,7 @@ class User
     def initialization
       init_reviews
       self.preference_profile ||= PreferenceProfile.new
+      self.extended_profile ||= ExtendedProfile.new
     end
 
 end
