@@ -20,9 +20,10 @@ class LocationsController < ApplicationController
 				@nearbyUsers = location.search(params[:loc])
 			end
 		end
-		
 	else
 		@nearbyUsers = location.search(params[:loc])
+		print "\nSEARCH DOWN\n"
+		print @nearbyUsers
 	end
 
 	if @nearbyUsers
@@ -36,7 +37,7 @@ class LocationsController < ApplicationController
 	  #end
 	  # TODO: there should be more checking wrapping around zip/city/state
 	  # or move the checking to model 
-	  if not session[:location]
+	  if not session[:location] 
 		if @location && @location.street_address && @location.city
 			session[:location] = { zip: @location.zip,
 								 city: @location.street_address + ", " + 
@@ -56,7 +57,8 @@ class LocationsController < ApplicationController
 	  if !signed_in?
 		@idx = 0
 		@usrLogInFlg = 0
-        @nearbyUsers.map{|usr| @idx+=1; usr.name = usr.name[0] + "."; usr._id = @idx }
+		# We need unique ids....so keep user id exposed...
+        @nearbyUsers.map{|usr| usr.name = usr.name[0] + "." }
       end
 	  @returnArray = @nearbyUsers.collect { |v| [v.id, v.as_document.as_json.
 			merge!("location"=> v.location.as_document.as_json, 
