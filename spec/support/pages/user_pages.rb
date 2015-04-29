@@ -1,4 +1,4 @@
-class SignInPage < SitePrism::Page
+class SignUpPage < SitePrism::Page
   # set_url '/signup'
   # element :name_field,       "#user_name"
   # "#user_gender_attributes_trans_true"
