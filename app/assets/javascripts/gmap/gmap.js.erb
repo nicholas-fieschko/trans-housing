@@ -73,7 +73,7 @@ function filterCurUser(usrInfo, map) {
 	for (var i = 0; i < usrInfo.length; i++) {
 		for (var j=0; j < curUsers.length; j++) {
 			// Move to keep list of current markers
-			if (usrInfo[i]._id == curUsers[j]) {
+			if (usrInfo[i]._id.$oid == curUsers[j]) {
 				curUsersKeep.push(j);
 				templist.push(curUsers[j]);
 				break;
@@ -82,13 +82,13 @@ function filterCurUser(usrInfo, map) {
 		
 		if (j >= curUsers.length){
 			for (var k=0; k < userAround.length; k++) {
-				if (usrInfo[i]._id == userAround[k]) {
+				if (usrInfo[i]._id.$oid == userAround[k]) {
 					break;
 				}
 			}
 			// Only add if it is not in the keep list either
 			if (k >= userAround.length) {
-				newUsers.push(usrInfo[i]._id);
+				newUsers.push(usrInfo[i]._id.$oid);
 				console.debug(usrInfo[i]);
 				var newMarker = addMarkers(map, usrInfo[i]);
 				newM.push(newMarker);
@@ -158,7 +158,7 @@ function queryNearbyUsers(lat, lng, map, flg) {
 				else {
 					console.debug(userInfo);
 					if (flg == 1) {
-						userAround.push(userInfo._id);
+						userAround.push(userInfo._id.$oid);
 						addMarkers(map,userInfo);
 						curUsers = userAround;
 					}

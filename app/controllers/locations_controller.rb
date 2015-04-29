@@ -13,12 +13,10 @@ class LocationsController < ApplicationController
 
   def search
     location = Location.new
-	
-	if session[:iniflag] == 1 && 
+	if params[:iniflag] == "1" && 
 		session[:location] && session[:location]["state"] != "Unknown"
-		print session[:location]["city"]
 		if session[:coordinate]
-			@nearbyUsers = location.search(session[:coordinate], filters_array)
+			@nearbyUsers = location.search(session[:coordinate].reverse, filters_array)
 		else 
 			@cor = Geokit::Geocoders::GoogleGeocoder.geocode(
 				session[:location]["city"] + session[:location]["state"])
@@ -29,9 +27,7 @@ class LocationsController < ApplicationController
 				@nearbyUsers = location.search(params[:loc], filters_array)
 			end
 		end
-		
 	else
-		print "This is using loc"
 		@nearbyUsers = location.search(params[:loc], filters_array)
 	end
 
@@ -46,7 +42,7 @@ class LocationsController < ApplicationController
 	  #end
 	  # TODO: there should be more checking wrapping around zip/city/state
 	  # or move the checking to model 
-	  if not session[:location]
+	  if not session[:location] 
 		if @location && @location.street_address && @location.city
 			session[:location] = { zip: @location.zip,
 								 city: @location.street_address + ", " + 
@@ -60,16 +56,14 @@ class LocationsController < ApplicationController
 		end
 	  end
 
-	  print "\n\n\n\nCOR: "
-	  print session[:coordinates]
-	  print "\n\n\n\n"
 
 	  # TODO: can we think of other things to hide?
 	  @usrLogInFlg = 1;
 	  if !signed_in?
 		@idx = 0
 		@usrLogInFlg = 0
-        @nearbyUsers.map{|usr| @idx+=1; usr.name = usr.name[0] + "."; usr._id = @idx }
+		# We need unique ids....so keep user id exposed...
+        @nearbyUsers.map{|usr| usr.name = usr.name[0] + "." }
       end
 	  @returnArray = @nearbyUsers.collect { |v| [v.id, v.as_document.as_json.
 			merge!("location"=> v.location.as_document.as_json, 

@@ -20,7 +20,7 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
-	if session[:location]["city"] != "Unknown Location"
+	if session[:location] && session[:location]["city"] != "Unknown Location"
 		session[:coordinates] = Geokit::Geocoders::GoogleGeocoder.geocode(
 			session[:location]["city"])
 	end

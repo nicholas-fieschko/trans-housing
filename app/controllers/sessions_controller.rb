@@ -9,13 +9,14 @@ class SessionsController < ApplicationController
       sign_in contact_record.user
       redirect_back_or contact_record.user
     else
-      flash[:error] = 'Entered credentials do not match any registered accounts.'
+      flash.now[:error] = 'Entered credentials do not match any registered accounts.'
       render 'new'
     end
   end
 
   def destroy
     sign_out
+	reset_session
     redirect_to root_url
   end
 

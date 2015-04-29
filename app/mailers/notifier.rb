@@ -11,21 +11,25 @@ class Notifier < ApplicationMailer
 	# - By default, users get sent an email notification on receiving message
 	# - Eventually, we'll have more formal notion of an 'offer'.
 	# - Need to have opt-out logic.
-	def new_message(to, from)
-		@to   = to
-		@from = from
+	def new_message(sender, receiver, message)
+		@sender   = sender
+		@receiver = receiver
+		@message  = message
 		mail(
-				 to: @to.contact.email,
-				 subject: "[TransHousing] New message from #{@from.name}"
-				)
+				to: 	 receiver.contact.email,
+				subject: "[TransHousing] New message from #{sender.name}",
+				text:    message.text
+			)
 	end
 
-
-	def new_review(reviewer, receiver, review)
-		@reviewer = reviewer
+	def new_review(sender, receiver, review)
+		@sender   = sender
 		@receiver = receiver
-		@review = review
-		mail(to: "richang11@gmail.com", subject: "[TransHousing] Please leave a review for #{receiver.name}")
+		@review   = review
+		mail(
+				to:      "stephen.krewson@gmail.com", 
+				subject: "[TransHousing] Please leave a review for #{receiver.name}",
+			)
 	end
 
 	# - We will need more of these!
