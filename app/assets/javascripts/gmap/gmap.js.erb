@@ -300,6 +300,8 @@ function OnFilterChange(filter) {
 		setCookie("filters", delete_from_array(filters, filter.name).toString().replace(/,/g, "%2C"), 7000);
 	}
 
+	queryNearbyUsers(curLat, curLng, map, flg);
+
 }
 
 
