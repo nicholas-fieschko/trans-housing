@@ -67,7 +67,7 @@ class LocationsController < ApplicationController
 		@usrLogInFlg = 0
 		# We need unique ids....so keep user id exposed...
 		# can use a hash function in the future
-        @nearbyUsers.map{|usr| usr.name = usr.name[0] + "." }
+        @nearbyUsers.map{ |usr| usr.name = "Please sign in for details." } #usr.name[0] + "." }
       end
 	  @returnArray = @nearbyUsers.collect { |v| [v.id, v.as_document.as_json.
 			merge!("location"=> v.location.as_document.as_json, 
