@@ -29,6 +29,7 @@ module TransHousing
     # config.i18n.default_locale = :de
 
     # Change root_url to the Heroku site
+    # Need to run RAILS_ENV=production in Heroku's config
     if Rails.env.production?
       config.action_controller.default_url_options host: ENV['heroku_app']
       config.action_mailer.default_url_options host: ENV['heroku_app']
