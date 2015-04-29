@@ -3,16 +3,13 @@ class SessionsController < ApplicationController
   end
 
   def create
-    if params[:session][:username].include? '@'
-      user = Contact.where(email: params[:session][:username].downcase).first.user
+    method = (params[:session][:username].include? '@') ? "email" : "phone"
+    contact_record = Contact.where(method.to_sym => params[:session][:username].downcase).first
+    if contact_record && contact_record.user.authenticate(params[:session][:password])
+      sign_in contact_record.user
+      redirect_back_or contact_record.user
     else
-      user = Contact.where(phone: params[:session][:username].downcase).first.user
-    end
-    if user && user.authenticate(params[:session][:password])
-      sign_in user
-      redirect_back_or user
-    else
-      flash.now[:error] = 'Invalid email/password combination'
+      flash.now[:error] = 'Entered credentials do not match any registered accounts.'
       render 'new'
     end
   end

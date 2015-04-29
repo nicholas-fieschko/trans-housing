@@ -1,30 +1,67 @@
-# IDs of 'edit' form elements.
+class SignInPage < SitePrism::Page
+  # set_url '/signup'
+  # element :name_field,       "#user_name"
+  # element :foo,       "#user_gender_attributes_trans_true"
+  # element :foo,       "#user_gender_attributes_trans_false"
+  # element :foo,       "#user_gender_attributes_identity"
+  # element :foo,       "#user_gender_attributes_cp_false"
+  # element :foo,       "#user_gender_attributes_cp_true"
+  # element :foo,       "#user_gender_attributes_they"
+  # element :foo,       "#user_gender_attributes_their"
+  # element :foo,       "#user_gender_attributes_them"
+  # element :foo,       "#user_contact_attributes_email"
+  # element :foo,       "#user_contact_attributes_phone"
+  # element :foo,       "#user_location_attributes_zip"
+  # element :foo,       "#user_location_attributes_city"
+  # element :foo,       "#user_location_attributes_state"
+  # element :foo,       "#user_is_provider_true"
+  # element :foo,       "#user_is_provider_false"
+  # element :foo,       "#user_food_resource_attributes_currently_offered_true"
+  # element :foo,       "#user_food_resource_attributes_currently_offered_false"
+  # element :foo,       "#user_shower_resource_attributes_currently_offered_true"
+  # element :foo,       "#user_shower_resource_attributes_currently_offered_false"
+  # element :foo,       "#user_laundry_resource_attributes_currently_offered_true"
+  # element :foo,       "#user_laundry_resource_attributes_currently_offered_false"
+  # element :foo,       "#user_housing_resource_attributes_currently_offered_true"
+  # element :foo,       "#user_housing_resource_attributes_currently_offered_false"
+  # element :foo,       "#user_transportation_resource_attributes_currently_offered_true"
+  # element :foo,       "#user_transportation_resource_attributes_currently_offered_false"
+  # element :foo,       "#user_buddy_resource_attributes_currently_offered_true"
+  # element :foo,       "#user_buddy_resource_attributes_currently_offered_false"
+  # element :foo,       "#user_password"
+  # element :foo,       "#user_password_confirmation"
+  # element :foo,       "#submit_signup "
 
-# user_name
-# user_contact_attributes_email
-# user_contact_attributes_phone
-# user_location_attributes_zip
-# user_location_attributes_city
-# user_location_attributes_state
-# user_food_resource_attributes_currently_offered_true
-# user_food_resource_attributes_currently_offered_false
-# user_food_resource_attributes_id
-# user_shower_resource_attributes_currently_offered_true
-# user_shower_resource_attributes_currently_offered_false
-# user_shower_resource_attributes_id
-# user_laundry_resource_attributes_currently_offered_true
-# user_laundry_resource_attributes_currently_offered_false
-# user_laundry_resource_attributes_id
-# user_housing_resource_attributes_currently_offered_true
-# user_housing_resource_attributes_currently_offered_false
-# user_housing_resource_attributes_id
-# user_transportation_resource_attributes_currently_offered_true
-# user_transportation_resource_attributes_currently_offered_false
-# user_transportation_resource_attributes_id
-# user_buddy_resource_attributes_currently_offered_true
-# user_buddy_resource_attributes_currently_offered_false
-# user_buddy_resource_attributes_id
-# user_password
-# user_password_confirmation
-# user_location_attributes_id
-# user_contact_attributes_id 
+class EditProfilePage < SitePrism::Page
+  # set_url_matcher
+  # IDs of 'edit' form elements.
+
+  # element :foo, "#user_name"
+  # element :foo, "#user_contact_attributes_email"
+  # element :foo, "#user_contact_attributes_phone"
+  # element :foo, "#user_location_attributes_zip"
+  # element :foo, "#user_location_attributes_city"
+  # element :foo, "#user_location_attributes_state"
+  # element :foo, "#user_food_resource_attributes_currently_offered_true"
+  # element :foo, "#user_food_resource_attributes_currently_offered_false"
+  # element :foo, "#user_food_resource_attributes_id"
+  # element :foo, "#user_shower_resource_attributes_currently_offered_true"
+  # element :foo, "#user_shower_resource_attributes_currently_offered_false"
+  # element :foo, "#user_shower_resource_attributes_id"
+  # element :foo, "#user_laundry_resource_attributes_currently_offered_true"
+  # element :foo, "#user_laundry_resource_attributes_currently_offered_false"
+  # element :foo, "#user_laundry_resource_attributes_id"
+  # element :foo, "#user_housing_resource_attributes_currently_offered_true"
+  # element :foo, "#user_housing_resource_attributes_currently_offered_false"
+  # element :foo, "#user_housing_resource_attributes_id"
+  # element :foo, "#user_transportation_resource_attributes_currently_offered_true"
+  # element :foo, "#user_transportation_resource_attributes_currently_offered_false"
+  # element :foo, "#user_transportation_resource_attributes_id"
+  # element :foo, "#user_buddy_resource_attributes_currently_offered_true"
+  # element :foo, "#user_buddy_resource_attributes_currently_offered_false"
+  # element :foo, "#user_buddy_resource_attributes_id"
+  # element :foo, "#user_password"
+  # element :foo, "#user_password_confirmation"
+  # element :foo, "#user_location_attributes_id"
+  # element :foo, "#user_contact_attributes_id "
+end

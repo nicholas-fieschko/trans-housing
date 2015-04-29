@@ -18,6 +18,7 @@ gem 'mailgun-ruby', '~> 1.0.2', require: 'mailgun'
 gem 'twilio-ruby', '~> 4.0.0'
 gem 'figaro'
 gem 'recaptcha', require: 'recaptcha/rails'
+gem 'globalphone'
 
 gem 'jquery-rails'				 # Use jquery as the JavaScript library
 gem 'jquery-turbolinks'

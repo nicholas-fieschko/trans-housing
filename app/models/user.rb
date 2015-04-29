@@ -4,7 +4,6 @@ class User
   include Mongoid::Attributes::Dynamic
   include ActiveModel::SecurePassword
 
-
   field :name,                              type: String
   field :is_provider,                       type: Boolean
 
@@ -14,7 +13,7 @@ class User
   has_one    :location,                     dependent: :delete
 
   embeds_one :preference_profile
-  # embeds_one :extended_profile
+  embeds_one :extended_profile
 
   embeds_one :food_resource
   embeds_one :shower_resource
@@ -124,6 +123,14 @@ class User
     self.preference_profile
   end
 
+  def email
+    self.contact.email
+  end
+
+  def phone
+    self.contact.phone
+  end
+
   # Retrieve whether or not a user has enabled receipt of 
   # new message notifications by text message.
   # Default is false. 
@@ -186,66 +193,66 @@ class User
     Digest::SHA1.hexdigest(token.to_s)
   end
 
-  def self.search(search)
-    if search
-      any_of({name: /#{search}/i}, {city: /#{search}/i})
-    else
-      self.all.to_a
-    end
-  end
+  # def self.search(search)
+  #   if search
+  #     any_of({name: /#{search}/i}, {city: /#{search}/i})
+  #   else
+  #     self.all.to_a
+  #   end
+  # end
 
-  def self.numerical_options
-    ["1","2","3","4","5","6","7","8","9","10"]
-  end
+  # def self.numerical_options
+  #   ["1","2","3","4","5","6","7","8","9","10"]
+  # end
 
-  def self.resources_list
-    ["Housing",
-     "Food",
-     "Shower",
-     "Laundry",
-     "Transportation",
-     "Misc"]
-  end
+  # def self.resources_list
+  #   ["Housing",
+  #    "Food",
+  #    "Shower",
+  #    "Laundry",
+  #    "Transportation",
+  #    "Misc"]
+  # end
 
-  def self.integer_from_options_list(options_list)
-    # convert options list given by radio buttons into one-hot integer
-    resources = 0;
-    if options_list
-      options_list.each do |option|
-        resources += 2 ** option.to_i
-      end
-    end
+  # def self.integer_from_options_list(options_list)
+  #   # convert options list given by radio buttons into one-hot integer
+  #   resources = 0;
+  #   if options_list
+  #     options_list.each do |option|
+  #       resources += 2 ** option.to_i
+  #     end
+  #   end
 
-    resources
-  end
+  #   resources
+  # end
 
-  def self.find_with_filters(filters)
+  # def self.find_with_filters(filters)
 
-    filtered_users = User.all
+  #   filtered_users = User.all
 
-    # if filters[:city] && filters[:city].length > 0
-    #   filtered_users = filtered_users.near(filters[:city], 30)
-    # end
+  #   # if filters[:city] && filters[:city].length > 0
+  #   #   filtered_users = filtered_users.near(filters[:city], 30)
+  #   # end
 
-    if filters[:resources]
-      resources = User.integer_from_options_list(filters[:resources])
-      # filtered_users = filtered_users.where({"resources & ? = ?", resources, resources})
-    end
+  #   if filters[:resources]
+  #     resources = User.integer_from_options_list(filters[:resources])
+  #     # filtered_users = filtered_users.where({"resources & ? = ?", resources, resources})
+  #   end
 
-    filtered_users
-  end
+  #   filtered_users
+  # end
 
-  def set_resources_from_options_list!(options_list)
-    self.resources = User.integer_from_options_list(options_list)
-  end
+  # def set_resources_from_options_list!(options_list)
+  #   self.resources = User.integer_from_options_list(options_list)
+  # end
 
-  def boolean_array_from_resources_integer
-    [].tap do |resources_list|
-      User.resources_list.length.times do |order|
-        resources_list << (self.resources & 2 ** order > 0)
-      end
-    end
-  end
+  # def boolean_array_from_resources_integer
+  #   [].tap do |resources_list|
+  #     User.resources_list.length.times do |order|
+  #       resources_list << (self.resources & 2 ** order > 0)
+  #     end
+  #   end
+  # end
 
     private
 

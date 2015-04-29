@@ -49,9 +49,15 @@ RSpec.feature "Sign In", :type => :feature do
       @signin_page.password_field.set "wrong! #{@password}"
       @signin_page.signin_button.click
     end
+
     it "does not successfully log in with the wrong password" do
       expect(page).to_not have_content "Signed in as #{@user.name}"
     end
+
+    it "displays an appropriate error message if user does not exist" do
+      expect(page).to have_content "Entered credentials do not match any registered accounts."
+    end
+
   end
 
 
