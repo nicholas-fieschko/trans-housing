@@ -18,8 +18,18 @@
 //= require_tree .
 
 handlers = function(){
+
+  // Prevent enter from submitting form early on sign-up.
+  $(".wizard-page input").keydown(function(e){
+    if( (e.keyCode == 13)) {
+      e.preventDefault();
+
+      th.validateAndAdvance($(this));
+    }
+  });
+
   $("#user_gender_attributes_identity").click(function(){th.updatePronouns();});
-  $("#pronoun-button").click(function(){th.updatePronouns();});
+  $("#user_gender_attributes_identity_button").click(function(){th.updatePronouns();});
   $("label[for='user_is_provider_true']").first().click(function(){th.updateHelperSeekerStatusText("provider");});
   $("label[for='user_is_provider_false']").first().click(function(){th.updateHelperSeekerStatusText("seeker");});
 

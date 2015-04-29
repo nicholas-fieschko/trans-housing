@@ -5,6 +5,8 @@ $trans-pink:          pink
 $trans-blue:          #6FBEF3
 $trans-purple:        #BF55EC
 
+$error-red:           #E74C3C
+
 @mixin bg-and-text-color($bg,$text)
   color:              $text
   background-color:   $bg
@@ -38,6 +40,9 @@ li.pure-menu-item
   color:              $trans-blue
 #logo-trans
   color:              $trans-pink
+
+h2
+  font-size:          1.5em
 
 .btn
   &:active
@@ -100,6 +105,21 @@ input:-webkit-autofill
   &:focus
     -webkit-box-shadow: 0 0 0px 1000px white inset !important
 
+.radio-container
+  padding:            1em
+
+.radio-container input[type=radio]
+  &[id*=false],&[id*=true]
+    margin:           .2em
+
+select
+  height:             2.5em
+  border:             1px solid #ccc
+  background-color:   #fff
+  border-radius:      4px
+  vertical-align:     middle
+  padding:            .5em .6em
+
 .notice-container
   padding:            15px
   text-align:         center
@@ -109,7 +129,7 @@ input:-webkit-autofill
   @extend             .notice-container
   color:              white
   font-weight:        bolder
-  background-color:   #E74C3C
+  background-color:   $error-red
 
 span.notice-text
   height:             100%
@@ -164,10 +184,17 @@ form
       text-align:       center
       font-size:        16px
 
+span.input-error
+  font-style:           italic
+  color:                $error-red
+  & i
+    margin:             5px
+
 .wizard-page
-  display: none
+  display:              none
   &.wizard-current
-    display: block
+    display:            block
+    overflow:           auto
 
 .wizard-forward,.message-reply-button
   float:              right
@@ -176,6 +203,9 @@ form
   @extend             .btn-sign-up
   @include            btn-hover-invert($trans-blue,white)
 
+#submit_signup
+  @extend             .wizard-forward 
+  
 .wizard-back
   float:              left
   @extend             .btn 

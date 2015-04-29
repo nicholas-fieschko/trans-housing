@@ -131,7 +131,7 @@ function setUsrMarker(loc, map) {
 
 function handleNoGeolocation(errorFlag, map) {
     if (errorFlag == true) {
-	alert("Geolocation service failed...we will put you in Yale");
+			console.error("Geolocation service failed...we will put you in Yale");
     } 
 	var myLatLng = yale;
 	setUsrMarker([yale.lng(), yale.lat()], map)
