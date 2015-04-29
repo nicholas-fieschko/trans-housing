@@ -11,11 +11,10 @@ RSpec.feature "Sign In", :type => :feature do
       password_confirmation: @password,
       contact: 
         Fabricate.build(:contact, 
-        email:             @email,
-        phone:             @phone))
+        email:               @email,
+        phone:               @phone))
     @signin_page = SignInPage.new
     @signin_page.load
-
   end
 
   context "User navigates to the sign in page" do

@@ -32,15 +32,19 @@
         %h2.fs-title First things first: what's your name?
         = f.input :name, label: false, placeholder: "I am..."
 
-      %button.wizard-forward{type: "button",onclick: "th.advanceWizard(1,2); th.advanceWizard(0,'g-1');"} Next
+      / %button.wizard-forward{type: "button",id: "user_name_button", onclick: "th.advanceWizard(1,2); th.advanceWizard(0,'g-1');"} Next
+      %button.wizard-forward{type: "button",id: "user_name_button", onclick: "th.validateAndAdvance($(this));"} Next
     .step-2.wizard-page
       = f.simple_fields_for :gender do |g|
         %fieldset.step-g-1.wizard-page
           %h2.fs-title
-            Now, let's talk about gender. Are you a transgender person, or otherwise under the trans* identity umbrella?
-          = g.collection_radio_buttons :trans, [[true, 'Yes!'] ,[false, 'Nope']], :first, :last
+            Now, let's talk about gender. 
+          Are you a transgender person, or otherwise under the trans* identity umbrella?
+          .radio-form-container
+            = g.collection_radio_buttons :trans, [[true, 'Yes!'] ,[false, 'Nope']], :first, :last, item_wrapper_class: "radio-container"
           %button.wizard-back{type: "button",onclick: "th.advanceWizard('g-1',0); th.advanceWizard(2,1);"} Back
-          %button.wizard-forward{type: "button",onclick: "th.advanceWizard('g-1','g-2')"} Next
+          / %button.wizard-forward{type: "button",id: "user_gender_attributes_trans_true_button",onclick: "th.advanceWizard('g-1','g-2')"} Next
+          %button.wizard-forward{type: "button",id: "user_gender_attributes_trans_true_button",onclick: "th.validateAndAdvance($(this));"} Next
   
         %fieldset.step-g-2.wizard-page
           %h2.fs-title 
@@ -50,7 +54,8 @@
           = select_tag "nonbinary_trans_genders", options_for_select(["Bigender","Agender","Genderqueer","Genderfluid","Just let me type it!"], "Genderqueer")
           = g.input :identity, label: false, input_html: { value: 'Male', placeholder: "I am..."}
           %button.wizard-back{type: "button",onclick: "th.advanceWizard('g-2','g-1')"} Back
-          %button.wizard-forward#pronoun-button{type: "button",onclick: "th.advanceWhereDecision('g-2')"} Next
+          / %button.wizard-forward#pronoun-button{type: "button",id: "user_gender_attributes_identity_button",onclick: "th.advanceWhereDecision('g-2')"} Next
+          %button.wizard-forward{type: "button",id: "user_gender_attributes_identity_button",onclick: "th.validateAndAdvance($(this));"} Next
 
         %fieldset.step-g-3.wizard-page
           %h2.fs-title 
@@ -58,16 +63,19 @@
             %span#they "he",
             %span#them "him", 
             %span#their "his"?
-          = g.collection_radio_buttons :cp, [[false, 'Yes'] ,[true, 'No']], :first, :last
+          .radio-form-container
+            = g.collection_radio_buttons :cp, [[false, 'Yes'] ,[true, 'No']], :first, :last, item_wrapper_class: "radio-container"
           %button.wizard-back{type: "button",onclick: "th.advanceWizard('g-3','g-2')"} Back
-          %button.wizard-forward{type: "button",onclick: "th.advanceWhereDecision('g-3')"} Next
+          / %button.wizard-forward{type: "button",id: "user_gender_attributes_cp_false_button",onclick: "th.advanceWhereDecision('g-3')"} Next
+          %button.wizard-forward{type: "button",id: "user_gender_attributes_cp_false_button",onclick: "th.validateAndAdvance($(this));"} Next
         %fieldset.step-g-4.wizard-page
           %h2.fs-title Please enter your pronouns.
           = g.input :they, label: false, placeholder: '"She/he/they" tense'
           = g.input :their, label: false, placeholder: '"Her/him/them" tense'
           = g.input :them, label: false, placeholder: '"Her/his/their" tense'
           %button.wizard-back{type: "button",onclick: "th.advanceWizard('g-4','g-3')"} Back
-          %button.wizard-forward{type: "button",onclick: "th.advanceWizard('g-4','3')"} Next
+          / %button.wizard-forward{type: "button",id: "user_gender_attributes_they_button",onclick: "th.advanceWizard('g-4','3')"} Next
+          %button.wizard-forward{type: "button",id: "user_gender_attributes_they_button",onclick: "th.validateAndAdvance($(this));"} Next
     .step-3.wizard-page
       = f.simple_fields_for :contact do |c|
         %fieldset
@@ -75,7 +83,8 @@
           = c.input :email, label: false, placeholder: "Email"
           = c.input :phone, label: false, placeholder: "Phone"
           %button.wizard-back{type: "button",onclick: "th.advanceWhereDecision('3')"} Back
-          %button.wizard-forward{type: "button",onclick: "th.advanceWizard('3','4')"} Next
+          / %button.wizard-forward{type: "button",id: "user_contact_attributes_email_button",onclick: "th.advanceWizard('3','4')"} Next
+          %button.wizard-forward{type: "button",id: "user_contact_attributes_email_button",onclick: "th.validateAndAdvance($(this));"} Next
 
     .step-4.wizard-page
       = f.simple_fields_for :location do |l|
@@ -85,16 +94,19 @@
           = l.input :city, label: false, placeholder: "city"
           = l.input :state, label: false, placeholder: "state"
           %button.wizard-back{type: "button",onclick: "th.advanceWizard('4','3')"} Back
-          %button.wizard-forward{type: "button",onclick: "th.advanceWizard('4','5')"} Next
+          / %button.wizard-forward{type: "button",id: "user_location_attributes_zip_button",onclick: "th.advanceWizard('4','5')"} Next
+          %button.wizard-forward{type: "button",id: "user_location_attributes_zip_button",onclick: "th.validateAndAdvance($(this));"} Next
           %div.mapcontainer 
             #map_canvas
 
     .step-5.wizard-page
       %fieldset
         %h2.fs-title Are you seeking help, or can you offer help?
-        = f.collection_radio_buttons :is_provider, [[true, 'I can help!'] ,[false, 'I need help!']], :first, :last
+        .radio-form-container
+          = f.collection_radio_buttons :is_provider, [[true, 'I can help!'] ,[false, 'I need help!']], :first, :last, item_wrapper_class: "radio-container"
         %button.wizard-back{type: "button",onclick: "th.advanceWizard('5','4')"} Back
-        %button.wizard-forward{type: "button",onclick: "th.advanceWizard('5','6')"} Next
+        / %button.wizard-forward{type: "button",id: "user_is_provider_true_button",onclick: "th.advanceWizard('5','6')"} Next
+        %button.wizard-forward{type: "button",id: "user_is_provider_true_button",onclick: "th.validateAndAdvance($(this));"} Next
 
     .step-6.wizard-page
       %fieldset
@@ -102,37 +114,44 @@
         .resource
           = f.simple_fields_for :food_resource do |fr|
             %label Food
-            = fr.collection_radio_buttons :currently_offered, [[true, 'Yes'] ,[false, 'No']], 
-                                                    :first, :last, :checked => [false, 'No']
+            .radio-form-container
+              = fr.collection_radio_buttons :currently_offered, [[true, 'Yes'] ,[false, 'No']], 
+                                                    :first, :last, item_wrapper_class: "radio-container", :checked => [false, 'No']
         .resource
           = f.simple_fields_for :shower_resource do |sr|
             %label A clean shower
-            = sr.collection_radio_buttons :currently_offered, [[true, 'Yes'] ,[false, 'No']], 
-                                                    :first, :last, :checked => [false, 'No']
+            .radio-form-container
+              = sr.collection_radio_buttons :currently_offered, [[true, 'Yes'] ,[false, 'No']], 
+                                                    :first, :last, item_wrapper_class: "radio-container", :checked => [false, 'No']
         .resource
           = f.simple_fields_for :laundry_resource do |lr|
             %label Access to a laundry machine
-            = lr.collection_radio_buttons :currently_offered, [[true, 'Yes'] ,[false, 'No']], 
-                                                    :first, :last, :checked => [false, 'No']
+            .radio-form-container
+              = lr.collection_radio_buttons :currently_offered, [[true, 'Yes'] ,[false, 'No']], 
+                                                    :first, :last, item_wrapper_class: "radio-container", :checked => [false, 'No']
         .resource
           = f.simple_fields_for :housing_resource do |hr|
             %label Somewhere to sleep
-            = hr.collection_radio_buttons :currently_offered, [[true, 'Yes'] ,[false, 'No']], 
-                                                    :first, :last, :checked => [false, 'No']
+            .radio-form-container
+              = hr.collection_radio_buttons :currently_offered, [[true, 'Yes'] ,[false, 'No']], 
+                                                    :first, :last, item_wrapper_class: "radio-container", :checked => [false, 'No']
         .resource
           = f.simple_fields_for :transportation_resource do |tr|
             %label Transportation from place to place
-            = tr.collection_radio_buttons :currently_offered, [[true, 'Yes'] ,[false, 'No']], 
-                                                    :first, :last, :checked => [false, 'No']
+            .radio-form-container
+              = tr.collection_radio_buttons :currently_offered, [[true, 'Yes'] ,[false, 'No']], 
+                                                    :first, :last, item_wrapper_class: "radio-container", :checked => [false, 'No']
         .resource
           = f.simple_fields_for :buddy_resource do |br|
             %label A buddy for mentorship and added safety in acquiring resources
-            = br.collection_radio_buttons :currently_offered, [[true, 'Yes'] ,[false, 'No']], 
-                                                    :first, :last, :checked => [false, 'No']
+            .radio-form-container
+              = br.collection_radio_buttons :currently_offered, [[true, 'Yes'] ,[false, 'No']], 
+                                                    :first, :last, item_wrapper_class: "radio-container", :checked => [false, 'No']
 
         =# f.input :misc_resource, as: :boolean, label: "Something else"
         %button.wizard-back{type: "button",onclick: "th.advanceWizard('6','5')"} Back
-        %button.wizard-forward{type: "button",onclick: "th.advanceWizard('6','7')"} Next
+        / %button.wizard-forward{type: "button",id: "user_food_resource_attributes_currently_offered_true_button",onclick: "th.advanceWizard('6','7')"} Next
+        %button.wizard-forward{type: "button",id: "user_food_resource_attributes_currently_offered_true_button",onclick: "th.validateAndAdvance($(this));"} Next
 
     .step-7.wizard-page
       %fieldset
