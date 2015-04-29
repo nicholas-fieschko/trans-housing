@@ -132,7 +132,7 @@ function handleNoGeolocation(errorFlag, map) {
 	var myLatLng = yale;
 	setUsrMarker([yale.lng(), yale.lat()], map)
 	queryNearbyUsers(myLatLng.lat(),
-	            myLatLng.lng(), map, 2);
+	            myLatLng.lng(), map, 1);
 }
 
 function queryNearbyUsers(lat, lng, map, flg) {
@@ -147,7 +147,7 @@ function queryNearbyUsers(lat, lng, map, flg) {
 			var curUsr = [];
 		    $.each(data, function(k,userInfo) {
 				if (k == "usrNewLoc") {
-					if (flg == 2) {
+					if (flg == 1) {
 						var newLoc = [parseFloat(userInfo.usrNewLoc[0]),
 									  parseFloat(userInfo.usrNewLoc[1])]
 						setUsrMarker(newLoc, map);
