@@ -3,3 +3,9 @@
     %i.fa.fa-exclamation-triangle.fa-2x
     %span.notice-text
       = flash[:error]
+
+- if flash[:warning]
+  .pure-u-1.notice-warning-container
+    %i.fa.fa-exclamation-triangle.fa-2x
+    %span.notice-text
+      = flash[:warning]

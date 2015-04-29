@@ -5,6 +5,11 @@ $trans-pink:          pink
 $trans-blue:          #6FBEF3
 $trans-purple:        #BF55EC
 
+$light-trans-pink:    #fff6f8
+$light-trans-blue:    #dbf1ff
+
+$error-red:           #E74C3C
+
 @mixin bg-and-text-color($bg,$text)
   color:              $text
   background-color:   $bg
@@ -26,18 +31,29 @@ $trans-purple:        #BF55EC
     @content
   &:-ms-input-placeholder 
     @content
+li
+  list-style: none
 
 li.pure-menu-item
   margin:             0px 3px
 
+header
+  overflow:           auto
+
 .logo-homepage#logo
   font-size:          300%
+.header-menu-items
+  float:              right
 #logo
+  float:              left
   text-decoration:    none
 #logo-housing
   color:              $trans-blue
 #logo-trans
   color:              $trans-pink
+
+h2
+  font-size:          1.5em
 
 .btn
   &:active
@@ -87,6 +103,21 @@ i.settings-icon
   background-image:   url("map_placeholder.gif")
   height:             400vh
 
+.pure-g [class *="pure-u"]
+  font-family:        'Source Sans Pro', sans-serif !important
+  @include transition(all 1s ease-in-out)
+
+.filters,.filter-placeholder
+  text-align:         center
+  text-transform:     capitalize
+
+.filters[class *="pure-u"]
+  display: none
+  & label
+    color:  inherit
+    font-weight:  inherit
+    margin: 0em .3em
+
 .spin-fix .settings-icon
   -webkit-transform-origin:  50% calc(50% - .5px)
   transform-origin:          50% calc(50% - .5px)
@@ -100,6 +131,31 @@ input:-webkit-autofill
   &:focus
     -webkit-box-shadow: 0 0 0px 1000px white inset !important
 
+.radio-container
+  padding:            1em
+
+.radio-container input[type=radio]
+  &[id*=false],&[id*=true]
+    margin:           .2em
+
+select
+  height:             2.5em
+  border:             1px solid #ccc
+  background-color:   #fff
+  border-radius:      4px
+  vertical-align:     middle
+  padding:            .5em .6em
+
+.control-label
+  width:             25%
+  text-align: right
+  padding-right: 2em
+  vertical-align: super
+
+.pure-form-aligned input.input-field[type]
+  width:             50%
+
+
 .notice-container
   padding:            15px
   text-align:         center
@@ -109,7 +165,13 @@ input:-webkit-autofill
   @extend             .notice-container
   color:              white
   font-weight:        bolder
-  background-color:   #E74C3C
+  background-color:   $error-red
+
+.notice-warning-container
+  @extend             .notice-container
+  color:              #d35400
+  font-weight:        bolder
+  background-color:   #ffc835
 
 span.notice-text
   height:             100%
@@ -127,6 +189,19 @@ span.notice-text
   background-color:   white
   padding:            20px
   overflow:           auto
+  height:             100%
+
+#profile-page
+  text-align:         left
+
+#profile-left-column
+  text-align:         center
+
+#profile-right-column
+  padding-left:       2.5em
+
+#profile-bottom-section
+  text-align:         center
 
 .user-rating,.user-name
   float: left
@@ -138,8 +213,8 @@ span.notice-text
   clear: both
 
 .user-resources
-  float: left
-  clear: both
+  // float: left
+  // clear: both
 
 #request-help-button
   float: right
@@ -164,10 +239,17 @@ form
       text-align:       center
       font-size:        16px
 
+span.input-error
+  font-style:           italic
+  color:                $error-red
+  & i
+    margin:             5px
+
 .wizard-page
-  display: none
+  display:              none
   &.wizard-current
-    display: block
+    display:            block
+    overflow:           auto
 
 .wizard-forward,.message-reply-button
   float:              right
@@ -176,6 +258,9 @@ form
   @extend             .btn-sign-up
   @include            btn-hover-invert($trans-blue,white)
 
+#submit_signup
+  @extend             .wizard-forward 
+  
 .wizard-back
   float:              left
   @extend             .btn 
@@ -187,11 +272,15 @@ div fieldset
   border:             none
 
 .mapcontainer
-  height:             500px
+  height:             25em
 
 #user_gender_attributes_identity,#nonbinary_trans_genders,
 #binary_trans_genders
   display: none
+
+.g-recaptcha > div > div
+  width:              100% !important
+
 
 // Sessions SASS. Until I completely re-do the application.css.sass
 // organization as recommended elsewhere (a to-do item), things must
@@ -201,7 +290,7 @@ div fieldset
   cursor:             default
   text-transform:     uppercase
   display:            block
-  font-size:          150%
+  font-size:          1.5em
   font-weight:        normal
   line-height:        1.43
   text-align:         center
@@ -249,25 +338,48 @@ div fieldset
   margin:             0
   margin-top:         10px
 
+.pure-form input[type=radio]
+  width:              inherit !important
+
+.pure-form input[type=radio] ~ label
+  padding: .5em
+  vertical-align: super
+
+.pure-form input[type=submit]
+  width:              inherit !important
+  border:             inherit !important
+
 
 
 
 .login-box,.sign-up-box,.account-settings-box,.page-content-box
   background-color:   white
   padding:            15px
-  border-radius:      10px
+  //border-radius:      10px
   text-align:         center
   font-family:        'Source Sans Pro', sans-serif
 
 
 .login-box-positioner
   position:           relative
-  top:                5%
-  border-radius:      6px
+  // top:                5%
+  // border-radius:      6px
+  height:             100%
+  border-color:       $light-trans-pink
+  border-style:       solid
+  border-width:       2em
+  overflow:           auto
 
 
 .map-bg
+  background-color:   $light-trans-blue
 //  background-image:   url("map_placeholder.gif")
+
+.side-columns
+  border-style:       double
+  border-width:       .5em
+  border-color:       white
+  height:             100%
 
 html,body
   height:             100%
@@ -297,3 +409,11 @@ html,body
 #message-reply
   width: 70%
   margin: 30px
+
+
+#thread-delete-button
+  color: $error-red
+  font-size: 1em
+  background-color: white
+  float: right
+  border: none

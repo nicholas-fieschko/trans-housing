@@ -1,15 +1,30 @@
-Filter by user type:
-%br
-- @all_user_type_filters.each do |f|
-  = f
-  = check_box_tag "#{f}", @filters.include?(f), @filters.include?(f), onclick: 'OnFilterChange(this)'
-%br
+.pure-g
+  .pure-u-1-24.filter-placeholder
+  .pure-u-1-24.filter-placeholder
+    %i.fa.fa-angle-double-down.fa-2x
+  .pure-u-5-6.filter-placeholder
+    Click for Map Filters
+  .pure-u-1-24.filter-placeholder
+    %i.fa.fa-angle-double-down.fa-2x
+  .pure-u-1-24.filter-placeholder
 
-Filter by resource:
-%br
-- @all_resource_filters.each do |f|
-  = f
-  = check_box_tag "#{f}", @filters.include?(f), @filters.include?(f), onclick: 'OnFilterChange(this)'
-
-
+  .pure-u-1-24.filters.filters-toggle
+    %i.fa.fa-angle-double-up.fa-2x
+  .pure-u-1-4.filters
+    Only show me...
+    %div
+      Resource 
+      - @all_user_type_filters.each do |f|
+        %label
+          = check_box_tag "#{f}", @filters.include?(f), @filters.include?(f), onclick: 'OnFilterChange(this)'
+          = "#{f.pluralize}"
+  .pure-u-2-3.filters
+    Who have specified at least one of...
+    %div
+      - @all_resource_filters.each do |f|
+        %label
+          = check_box_tag "#{f}", @filters.include?(f), @filters.include?(f), onclick: 'OnFilterChange(this)'
+          = (f == "misc") ? "Other" : f
+  .pure-u-1-24.filters.filters-toggle
+    %i.fa.fa-angle-double-up.fa-2x
 #map_canvas

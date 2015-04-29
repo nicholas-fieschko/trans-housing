@@ -20,4 +20,16 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
+  mongoid:
+    attributes:
+      user:
+        email: "Email address"
+        name: "Name"
+    errors:
+      models:
+        user:
+          attributes:
+            email:
+              blank: "is required"
+            name:
+              blank: "is required"

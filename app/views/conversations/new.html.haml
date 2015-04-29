@@ -1,17 +1,17 @@
 .pure-g.grid-columns-container
-  .pure-u-1-5
-  .pure-u-3-5.login-box-positioner
+  .pure-u-1-8.side-columns
+  .pure-u-3-4.login-box-positioner
     .sign-up-box.sign-up-column
-      %h1 Write a message to #{@receiver.name}.
+      %h2 Write a message to #{@receiver.name}.
 
       / Will need instance variable for the recipient(s)
-      = form_for [@receiver, @conversation] do |c|
-        %p Subject
-        = c.text_field :subject
+      = form_for [@receiver, @conversation], html: { class: "pure-form pure-form-aligned pure-control-group" } do |c|
+        / %label.control-label Subject
+        = c.text_field :subject, class: "input-field form-control", placeholder: "Subject"
 
-        %p Message
+        / %label.control-label Message
         = fields_for @conversation.messages.last do |m|
-          = m.text_area :text, size: '24x6'
+          = m.text_area :text, size: '24x6', class: "input-field form-control", placeholder: "Message"
 
-        = c.button :submit, value: "Send message"
-  .pure-u-1-5
+        = c.button :submit, value: "Send message", class: "wizard-forward"
+  .pure-u-1-8.side-columns

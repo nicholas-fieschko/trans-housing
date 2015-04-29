@@ -1,1 +1,6 @@
-#{@user.name}, you have sucessfully signed up for the site.
+Hi, #{@receiver.name}!
+
+You have sucessfully signed up for TransHousing.
+
+/Visit your
+/= link_to("User Account", user_path(id: @receiver.id.to_s))
