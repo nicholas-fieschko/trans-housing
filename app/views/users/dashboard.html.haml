@@ -1,6 +1,6 @@
 .pure-g.login-column
-  .pure-u-1-5
-  .pure-u-3-5.login-box-positioner
+  .pure-u-1-8.side-columns
+  .pure-u-3-4.login-box-positioner
     .login-box.login-column
       %h3 Pending Reviews
 
@@ -30,5 +30,4 @@
             Reminder: You have a 
             = link_to "help request", user_request_path(User.find(r.provider), r)
             with #{User.find(r.provider).name}. 
-
-  .pure-u-1-5
+  .pure-u-1-8.side-columns

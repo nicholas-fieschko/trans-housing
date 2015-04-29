@@ -26,6 +26,9 @@ class UsersController < ApplicationController
 			session[:location]["city"]+ " " + session[:location]["state"])
 		if @geokitResult.success
 			session[:coordinates] = [@geokitResult.lng, @geokitResult.lat]
+    # Below is added by nick after invalid location resulted in nil session coords.
+    # else
+    #   session[:coordinates] = [41.31845, -72.92226]
 		end
 	end
 
@@ -40,14 +43,14 @@ class UsersController < ApplicationController
         @phone = @user.contact[:phone]
         if !GlobalPhone.validate(@phone)
           # Put in flash alert about invalid United States phone #
-          flash[:error] = "WARNING: Invalid phone number"
+          flash[:warning] = "Note: we were unable to automatically verify your phone number. Please check in your settings that it is correct."
         end
       end
 
       # Iff email addr given, make sure it's valid (but let continue)
       if @user.contact[:email]
         if !@user.mailgun_valid?(@user.contact[:email])
-          flash[:error] = "WARNING: Invalid email address"
+          flash[:warning] = "Note: we were unable to automatically verify your email address. Please check in your settings that it is correct."
         end
       end
 

@@ -1,10 +1,10 @@
 .pure-g.login-column
-  .pure-u-1-5
+  .pure-u-1-8.side-columns
     %ul
       %li Profile
       %li Notifications
       %li Security
-  .pure-u-3-5.login-box-positioner
+  .pure-u-3-4.login-box-positioner
     .account-settings-box.account-settings-column
       %h1 Account Settings
       = simple_form_for @user do |f|
@@ -43,4 +43,4 @@
             = f.input :password, label: "Change Password"
             = f.input :password_confirmation
             = f.button :submit, value: "Update", class: "wizard-forward"
-  .pure-u-1-5
+  .pure-u-1-8.side-columns

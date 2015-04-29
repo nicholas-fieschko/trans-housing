@@ -1,6 +1,6 @@
 .pure-g.grid-columns-container
-  .pure-u-1-5
-  .pure-u-3-5.login-box-positioner
+  .pure-u-1-8.side-columns
+  .pure-u-3-4.login-box-positioner
     .sign-up-box.sign-up-column
       %h1 Conversations
       %ul
@@ -15,3 +15,4 @@
       - if @inbox.empty?
         Your inbox is empty.
         -#=  link_to 'Send a new message', new_user_conversation_path (check if trashed or not!)
+  .pure-u-1-8.side-columns

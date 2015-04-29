@@ -5,6 +5,9 @@ $trans-pink:          pink
 $trans-blue:          #6FBEF3
 $trans-purple:        #BF55EC
 
+$light-trans-pink:    #fff6f8
+$light-trans-blue:    #dbf1ff
+
 $error-red:           #E74C3C
 
 @mixin bg-and-text-color($bg,$text)
@@ -131,6 +134,12 @@ select
   font-weight:        bolder
   background-color:   $error-red
 
+.notice-warning-container
+  @extend             .notice-container
+  color:              #d35400
+  font-weight:        bolder
+  background-color:   #ffc835
+
 span.notice-text
   height:             100%
   vertical-align:     super
@@ -217,11 +226,15 @@ div fieldset
   border:             none
 
 .mapcontainer
-  height:             500px
+  height:             25em
 
 #user_gender_attributes_identity,#nonbinary_trans_genders,
 #binary_trans_genders
   display: none
+
+.g-recaptcha > div > div
+  width:              100% !important
+
 
 // Sessions SASS. Until I completely re-do the application.css.sass
 // organization as recommended elsewhere (a to-do item), things must
@@ -231,7 +244,7 @@ div fieldset
   cursor:             default
   text-transform:     uppercase
   display:            block
-  font-size:          150%
+  font-size:          1.5em
   font-weight:        normal
   line-height:        1.43
   text-align:         center
@@ -285,19 +298,29 @@ div fieldset
 .login-box,.sign-up-box,.account-settings-box,.page-content-box
   background-color:   white
   padding:            15px
-  border-radius:      10px
+  //border-radius:      10px
   text-align:         center
   font-family:        'Source Sans Pro', sans-serif
 
 
 .login-box-positioner
   position:           relative
-  top:                5%
-  border-radius:      6px
+  // top:                5%
+  // border-radius:      6px
+  height:             100%
+  border-color:       $light-trans-pink
+  border-style:       solid
+  border-width:       2em
 
 
 .map-bg
+  background-color:   $light-trans-blue
 //  background-image:   url("map_placeholder.gif")
+
+.side-columns
+  border-style:       double
+  border-width:       .5em
+  border-color:       white
 
 html,body
   height:             100%

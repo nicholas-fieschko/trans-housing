@@ -92,6 +92,7 @@ th.validateAndAdvance = (obj) ->
         th.advanceWizard('g-4','3')
       when "user_contact_attributes_email","user_contact_attributes_phone"
         th.advanceWizard('3','4')
+        google.maps.event.trigger(map, "resize")
       when "user_location_attributes_zip","user_location_attributes_city","user_location_attributes_state"
         th.advanceWizard('4','5')
       when "user_is_provider_true","user_is_provider_false"
