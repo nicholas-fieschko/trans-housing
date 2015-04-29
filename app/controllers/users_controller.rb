@@ -30,7 +30,14 @@ class UsersController < ApplicationController
         @phone = @user.contact[:phone]
         if !GlobalPhone.validate(@phone)
           # Put in flash alert about invalid United States phone #
-          flash[:error] = "Invalid US (+1) phone number"
+          flash[:error] = "WARNING: Invalid phone number"
+        end
+      end
+
+      # Iff email addr given, make sure it's valid (but let continue)
+      if @user.contact[:email]
+        if !User.mailgun_valid?(@user.contact[:email])
+          flash[:error] = "WARNING: Invalid email address"
         end
       end
 
