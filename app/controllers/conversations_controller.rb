@@ -82,9 +82,12 @@ class ConversationsController < ApplicationController
 		)
 		
 		# Reset the unread list; add the message; persist
-		@thread.readers = [current_user.id]
+		@thread.readers.push(@receiver.id)
+		@thread.owners.push(@receiver.id)
 		@thread.messages.push(@message)
 		@thread.save
+		@sender.save
+		@receiver.save
 
 		# Trigger some emails/SMS
 		send_copies(@sender, @receiver, @message)
