@@ -36,7 +36,7 @@ class UsersController < ApplicationController
 
       # Iff email addr given, make sure it's valid (but let continue)
       if @user.contact[:email]
-        if !User.mailgun_valid?(@user.contact[:email])
+        if !@user.mailgun_valid?(@user.contact[:email])
           flash[:error] = "WARNING: Invalid email address"
         end
       end
