@@ -1,4 +1,6 @@
 class UsersController < ApplicationController
+	include Geokit::Geocoders
+	
   def new
     if signed_in?
       redirect_to root_url
@@ -18,8 +20,16 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
-    @user.location[:coordinates] = session[:coordinates].map &:to_f
+	session[:location] = @user.location
+	if session[:location] && session[:location]["city"] != "Unknown Location"
+		@geokitResult = Geokit::Geocoders::GoogleGeocoder.geocode(
+			session[:location]["city"]+ " " + session[:location]["state"])
+		if @geokitResult.success
+			session[:coordinates] = [@geokitResult.lng, @geokitResult.lat]
+		end
+	end
 
+    @user.location[:coordinates] = session[:coordinates].map &:to_f
    
     
     if verify_recaptcha(model: @user, message: "Robot!!") && @user.save
@@ -36,7 +46,7 @@ class UsersController < ApplicationController
 
       # Iff email addr given, make sure it's valid (but let continue)
       if @user.contact[:email]
-        if !User.mailgun_valid?(@user.contact[:email])
+        if !@user.mailgun_valid?(@user.contact[:email])
           flash[:error] = "WARNING: Invalid email address"
         end
       end

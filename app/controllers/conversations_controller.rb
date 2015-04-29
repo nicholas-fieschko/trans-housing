@@ -40,6 +40,9 @@ class ConversationsController < ApplicationController
 		@message.save
 		@conversation.save
 
+		# Check preferences and then send copies to email and SMS as required
+		send_copies(@sender, @receiver, @message)
+
 		# Go back to inbox!
 		redirect_to user_conversations_path
 	end
@@ -56,10 +59,22 @@ class ConversationsController < ApplicationController
 		@thread.save
 	end
 
+	# Once the message is added, send email and text copies as required
+	# => MUST call .deliver!!
+	def send_copies(sender, receiver, message)
+		if sender.receives_message_notifs_by_email?
+			Notifier.new_message(sender, receiver, message).deliver
+		end
+		if sender.receives_message_notifs_by_text?
+			Notifier.new_sms(sender, receiver, message).deliver
+		end
+	end
+
 	# Add a message to a thread (display this option in show)
 	def update
-		@sender  = current_user
-		@thread  = Conversation.find(params[:id])
+		@sender   = current_user
+		@receiver = User.find(params[:user_id])
+		@thread   = Conversation.find(params[:id])
 	
 		@message = Message.new(
 			sender:   @sender,
@@ -70,6 +85,9 @@ class ConversationsController < ApplicationController
 		@thread.readers = [current_user.id]
 		@thread.messages.push(@message)
 		@thread.save
+
+		# Trigger some emails/SMS
+		send_copies(@sender, @receiver, @message)
 
 		# Return to the updated conversation
 		redirect_to user_conversation_path(id: @thread.id)

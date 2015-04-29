@@ -1,1 +1,15 @@
+Filter by user type:
+%br
+- @all_user_type_filters.each do |f|
+  = f
+  = check_box_tag "#{f}", @filters.include?(f), @filters.include?(f), onclick: 'OnFilterChange(this)'
+%br
+
+Filter by resource:
+%br
+- @all_resource_filters.each do |f|
+  = f
+  = check_box_tag "#{f}", @filters.include?(f), @filters.include?(f), onclick: 'OnFilterChange(this)'
+
+
 #map_canvas

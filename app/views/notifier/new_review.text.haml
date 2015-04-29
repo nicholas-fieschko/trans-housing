@@ -1,6 +1,9 @@
-Hi, #{@reviewer.name}!
+Hi, #{@sender.name}!
 
 Please leave a review for #{@receiver.name}.
 
-Navigate your browser to the following URL:
 = edit_user_review_url(@receiver.id.to_s, @review.id.to_s)
+
+Visit your account at:
+
+= user_path(@sender.id.to_s)

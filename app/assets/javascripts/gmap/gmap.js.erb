@@ -3,7 +3,8 @@ var userAround = [];
 var curUsers = [];
 var markers = [];
 var yale = new google.maps.LatLng(41.31845, -72.92226);
-
+var usrMarker = new google.maps.Marker;
+var map;
 
 $(document).ready(function() {
 	var url = "/location/posts"
@@ -31,7 +32,7 @@ function initialize() {
 	zoom: 14,	  
 	mapTypeId: google.maps.MapTypeId.ROADMAP
     }
-	var map = new google.maps.Map(map_canvas, map_options);
+	map = new google.maps.Map(map_canvas, map_options);
     initialLocation = yale;
     map.setCenter(initialLocation);
     // Try W3C Geolocation 
@@ -44,12 +45,7 @@ function initialize() {
 							 coords.longitude);
 		map.setCenter(initialLocation);
 		// We want to put a marker on our location
-		var myLatLng = new google.maps.LatLng(initialLocation.lat(), 
-						      initialLocation.lng());
-		var marker = new google.maps.Marker ({
-			position:myLatLng,
-			map: map,	
-		});
+		setUsrMarker([initialLocation.lng(),initialLocation.lat()], map);
 		queryNearbyUsers(initialLocation.lat(), 
 			initialLocation.lng(), map, 1);
 	    },function (){
@@ -61,6 +57,10 @@ function initialize() {
 	handleNoGeolocation(browserSupportFlag, map);
     }
 	google.maps.event.addListener(map, 'dragend', function(){
+		var newCenter = map.getCenter();
+		queryNearbyUsers(newCenter.lat(), newCenter.lng(), map, 0);
+	});
+	google.maps.event.addListener(map, 'zoom_changed', function() {
 		var newCenter = map.getCenter();
 		queryNearbyUsers(newCenter.lat(), newCenter.lng(), map, 0);
 	});
@@ -120,23 +120,29 @@ function filterCurUser(usrInfo, map) {
 	console.debug(curUsers);
 }
 
+function setUsrMarker(loc, map) {
+	var myLatLng = new google.maps.LatLng(loc[1], loc[0])
+	usrMarker.setMap(null);
+	usrMarker = new google.maps.Marker ({
+		position:myLatLng,
+		map: map,	
+	});
+}
+
 function handleNoGeolocation(errorFlag, map) {
     if (errorFlag == true) {
 			console.error("Geolocation service failed...we will put you in Yale");
     } 
 	var myLatLng = yale;
-	var marker = new google.maps.Marker ({
-		position:myLatLng,
-		map: map,	
-	});
-
+	setUsrMarker([yale.lng(), yale.lat()], map)
 	queryNearbyUsers(myLatLng.lat(),
 	            myLatLng.lng(), map, 1);
 }
 
-function queryNearbyUsers(lat, lng, map, flg) {
+function queryNearbyUsers(lat, lng, map, flg, zl) {
     var url = "/location/posts";
-    var loc = { loc: [lat, lng]};
+	var zoomlevel = map.getZoom();
+    var loc = { loc: [lat, lng], iniflag: flg, zoom: zoomlevel};
         $.ajax({
 		type: "POST",
 		url: url,
@@ -145,17 +151,29 @@ function queryNearbyUsers(lat, lng, map, flg) {
 		success: function(data) {
 			var curUsr = [];
 		    $.each(data, function(k,userInfo) {
-				console.debug(userInfo);
-				if (flg == 1) {
-					userAround.push(userInfo._id.$oid);
-					addMarkers(map,userInfo);
-					curUsers = userAround;
+				if (k == "usrNewLoc") {
+					if (flg == 1) {
+						var newLoc = [parseFloat(userInfo.usrNewLoc[0]),
+									  parseFloat(userInfo.usrNewLoc[1])]
+						setUsrMarker(newLoc, map);
+						map.setCenter(new 
+							google.maps.LatLng(newLoc[1], newLoc[0]));
+						}
 				}
 				else {
-					curUsr.push(userInfo)
+					console.debug(userInfo);
+					// We never execute this branch
+					if (flg < 0) {
+						userAround.push(userInfo._id.$oid);
+						addMarkers(map,userInfo);
+						curUsers = userAround;
+					}
+					else {
+						curUsr.push(userInfo)
+					}
 				}
 			});
-			if (flg == 0) {
+			if (flg < 3) {
 				filterCurUser(curUsr,map);
 			}
 		},
@@ -290,9 +308,56 @@ function addMarkers(map, usr) {
 
 
 
+function OnFilterChange(filter) {
+	var filters = getCookie("filters").split("%2C");
+	if (filter.checked) {
+		filters.push(filter.name);
+		setCookie("filters", filters.toString().replace(/,/g, "%2C"), 7000);
+	}
+	else {
+		setCookie("filters", delete_from_array(filters, filter.name).toString().replace(/,/g, "%2C"), 7000);
+	}
+
+
+	var curLat = map.getCenter().lat();
+	var curLng = map.getCenter().lng();
+	queryNearbyUsers(curLat, curLng, map, 0);
+
+}
+
+
 function url_protocol_domain_port() {
 	var url = window.location.href;
 	var arr = url.split("/");
 	var result = arr[0] + "//" + arr[2];
 	return result;
+}
+
+
+function setCookie(cname, cvalue, exdays) {
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays*24*60*60*1000));
+    var expires = "expires="+d.toUTCString();
+    document.cookie = cname + "=" + cvalue + "; " + expires;
+}
+
+
+function getCookie(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0; i<ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1);
+        if (c.indexOf(name) == 0) return c.substring(name.length,c.length);
+    }
+    return "";
+}
+
+function delete_from_array(array, element) {
+	var index = array.indexOf(element);
+	if (index > -1) {
+		array.splice(index, 1);
+		return array;
+	}
+	else return array;
 }
