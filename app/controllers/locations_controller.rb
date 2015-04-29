@@ -6,12 +6,10 @@ class LocationsController < ApplicationController
 
   def search
     location = Location.new
-	
-	if session[:iniflag] == 1 && 
+	if params[:iniflag] == "1" && 
 		session[:location] && session[:location]["state"] != "Unknown"
-		print session[:location]["city"]
 		if session[:coordinate]
-			@nearbyUsers = location.search(session[:coordinate])
+			@nearbyUsers = location.search(session[:coordinate].reverse)
 		else 
 			@cor = Geokit::Geocoders::GoogleGeocoder.geocode(
 				session[:location]["city"] + session[:location]["state"])
@@ -24,7 +22,6 @@ class LocationsController < ApplicationController
 		end
 		
 	else
-		print "This is using loc"
 		@nearbyUsers = location.search(params[:loc])
 	end
 
@@ -53,9 +50,6 @@ class LocationsController < ApplicationController
 		end
 	  end
 
-	  print "\n\n\n\nCOR: "
-	  print session[:coordinates]
-	  print "\n\n\n\n"
 
 	  # TODO: can we think of other things to hide?
 	  @usrLogInFlg = 1;
