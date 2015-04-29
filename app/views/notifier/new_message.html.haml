@@ -6,8 +6,8 @@
 .div #{@message.text}
 \--
 
-Click to
-= link_to("reply", user_conversation_path(user_id: @receiver.id.to_s, id: @thread.to_s))
+/Click to
+/= link_to("reply", user_conversation_path(user_id: @receiver.id.to_s, id: @thread.to_s))
 
-Visit your
-= link_to("account", user_path(id: @receiver.id.to_s))
+/Visit your
+/= link_to("account", user_path(id: @receiver.id.to_s))
