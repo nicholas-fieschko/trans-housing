@@ -32,6 +32,4 @@ twilio_num:   '+15015022331'
 RECAPTCHA_PUBLIC_KEY:  '6Ld1TwUTAAAAAOgV0Vm8UIT7zn-kEiF-Sa3gX6gK'
 RECAPTCHA_PRIVATE_KEY: '6Ld1TwUTAAAAAD2mUqF3B-n35QsxoUEd1UPJsAte'
 
-
-
 # N.B. Figaro stashes these in ENV['string']

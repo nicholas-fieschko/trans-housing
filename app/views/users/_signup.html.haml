@@ -161,8 +161,7 @@
         = f.input :password_confirmation
         / Adding a reCAPTCHA
         = recaptcha_tags
-        /= verify_recaptcha
-
+        /= verify_recaptcha in the user model
 
         = f.button :submit, value: "Create my account!", id: "submit_signup",class: "wizard-forward"
 
