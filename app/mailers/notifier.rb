@@ -17,6 +17,7 @@ class Notifier < ApplicationMailer
 		@sender   = sender
 		@receiver = receiver
 		@message  = message
+		@thread   = message.conversation_id
 		mail(
 			to: 	 receiver.contact.email,
 			subject: "[TransHousing] New message from #{sender.name}",
