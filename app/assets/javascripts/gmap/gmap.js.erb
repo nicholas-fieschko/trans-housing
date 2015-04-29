@@ -3,7 +3,8 @@ var userAround = [];
 var curUsers = [];
 var markers = [];
 var yale = new google.maps.LatLng(41.31845, -72.92226);
-
+var usrMarker = new google.maps.Marker;
+var map;
 
 $(document).ready(function() {
 	var url = "/location/posts"
@@ -31,7 +32,7 @@ function initialize() {
 	zoom: 14,	  
 	mapTypeId: google.maps.MapTypeId.ROADMAP
     }
-	var map = new google.maps.Map(map_canvas, map_options);
+	map = new google.maps.Map(map_canvas, map_options);
     initialLocation = yale;
     map.setCenter(initialLocation);
     // Try W3C Geolocation 
@@ -44,12 +45,7 @@ function initialize() {
 							 coords.longitude);
 		map.setCenter(initialLocation);
 		// We want to put a marker on our location
-		var myLatLng = new google.maps.LatLng(initialLocation.lat(), 
-						      initialLocation.lng());
-		var marker = new google.maps.Marker ({
-			position:myLatLng,
-			map: map,	
-		});
+		setUsrMarker([initialLocation.lng(),initialLocation.lat()], map);
 		queryNearbyUsers(initialLocation.lat(), 
 			initialLocation.lng(), map, 1);
 	    },function (){
@@ -77,7 +73,7 @@ function filterCurUser(usrInfo, map) {
 	for (var i = 0; i < usrInfo.length; i++) {
 		for (var j=0; j < curUsers.length; j++) {
 			// Move to keep list of current markers
-			if (usrInfo[i]._id.$oid == curUsers[j]) {
+			if (usrInfo[i]._id == curUsers[j]) {
 				curUsersKeep.push(j);
 				templist.push(curUsers[j]);
 				break;
@@ -86,13 +82,13 @@ function filterCurUser(usrInfo, map) {
 		
 		if (j >= curUsers.length){
 			for (var k=0; k < userAround.length; k++) {
-				if (usrInfo[i]._id.$oid == userAround[k]) {
+				if (usrInfo[i]._id == userAround[k]) {
 					break;
 				}
 			}
 			// Only add if it is not in the keep list either
 			if (k >= userAround.length) {
-				newUsers.push(usrInfo[i]._id.$oid);
+				newUsers.push(usrInfo[i]._id);
 				console.debug(usrInfo[i]);
 				var newMarker = addMarkers(map, usrInfo[i]);
 				newM.push(newMarker);
@@ -120,23 +116,28 @@ function filterCurUser(usrInfo, map) {
 	console.debug(curUsers);
 }
 
+function setUsrMarker(loc, map) {
+	var myLatLng = new google.maps.LatLng(loc[1], loc[0])
+	usrMarker.setMap(null);
+	usrMarker = new google.maps.Marker ({
+		position:myLatLng,
+		map: map,	
+	});
+}
+
 function handleNoGeolocation(errorFlag, map) {
     if (errorFlag == true) {
 	alert("Geolocation service failed...we will put you in Yale");
     } 
 	var myLatLng = yale;
-	var marker = new google.maps.Marker ({
-		position:myLatLng,
-		map: map,	
-	});
-
+	setUsrMarker([yale.lng(), yale.lat()], map)
 	queryNearbyUsers(myLatLng.lat(),
 	            myLatLng.lng(), map, 1);
 }
 
 function queryNearbyUsers(lat, lng, map, flg) {
     var url = "/location/posts";
-    var loc = { loc: [lat, lng]};
+    var loc = { loc: [lat, lng], iniflag: flg};
         $.ajax({
 		type: "POST",
 		url: url,
@@ -145,14 +146,25 @@ function queryNearbyUsers(lat, lng, map, flg) {
 		success: function(data) {
 			var curUsr = [];
 		    $.each(data, function(k,userInfo) {
-				console.debug(userInfo);
-				if (flg == 1) {
-					userAround.push(userInfo._id.$oid);
-					addMarkers(map,userInfo);
-					curUsers = userAround;
+				if (k == "usrNewLoc") {
+					if (flg == 1) {
+						var newLoc = [parseFloat(userInfo.usrNewLoc[0]),
+									  parseFloat(userInfo.usrNewLoc[1])]
+						setUsrMarker(newLoc, map);
+						map.setCenter(new 
+							google.maps.LatLng(newLoc[1], newLoc[0]));
+						}
 				}
 				else {
-					curUsr.push(userInfo)
+					console.debug(userInfo);
+					if (flg == 1) {
+						userAround.push(userInfo._id);
+						addMarkers(map,userInfo);
+						curUsers = userAround;
+					}
+					else {
+						curUsr.push(userInfo)
+					}
 				}
 			});
 			if (flg == 0) {
@@ -300,7 +312,10 @@ function OnFilterChange(filter) {
 		setCookie("filters", delete_from_array(filters, filter.name).toString().replace(/,/g, "%2C"), 7000);
 	}
 
-	queryNearbyUsers(curLat, curLng, map, flg);
+
+	var curLat = map.getCenter().lat();
+	var curLng = map.getCenter().lat();
+	queryNearbyUsers(curLat, curLng, map, 0);
 
 }
 
