@@ -9,7 +9,7 @@ You have a new message from #{@sender.name}.
 ***
 
 Click the link to
-= link_to("Reply", user_conversation_url(user_id: @receiver.id.to_s, id: @thread.to_s))
+= link_to("Reply", user_conversation_path(user_id: @receiver.id.to_s, id: @thread.to_s))
 
 Visit your 
-= link_to("User Account", user_url(id: @receiver.id.to_s))
+= link_to("User Account", user_path(id: @receiver.id.to_s))
