@@ -89,22 +89,23 @@
     .step-4.wizard-page
       = f.simple_fields_for :location do |l|
         %fieldset
-          %h2.fs-title Enter your location information. 
+          %h2.fs-title Enter your location.
+          Or anywhere reasonably close-- we just want to match you with the right people!
           = l.input :zip, label: false, placeholder: "zip"
           = l.input :city, label: false, placeholder: "city"
           = l.input :state, label: false, placeholder: "state"
           %button.wizard-back{type: "button",onclick: "th.advanceWizard('4','3')"} Back
           / %button.wizard-forward{type: "button",id: "user_location_attributes_zip_button",onclick: "th.advanceWizard('4','5')"} Next
           %button.wizard-forward{type: "button",id: "user_location_attributes_zip_button",onclick: "th.validateAndAdvance($(this));"} Next
-          %div.mapcontainer 
-            #map_canvas
+        %div.mapcontainer 
+          #map_canvas
 
     .step-5.wizard-page
       %fieldset
         %h2.fs-title Are you seeking help, or can you offer help?
         .radio-form-container
           = f.collection_radio_buttons :is_provider, [[true, 'I can help!'] ,[false, 'I need help!']], :first, :last, item_wrapper_class: "radio-container"
-        %button.wizard-back{type: "button",onclick: "th.advanceWizard('5','4')"} Back
+        %button.wizard-back{type: "button",onclick: "th.advanceWizard('5','4'); google.maps.event.trigger(map, 'resize');"} Back
         / %button.wizard-forward{type: "button",id: "user_is_provider_true_button",onclick: "th.advanceWizard('5','6')"} Next
         %button.wizard-forward{type: "button",id: "user_is_provider_true_button",onclick: "th.validateAndAdvance($(this));"} Next
 
