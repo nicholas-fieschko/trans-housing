@@ -1,5 +1,5 @@
 # Per gotealeaf, Rails 4.2.1 supports preview fx
-class UserMailer < Actionmailer::Base
+class UserMailer < ActionMailer::Base
   default from: 'noreply@transhousing.com'
 
 	def welcome_email(user)
