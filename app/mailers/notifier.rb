@@ -5,9 +5,12 @@ class Notifier < ApplicationMailer
 	# - Sends an email to the user upon signup (set in users_controller)
 	# - In Fabricator, all user emails set to 'stephen.krewson@gmail.com'
 	# - Text of email in views/welcome.text.haml (no html yet)
-	def welcome(user)
-		@user = user
-		mail(to: "stephen.krewson@gmail.com", subject: "[TransHousing] Welcome!")
+	def welcome(receiver)
+		@receiver = user
+		mail(
+			to: receiver.contact.email,
+			subject: "[TransHousing] Welcome!"
+		)
 	end
 
 	# - By default, users get sent an email notification on receiving message
@@ -39,6 +42,7 @@ class Notifier < ApplicationMailer
 		@sender   = sender
 		@receiver = receiver
 		@message  = message
+		@thread   = message.conversation_id
 
 		# Link sender with rotp counter
 		#secret_key = ROTP::Base32.random_base32
@@ -49,14 +53,20 @@ class Notifier < ApplicationMailer
 		#ret_code << "Reply by including this code: "
 		#ret_code << hotp.at(0)
 
+		ret_link = user_conversation_path(
+			user_id: @receiver.id.to_s,
+			id: @thread.to_s
+		).prepend(ENV['heroku_path'])
+
+		ret_link.prepend("#{message.text} | Reply: ")
+		ret_link.prepend("From #{sender.name} | ")
+
 		@client = Twilio::REST::Client.new
 		@client.messages.create(
 			from: ENV['twilio_num'],
 			to:   @receiver.contact.phone,
-			body: @message.text
+			body: ret_link
 		)
 	end
-
-	# - We will need more of these!
 
 end
