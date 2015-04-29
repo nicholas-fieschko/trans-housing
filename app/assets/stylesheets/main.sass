@@ -35,14 +35,21 @@ $error-red:           #E74C3C
 li.pure-menu-item
   margin:             0px 3px
 
+header
+  overflow:           auto
+
 .logo-homepage#logo
   font-size:          300%
+.header-menu-items
+  float:              right
 #logo
+  float:              left
   text-decoration:    none
 #logo-housing
   color:              $trans-blue
 #logo-trans
   color:              $trans-pink
+
 
 h2
   font-size:          1.5em
@@ -94,6 +101,9 @@ i.settings-icon
 #frontpage-map
   background-image:   url("map_placeholder.gif")
   height:             400vh
+
+.pure-g.filters
+  font-family:        'Source Sans Pro', sans-serif
 
 .spin-fix .settings-icon
   -webkit-transform-origin:  50% calc(50% - .5px)
@@ -321,6 +331,7 @@ div fieldset
   border-style:       double
   border-width:       .5em
   border-color:       white
+  height:             100%
 
 html,body
   height:             100%
