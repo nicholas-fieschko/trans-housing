@@ -116,7 +116,7 @@ class User
     self.buddy_resource[:currently_offered]
   end
   def misc?
-    self.misc_resource[:currently_offered]
+    self.misc_resource && self.misc_resource[:currently_offered]
   end
 
   def prefs
