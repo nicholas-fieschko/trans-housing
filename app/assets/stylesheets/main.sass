@@ -102,8 +102,20 @@ i.settings-icon
   background-image:   url("map_placeholder.gif")
   height:             400vh
 
-.pure-g.filters
-  font-family:        'Source Sans Pro', sans-serif
+.pure-g [class *="pure-u"]
+  font-family:        'Source Sans Pro', sans-serif !important
+  @include transition(all 1s ease-in-out)
+
+.filters,.filter-placeholder
+  text-align:         center
+  text-transform:     capitalize
+
+.filters[class *="pure-u"]
+  display: none
+  & label
+    color:  inherit
+    font-weight:  inherit
+    margin: 0em .3em
 
 .spin-fix .settings-icon
   -webkit-transform-origin:  50% calc(50% - .5px)

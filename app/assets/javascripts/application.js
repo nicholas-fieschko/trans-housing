@@ -40,6 +40,15 @@ handlers = function(){
   $("#user_gender_attributes_trans_true").change(function(){th.setGenderSelectOptions(true);});
   $("#user_gender_attributes_trans_false").change(function(){th.setGenderSelectOptions(false);});
 
+  $(".filter-placeholder").click(function(){
+    $(".filters").slideDown()
+    $(".filter-placeholder").slideUp()
+  });
+
+  $(".filters-toggle").click(function(){
+    $(".filters").slideUp()
+    $(".filter-placeholder").slideDown()
+  });
 
 };
 
