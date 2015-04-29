@@ -4,6 +4,8 @@ var curUsers = [];
 var markers = [];
 var yale = new google.maps.LatLng(41.31845, -72.92226);
 var usrMarker = new google.maps.Marker;
+var map;
+var curLat, curLng;
 
 $(document).ready(function() {
 	var url = "/location/posts"
@@ -31,7 +33,7 @@ function initialize() {
 	zoom: 14,	  
 	mapTypeId: google.maps.MapTypeId.ROADMAP
     }
-	var map = new google.maps.Map(map_canvas, map_options);
+	map = new google.maps.Map(map_canvas, map_options);
     initialLocation = yale;
     map.setCenter(initialLocation);
     // Try W3C Geolocation 
