@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
-	include Geokit::Geocoders
-	
+  include Geokit::Geocoders
+  
   def new
     if signed_in?
       redirect_to root_url
@@ -20,6 +20,8 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
+
+
 	session[:location] = @user.location
 	if session[:location] && session[:location]["city"] != "Unknown Location"
 		@geokitResult = Geokit::Geocoders::GoogleGeocoder.geocode(
@@ -28,9 +30,8 @@ class UsersController < ApplicationController
 			session[:coordinates] = [@geokitResult.lng, @geokitResult.lat]
 		end
 	end
-
-    @user.location[:coordinates] = session[:coordinates].map &:to_f
-   
+  @user.location[:coordinates] = session[:coordinates].map &:to_f
+    
     
     if verify_recaptcha(model: @user, message: "Please retry the captcha.") && @user.save
        # Iff phone # given, make sure it's correct (but let continue)
@@ -42,7 +43,7 @@ class UsersController < ApplicationController
           flash[:warning] = "Note: we were unable to automatically verify your phone number. Please check in your settings that it is correct."
         end
       end
-
+      
       # Iff email addr given, make sure it's valid (but let continue)
       if !@user.contact[:email].blank?
         if !@user.mailgun_valid?(@user.contact[:email])
@@ -51,12 +52,12 @@ class UsersController < ApplicationController
       end
 
       # Send a welcome email if we're in production
-			if Rails.env.production?
+      if Rails.env.production?
         Notifier.welcome(@user).deliver
       end
-
+      
       sign_in @user
-
+      flash[:success] = "Welcome to TransHousing!"
       redirect_to @user
     else
       # If the captcha error is the only one, only give a captcha error.
@@ -71,18 +72,19 @@ class UsersController < ApplicationController
       render 'new'
     end
   end
-
+  
   def edit
     @user = User.find(params[:id])
   end
-
+  
   def update
     @user = User.find(params[:id])
 
     if @user.update_attributes(edit_user_params)
-      flash[:success] = "Successfully updated settings."
+      flash[:success] = "Success!"
       redirect_to @user
     else
+      flash.now[:error] = "Please correct highlighted errors and try again."
       render 'edit'
     end
   end
@@ -95,12 +97,12 @@ class UsersController < ApplicationController
       @users = User.find_with_filters(params[:users_filters])
     end
   end
-
+  
   def show
-  	@user = User.find(params[:id])
-  	@reviews = @user.reviews
+    @user = User.find(params[:id])
+    @reviews = @user.reviews
   end
-
+  
 
   def dashboard
     if signed_in?
@@ -110,9 +112,8 @@ class UsersController < ApplicationController
       signed_in_user
     end
   end
-
+  
   private
-
     def user_params
       params.require(:user).permit(
         :name,
@@ -147,5 +148,4 @@ class UsersController < ApplicationController
         misc_resource_attributes:           [:currently_offered]
         )
     end
-
 end
