@@ -4,8 +4,8 @@ class User
   include Mongoid::Attributes::Dynamic
   include ActiveModel::SecurePassword
 
-  field :name,                              type: String
-  field :is_provider,                       type: Boolean
+  field      :name,                         type: String
+  field      :is_provider,                  type: Boolean
 
 
   embeds_one :gender
@@ -23,11 +23,11 @@ class User
   embeds_one :buddy_resource
   embeds_one :misc_resource
 
-  has_many :reviews
-  field :number_reviews,                    type: Integer
-  field :sum_rating,                        type: Float
-  field :average_rating,                    type: Float
-  
+  has_many   :reviews
+  field      :number_reviews,               type: Integer
+  field      :sum_rating,                   type: Float
+  field      :average_rating,               type: Float
+
   has_and_belongs_to_many :requests
 
   has_many :conversations
@@ -127,7 +127,11 @@ class User
   end
 
   def misc?
-    self.misc_resource[:currently_offered]
+    if self.misc_resource.nil?
+      false
+    else
+      self.misc_resource[:currently_offered]
+    end
   end
 
   def prefs
