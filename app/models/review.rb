@@ -28,11 +28,11 @@ class Review
 
   # Callback to set `expirable_created_at`
   before_create :set_expire
-    def set_expire
-  	self.expirable_created_at = Time.now
-  	self.completed = false
-  	return true
+  
+  def set_expire
+    self.expirable_created_at = Time.now
+    self.completed = false
+    return true
   end
-
 
 end
