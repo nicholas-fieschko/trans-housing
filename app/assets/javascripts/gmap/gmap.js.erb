@@ -11,16 +11,16 @@ $(document).ready(function() {
 	initialize();
 });
 
-$(document).on('click', '.wizard-forward', function(){
-  var center = map.getCenter();
-  google.maps.event.trigger(map, "resize");
-  map.setCenter(center);
+$(document).on('click', '.wizard-forward', function() {
+	var center = map.getCenter();
+	google.maps.event.trigger(map, "resize");
+	map.setCenter(center);
 });
 
 $(document).on('click', '.wizard-back', function(){
-  var center = map.getCenter();
-  google.maps.event.trigger(map, "resize");
-  map.setCenter(center);
+	var center = map.getCenter();
+	google.maps.event.trigger(map, "resize");
+	map.setCenter(center);
 });
 
 
@@ -29,37 +29,38 @@ function initialize() {
     var browserSupportFlag = new Boolean();
     var map_canvas = document.getElementById('map_canvas');
     var map_options = {
-	zoom: 14,	  
-	mapTypeId: google.maps.MapTypeId.ROADMAP
+    	zoom: 14,
+    	mapTypeId: google.maps.MapTypeId.ROADMAP
     }
+
 	map = new google.maps.Map(map_canvas, map_options);
     initialLocation = yale;
     map.setCenter(initialLocation);
     // Try W3C Geolocation 
     // (https://developers.google.com/maps/articles/geolocation)
     if (navigator.geolocation) {
-	browserSupportFlag = true;
-	navigator.geolocation.getCurrentPosition(function(position) {
-		initialLocation = new google.maps.LatLng(position.coords.
-							 latitude, position.
-							 coords.longitude);
-		map.setCenter(initialLocation);
-		// We want to put a marker on our location
-		setUsrMarker([initialLocation.lng(),initialLocation.lat()], map);
-		queryNearbyUsers(initialLocation.lat(), 
+		browserSupportFlag = true;
+		navigator.geolocation.getCurrentPosition(function(position) {
+			initialLocation = new google.maps.LatLng(position.coords.
+								latitude, position.coords.longitude);
+			map.setCenter(initialLocation);
+			// We want to put a marker on our location
+			setUsrMarker([initialLocation.lng(),initialLocation.lat()], map);
+			queryNearbyUsers(initialLocation.lat(), 
 			initialLocation.lng(), map, 1);
-	    },function (){
+	    },function () {
 			handleNoGeolocation(browserSupportFlag, map);
 	    });
+    } else {
+    	browserSupportFlag = false;
+    	handleNoGeolocation(browserSupportFlag, map);
     }
-    else {
-	browserSupportFlag = false;
-	handleNoGeolocation(browserSupportFlag, map);
-    }
-	google.maps.event.addListener(map, 'dragend', function(){
+
+	google.maps.event.addListener(map, 'dragend', function() {
 		var newCenter = map.getCenter();
 		queryNearbyUsers(newCenter.lat(), newCenter.lng(), map, 0);
 	});
+
 	google.maps.event.addListener(map, 'zoom_changed', function() {
 		var newCenter = map.getCenter();
 		queryNearbyUsers(newCenter.lat(), newCenter.lng(), map, 0);
@@ -84,7 +85,7 @@ function filterCurUser(usrInfo, map) {
 			}
 		}
 		
-		if (j >= curUsers.length){
+		if (j >= curUsers.length) {
 			for (var k=0; k < userAround.length; k++) {
 				if (usrInfo[i]._id.$oid == userAround[k]) {
 					break;
@@ -115,6 +116,7 @@ function filterCurUser(usrInfo, map) {
 			markers[i].setMap(null);
 		}
 	}
+
 	curUsers = templist2.concat(newUsers);
 	markers = newmarkerlist.concat(newM);
 	console.debug(curUsers);
@@ -132,11 +134,11 @@ function setUsrMarker(loc, map) {
 function handleNoGeolocation(errorFlag, map) {
     if (errorFlag == true) {
 			console.error("Geolocation service failed...we will put you in Yale");
-    } 
+    }
+
 	var myLatLng = yale;
 	setUsrMarker([yale.lng(), yale.lat()], map)
-	queryNearbyUsers(myLatLng.lat(),
-	            myLatLng.lng(), map, 1);
+	queryNearbyUsers(myLatLng.lat(), myLatLng.lng(), map, 1);
 }
 
 function queryNearbyUsers(lat, lng, map, flg, zl) {
@@ -158,54 +160,52 @@ function queryNearbyUsers(lat, lng, map, flg, zl) {
 						setUsrMarker(newLoc, map);
 						map.setCenter(new 
 							google.maps.LatLng(newLoc[1], newLoc[0]));
-						}
-				}
-				else {
+					}
+				} else {
 					console.debug(userInfo);
 					// We never execute this branch
 					if (flg < 0) {
 						userAround.push(userInfo._id.$oid);
 						addMarkers(map,userInfo);
 						curUsers = userAround;
-					}
-					else {
+					} else {
 						curUsr.push(userInfo)
 					}
 				}
 			});
+
 			if (flg < 3) {
 				filterCurUser(curUsr,map);
 			}
 		},
 		error: function() {
 		    console.error("Ajax error!")
-			}
-	    });
-	}
+		}
+	});
+}
 
 function addMarkers(map, usr) {
     // console.log(p)
 	if (usr.is_provider) {
 	    var image = {
-		size: new google.maps.Size(32, 32),
-		url: "<%= asset_path 'house_opt.png' %>",
-		// icon: '/images/house.png',
-		origin: new google.maps.Point(0, 0),
-		anchor: new google.maps.Point(12,12)
-                };
-        }
-    
-	else {
+			size: new google.maps.Size(32, 32),
+			url: "<%= asset_path 'house_opt.png' %>",
+			// icon: '/images/house.png',
+			origin: new google.maps.Point(0, 0),
+			anchor: new google.maps.Point(12,12)
+        };
+    } else {
 	    var image = {
-		url: "<%= asset_path 'people_opt.png' %>",
-		size: new google.maps.Size(32, 45),
-		origin: new google.maps.Point(0, 0),
-		anchor: new google.maps.Point(12,12)
-                };    
-        }
+			url: "<%= asset_path 'people_opt.png' %>",
+			size: new google.maps.Size(32, 45),
+			origin: new google.maps.Point(0, 0),
+			anchor: new google.maps.Point(12,12)
+    	};    
+	}
+    
     var shape = {
-	coords: [1, 1, 1, 20, 18, 18, 1], 
-	type: 'poly'
+		coords: [1, 1, 1, 20, 18, 18, 1], 
+		type: 'poly'
     };
 
 
@@ -226,7 +226,7 @@ function addMarkers(map, usr) {
     if (usr.housing_resource.currently_offered) {
 		housingIcon = '<i class="fa fa-bed fa-lg" title="Housing"></i>'
 	}
-    if (usr.transportation_resource.currently_offered){
+    if (usr.transportation_resource.currently_offered) {
 		transportationIcon = '<i class="fa fa-car fa-lg" title="Transportation"></i>'
 	}
 	if (usr.misc && usr.misc_resource.currently_offered) {
@@ -313,18 +313,14 @@ function OnFilterChange(filter) {
 	if (filter.checked) {
 		filters.push(filter.name);
 		setCookie("filters", filters.toString().replace(/,/g, "%2C"), 7000);
-	}
-	else {
+	} else {
 		setCookie("filters", delete_from_array(filters, filter.name).toString().replace(/,/g, "%2C"), 7000);
 	}
-
 
 	var curLat = map.getCenter().lat();
 	var curLng = map.getCenter().lng();
 	queryNearbyUsers(curLat, curLng, map, 0);
-
 }
-
 
 function url_protocol_domain_port() {
 	var url = window.location.href;
@@ -333,14 +329,12 @@ function url_protocol_domain_port() {
 	return result;
 }
 
-
 function setCookie(cname, cvalue, exdays) {
     var d = new Date();
     d.setTime(d.getTime() + (exdays*24*60*60*1000));
     var expires = "expires="+d.toUTCString();
     document.cookie = cname + "=" + cvalue + "; " + expires;
 }
-
 
 function getCookie(cname) {
     var name = cname + "=";
@@ -358,6 +352,7 @@ function delete_from_array(array, element) {
 	if (index > -1) {
 		array.splice(index, 1);
 		return array;
+	} else {
+		return array;
 	}
-	else return array;
 }
