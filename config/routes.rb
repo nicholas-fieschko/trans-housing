@@ -15,8 +15,8 @@ Rails.application.routes.draw do
   resources :sessions, only: [:new, :create, :destroy]
   
   resources :users do
-    resources :reviews, only: [:edit, :update, :show]
-    resources :requests
+    resources :reviews, only: [:edit, :update]
+    resources :exchanges
     resources :conversations, path: 'mail'
   end
 

@@ -1,0 +1,8 @@
+<li id="authored_review-<%= authored_review.id %>">
+  <span class="recipient"><%= link_to authored_review.recipient.name, user_path(authored_review.recipient_id) %></span> 
+  <span class="rating"><%= get_stars(authored_review.rating) %></span>
+  <span class="text"><%= authored_review.text %></span>
+  <span class="timestamp">
+    <%= authored_review.updated_at.strftime("%B %Y") %>
+  </span>
+</li>

@@ -28,18 +28,20 @@ handlers = function(){
     }
   });
 
+  // Update question text on sign-up form appropriate to options selected.
   $("#user_gender_attributes_identity").click(function(){th.updatePronouns();});
   $("#user_gender_attributes_identity_button").click(function(){th.updatePronouns();});
   $("label[for='user_is_provider_true']").first().click(function(){th.updateHelperSeekerStatusText("provider");});
   $("label[for='user_is_provider_false']").first().click(function(){th.updateHelperSeekerStatusText("seeker");});
 
+  // Display correct gender selection based on selections.
   $("#binary_genders").blur(function(){th.updateGenderIdentity("#binary_genders");});
   $("#binary_trans_genders").blur(function(){th.updateGenderIdentity("#binary_trans_genders");});
   $("#nonbinary_trans_genders").blur(function(){th.updateGenderIdentity("#nonbinary_trans_genders");});
-  
   $("#user_gender_attributes_trans_true").change(function(){th.setGenderSelectOptions(true);});
   $("#user_gender_attributes_trans_false").change(function(){th.setGenderSelectOptions(false);});
 
+  // Main page filter pull-down.
   $(".filter-placeholder").click(function(){
     $(".filters").slideDown()
     $(".filter-placeholder").slideUp()
@@ -52,6 +54,7 @@ handlers = function(){
 
 };
 
+// Load above handlers through various window load methods.
 $(window).on('page:load', function(){ 
   console.log("Loading handlers through 'window on page:load'.");
   handlers();

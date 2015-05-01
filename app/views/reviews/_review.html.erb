@@ -1,7 +1,7 @@
 <% if review.completed %>
 
 <li id="review-<%= review.id %>">
-  <span class="author"><%= link_to review.author, user_path(review.authorID) %></span> 
+  <span class="reviewer"><%= link_to review.reviewer.name, user_path(review.reviewer_id) %></span> 
   <span class="rating"><%= get_stars(review.rating) %></span>
   <span class="text"><%= review.text %></span>
   <span class="timestamp">

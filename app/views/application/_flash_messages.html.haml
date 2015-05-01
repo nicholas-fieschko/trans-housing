@@ -9,3 +9,9 @@
     %i.fa.fa-exclamation-triangle.fa-2x
     %span.notice-text
       = flash[:warning]
+
+- if flash[:success]
+  .pure-u-1.notice-success-container
+    %i.fa.fa-check-circle.fa-2x
+    %span.notice-text
+      = flash[:success]

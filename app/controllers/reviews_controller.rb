@@ -3,13 +3,14 @@ class ReviewsController < ApplicationController
   def update
     @user = User.find(params[:user_id])
     @review = Review.find(params[:id])
+    check_reviewer_id
     if @review.update_attributes(review_params)
-      @user.sum_rating = @user.sum_rating + @review.rating
-      @user.number_reviews = @user.number_reviews + 1
-      @user.average_rating = (@user.sum_rating / @user.number_reviews).round(1)
-      @user.save
-      @review.update_attribute(:completed, 1)
-      @review.update_attribute(:expirable_created_at, nil)
+      if !@review.completed
+        @review.set_complete
+        @user.update_attribute(:sum_rating, @user.sum_rating + @review.rating)
+        @user.update_attribute(:number_reviews, @user.number_reviews + 1)
+        @user.update_attribute(:average_rating, (@user.sum_rating.to_f / @user.number_reviews).round(1))
+      end
       #flash[:success] = "Review submitted"
       redirect_to @user
     else
@@ -17,22 +18,13 @@ class ReviewsController < ApplicationController
       render 'edit'
     end
   end
+  
 
   def edit
     @user = User.find(params[:user_id])
-    if (@review = Review.find(params[:id])) && not(@review.completed) && signed_in? && current_user.id == @review.authorID
-    else
-      redirect_to @user
-    end
+    @review = Review.find(params[:id])
+    check_reviewer_id
   end
-
-
-  def show
-  end
-
-
-
-
 
 
   private
@@ -41,6 +33,13 @@ class ReviewsController < ApplicationController
       params.require(:review).permit(:text, :rating)
     end
 
+    def check_reviewer_id
+      signed_in_user
+      if current_user.id != @review.reviewer_id
+        flash[:warning] = "Sorry, only the designated reviewer has permission to edit this review"
+        redirect_to @user
+      end
+    end
 
 
 end

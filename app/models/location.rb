@@ -1,7 +1,7 @@
 class Location
   include Mongoid::Document
   include Mongoid::Attributes::Dynamic
-
+  
   belongs_to :user
   
   field :c, as: :coordinates, type: Array             # [longitude, latitude]
@@ -24,6 +24,7 @@ class Location
   def lng
     self.coordinates.first
   end
+  
   def lat
     self.coordinates.last
   end
@@ -32,36 +33,36 @@ class Location
   def search(query, filters, zoomlevel)
     # Little hack here...should use lnglatRange() 
     @zoom = zoomlevel.to_i
-  	@distance = 2*(2**(15-@zoom))
-  	if query
-  		nearbyUsers = Location.where("coordinates" => {
-                			"$nearSphere" => {"$geometry" => {
-                				"type" => "Point",
-                				"coordinates"=> [query[1].to_f, query[0].to_f]
-                			},
-                			"$maxDistance"=> @distance*1609}}
-                		).to_a.map{|loc| loc.user}
+    @distance = 2*(2**(15-@zoom))
+    if query
+      nearbyUsers = Location.where("coordinates" => {
+                                     "$nearSphere" => {"$geometry" => {
+                                         "type" => "Point",
+                                         "coordinates"=> [query[1].to_f, query[0].to_f]
+                                       },
+                                       "$maxDistance"=> @distance*1609}}
+                                   ).to_a.map{|loc| loc.user}
       filter_by_user_type(nearbyUsers,filters) & filter_by_resource(nearbyUsers,filters)
-  	# TODO: better error handel here
-  	else
-  		[].to_a
-  	end
+      # TODO: better error handel here
+    else
+      [].to_a
+    end
   end	
-
+  
   private
 
-    def filter_by_user_type(users, filters) 
-      user_type_filters = filters.select { |f| User.all_user_type_filters.include?(f) }
-      filter(users,user_type_filters)
-    end
-
-    def filter_by_resource(users, filters)
-      resource_filters = filters.select { |f| User.all_resource_filters.include?(f) }
-      filter(users,resource_filters)
-    end
-
-    def filter(users, filters)
-      users.select { |u| filters.select{|f| u.send("#{f}?")}.any? }
-    end
-
+  def filter_by_user_type(users, filters) 
+    user_type_filters = filters.select { |f| User.all_user_type_filters.include?(f) }
+    filter(users,user_type_filters)
+  end
+  
+  def filter_by_resource(users, filters)
+    resource_filters = filters.select { |f| User.all_resource_filters.include?(f) }
+    filter(users,resource_filters)
+  end
+  
+  def filter(users, filters)
+    users.select { |u| filters.select{|f| u.send("#{f}?")}.any? }
+  end
+  
 end

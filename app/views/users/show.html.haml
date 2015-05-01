@@ -9,10 +9,10 @@
           = link_to "Contact #{@user.name}", new_user_conversation_path(@user.id), class: "btn btn-primary wizard-forward" 
 
           - if current_user.seeker? && @user.provider?
-            = link_to "Request help from #{@user.name}", new_user_request_path(@user.id), class: "btn btn-primary wizard-back", id: "request-help-button"
+            = link_to "Request help from #{@user.name}", new_user_exchange_path(@user.id), class: "btn btn-primary wizard-back", id: "request-help-button"
 
           - if current_user.provider? && @user.seeker?
-            = link_to "Offer help to #{@user.name}", new_user_request_path(@user.id), class: "btn btn-primary wizard-back", id: "request-help-button"
+            = link_to "Offer help to #{@user.name}", new_user_exchange_path(@user.id), class: "btn btn-primary wizard-back", id: "request-help-button"
         %h1#user-name.user-name{class: "header-username-#{gender_category(@user.gender[:identity])}"}
           = @user.name
       .pure-g
@@ -51,7 +51,7 @@
 
       .pure-u-1#profile-bottom-section
         %h3.user-rating
-        - if !@user.number_reviews.nil? && @user.number_reviews > 0
+        - if @user.number_reviews > 0
           Average Rating
           = get_stars(@user.average_rating)
           %h3 

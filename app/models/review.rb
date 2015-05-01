@@ -6,10 +6,10 @@ class Review
 
   default_scope -> { order(created_at: :desc) }
 
-  field :authorID, type: BSON::ObjectId
-  index({ authorID: 1 }, { name: "authorID_index" })
+  field :recipient_id, type: BSON::ObjectId
+  field :reviewer_id, type: BSON::ObjectId
+  index({ reviewer_id: 1 }, { name: "reviewer_id_index" })
 
-  field :author, type: String
   field :text, type: String
   field :rating, type: Integer
 
@@ -28,11 +28,24 @@ class Review
 
   # Callback to set `expirable_created_at`
   before_create :set_expire
-    def set_expire
-  	self.expirable_created_at = Time.now
-  	self.completed = false
-  	return true
+  def set_expire
+    self.expirable_created_at = Time.now
+    self.completed = false
+    return true
   end
 
+
+  def reviewer
+    User.find(self.reviewer_id)
+  end
+
+  def recipient
+    User.find(self.recipient_id)
+  end
+
+  def set_complete
+    self.update_attribute(:completed, 1)
+    self.update_attribute(:expirable_created_at, nil)
+  end
 
 end

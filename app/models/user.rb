@@ -1,11 +1,11 @@
 class User
-	
+  
   include Mongoid::Document
   include Mongoid::Attributes::Dynamic
   include ActiveModel::SecurePassword
 
-  field :name,                              type: String
-  field :is_provider,                       type: Boolean
+  field      :name,                         type: String
+  field      :is_provider,                  type: Boolean
 
 
   embeds_one :gender
@@ -23,49 +23,52 @@ class User
   embeds_one :buddy_resource
   embeds_one :misc_resource
 
-  has_many :reviews
-  field :number_reviews,                    type: Integer
-  field :sum_rating,                        type: Float
-  field :average_rating,                    type: Float
+  has_many   :reviews
+  field      :number_reviews,               type: Integer
+  field      :sum_rating,                   type: Float
+  field      :average_rating,               type: Float
 
-  has_and_belongs_to_many :requests
+  has_and_belongs_to_many :exchanges
 
-	has_many :conversations
+  has_many :conversations
   has_many :messages
-
+  
   accepts_nested_attributes_for  :gender, :contact,
-                                 :food_resource, :shower_resource, :laundry_resource,
-                                 :housing_resource, :transportation_resource,
-                                 :extended_profile, #:preference_profile,
-                                 :buddy_resource, :misc_resource, :location
+  :food_resource, :shower_resource, :laundry_resource,
+  :housing_resource, :transportation_resource,
+  :extended_profile,
+  :buddy_resource, :misc_resource, :location
+  
   validates_presence_of          :gender, :contact, :name,
-                                 :food_resource, :shower_resource, :laundry_resource,
-                                 :housing_resource, :transportation_resource,
-                                 :buddy_resource #, :location
-  validates_associated           :gender, :contact#, :location
-
-
+  :food_resource, :shower_resource, :laundry_resource,
+  :housing_resource, :transportation_resource,
+  :buddy_resource
+  
+  validates_associated           :gender, :contact#
+  
+  
   field :remember_token,         type: String
   field :password_digest,        type: String
-
+  
   has_secure_password
   before_create :create_remember_token, :initialization
-
+  
   def pronoun(tense)
-    standard_pronouns = { "male" => 
-                          {"they" => "he",
-                           "them" => "him", 
-                           "their" => "his"},
-                         "female" => 
-                          {"they" => "she",
-                           "them" => "her", 
-                           "their" => "her"} }
+    standard_pronouns = { 
+      "male" => 
+      {"they" => "he",
+        "them" => "him", 
+        "their" => "his"},
+      "female" => 
+      {"they" => "she",
+        "them" => "her", 
+        "their" => "her"} }
     identity = self.gender[:identity].downcase
     standard_pronouns.has_key?(identity) ? standard_pronouns[identity][tense] : nil ||
-    self.gender[tense.to_sym] ||
-    tense
+      self.gender[tense.to_sym] ||
+      tense
   end
-
+  
   # Returns true if JSON from mailgun API call contains true "is_valid" field
   # Description of validator in Mailgun docs; multimap doesn't work for Ruby 2
   def mailgun_valid?(email)
@@ -79,7 +82,7 @@ class User
     hash["is_valid"]
   end
   
-	def they
+  def they
     self.pronoun "they"
   end
 
@@ -90,10 +93,11 @@ class User
   def their
     self.pronoun "their"
   end
-
+  
   def provider?
     self.is_provider
   end
+  
   def seeker?
     !self.is_provider
   end
@@ -101,21 +105,27 @@ class User
   def food?
     self.food_resource[:currently_offered]
   end
+
   def shower?
     self.shower_resource[:currently_offered]
   end
+
   def laundry?
     self.laundry_resource[:currently_offered]
   end
+
   def housing?
     self.housing_resource[:currently_offered]
   end
+
   def transportation?
     self.transportation_resource[:currently_offered]
   end
+
   def buddy?
     self.buddy_resource[:currently_offered]
   end
+
   def misc?
     self.misc_resource && self.misc_resource[:currently_offered]
   end
@@ -137,7 +147,35 @@ class User
   end
 
   def self.all_resource_filters
-    return ['housing','laundry','food','buddy','shower','transportation','misc']
+    return ['housing','laundry','food','buddy','shower','transportation']
+  end
+
+  def self.providers
+    User.where(is_provider: true)
+  end
+
+  def self.seekers
+    User.where(is_provider: false)
+  end
+
+  def authored_reviews
+    Review.where(reviewer_id: self.id).all
+  end
+
+  def pending_exchanges
+    self.exchanges.select { |n| !n.seeker_accept_exchange || !n.provider_accept_exchange }
+  end
+
+  def active_exchanges
+    self.exchanges.select { |n| n.seeker_accept_exchange && n.provider_accept_exchange && !n.completed }
+  end
+
+  def user_type
+    if self.provider? then "provider" else "seeker" end
+  end
+
+  def user_type_complement
+    if self.provider? then "seeker" else "provider" end
   end
 
   # Retrieve whether or not a user has enabled receipt of 
@@ -145,10 +183,10 @@ class User
   # Default is false. 
   def receives_message_notifs_by_text?
     if self.prefs.nil? || self.prefs.message_notifs.nil? ||
-       self.prefs.message_notifs[:text].blank? ||
-       self.prefs.message_notifs[:text] == false
+        self.prefs.message_notifs[:text].blank? ||
+        self.prefs.message_notifs[:text] == false
       false
-     elsif self.prefs.message_notifs[:text] == true
+    elsif self.prefs.message_notifs[:text] == true
       true
     end
   end
@@ -158,10 +196,10 @@ class User
   # Default is true. 
   def receives_message_notifs_by_email?
     if self.prefs.nil? || self.prefs.message_notifs.nil? ||
-       self.prefs.message_notifs[:email].blank? ||
-       self.prefs.message_notifs[:email] == true
+        self.prefs.message_notifs[:email].blank? ||
+        self.prefs.message_notifs[:email] == true
       true
-     elsif self.prefs.message_notifs[:email] == false
+    elsif self.prefs.message_notifs[:email] == false
       false
     end
   end
@@ -175,7 +213,7 @@ class User
        self.prefs.dashboard_notifs[:text].blank? ||
        self.prefs.dashboard_notifs[:text] == false
       false
-     elsif self.prefs.dashboard_notifs[:text] == true
+    elsif self.prefs.dashboard_notifs[:text] == true
       true
     end
   end
@@ -186,10 +224,10 @@ class User
   # Default is true. 
   def receives_dashboard_notifs_by_email?
     if self.prefs.nil? || self.prefs.dashboard_notifs.nil? ||
-       self.prefs.dashboard_notifs[:email].blank? ||
-       self.prefs.dashboard_notifs[:email] == true
+        self.prefs.dashboard_notifs[:email].blank? ||
+        self.prefs.dashboard_notifs[:email] == true
       true
-     elsif self.prefs.dashboard_notifs[:email] == false
+    elsif self.prefs.dashboard_notifs[:email] == false
       false
     end
   end
@@ -210,75 +248,94 @@ class User
     end
   end
 
-  def self.numerical_options
-    ["1","2","3","4","5","6","7","8","9","10"]
-  end
-
   def self.resources_list
     ["Housing",
      "Food",
      "Shower",
      "Laundry",
-     "Transportation",
-     "Misc"]
+     "Transportation"]
   end
 
-  def self.integer_from_options_list(options_list)
-    # convert options list given by radio buttons into one-hot integer
-    resources = 0;
-    if options_list
-      options_list.each do |option|
-        resources += 2 ** option.to_i
-      end
-    end
-
-    resources
+  ###################################################################################
+  # These are only used for fabrication - in practice, we will use cached values
+  # in the fields of User model
+  def calculate_number_reviews
+    self.reviews.length
   end
 
-  def self.find_with_filters(filters)
-
-    filtered_users = User.all
-
-    # if filters[:city] && filters[:city].length > 0
-    #   filtered_users = filtered_users.near(filters[:city], 30)
-    # end
-
-    if filters[:resources]
-      resources = User.integer_from_options_list(filters[:resources])
-      # filtered_users = filtered_users.where({"resources & ? = ?", resources, resources})
-    end
-
-    filtered_users
+  def calculate_sum_rating
+    if self.reviews.empty? then 0
+    else self.reviews.map {|r| r.rating}.reduce(:+) end
   end
 
-  def set_resources_from_options_list!(options_list)
-    self.resources = User.integer_from_options_list(options_list)
+  def calculate_average_rating
+    if self.reviews.empty? then 0
+    else (self.calculate_sum_rating.to_f / self.calculate_number_reviews).round(1) end
+  end
+  ####################################################################################
+
+
+  # def self.numerical_options
+  #   ["1","2","3","4","5","6","7","8","9","10"]
+  # end
+  
+  # not uself filter functions
+  # def self.integer_from_options_list(options_list)
+  #   # convert options list given by radio buttons into one-hot integer
+  #   resources = 0;
+  #   if options_list
+  #     options_list.each do |option|
+  #       resources += 2 ** option.to_i
+  #     end
+  #   end
+
+  #   resources
+  # end
+
+  # def self.find_with_filters(filters)
+
+  #   filtered_users = User.all
+
+  #   # if filters[:city] && filters[:city].length > 0
+  #   #   filtered_users = filtered_users.near(filters[:city], 30)
+  #   # end
+
+  #   if filters[:resources]
+  #     resources = User.integer_from_options_list(filters[:resources])
+  #     # filtered_users = filtered_users.where({"resources & ? = ?", resources, resources})
+  #   end
+
+  #   filtered_users
+  # end
+
+  # def set_resources_from_options_list!(options_list)
+  #   self.resources = User.integer_from_options_list(options_list)
+  # end
+
+  # def boolean_array_from_resources_integer
+  #   [].tap do |resources_list|
+  #     User.resources_list.length.times do |order|
+  #       resources_list << (self.resources & 2 ** order > 0)
+  #     end
+  #   end
+  # end
+
+  private
+  
+  def create_remember_token
+    self.remember_token = User.digest(User.new_remember_token)
+  end
+  
+  def init_reviews
+    self.number_reviews = 0
+    self.average_rating = 0
+    self.sum_rating = 0
   end
 
-  def boolean_array_from_resources_integer
-    [].tap do |resources_list|
-      User.resources_list.length.times do |order|
-        resources_list << (self.resources & 2 ** order > 0)
-      end
-    end
+  def initialization
+    init_reviews
+    self.preference_profile ||= PreferenceProfile.new
+    self.extended_profile ||= ExtendedProfile.new
   end
-
-    private
-
-    def create_remember_token
-      self.remember_token = User.digest(User.new_remember_token)
-    end
-
-    def init_reviews
-      self.number_reviews = 0
-      self.average_rating = 0
-      self.sum_rating = 0
-    end
-
-    def initialization
-      init_reviews
-      self.preference_profile ||= PreferenceProfile.new
-      self.extended_profile ||= ExtendedProfile.new
-    end
-
+  
 end

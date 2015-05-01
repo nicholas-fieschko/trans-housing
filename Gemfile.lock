@@ -194,6 +194,9 @@ GEM
       rack
     rack-test (0.6.3)
       rack (>= 1.0)
+    rack_session_access (0.1.1)
+      builder (>= 2.0.0)
+      rack (>= 1.0.0)
     rails (4.2.0)
       actionmailer (= 4.2.0)
       actionpack (= 4.2.0)
@@ -346,6 +349,7 @@ DEPENDENCIES
   mongoid-geospatial (~> 4.0)
   puma (= 2.11.1)
   rack-livereload
+  rack_session_access
   rails (= 4.2.0)
   rails_12factor (= 0.0.2)
   recaptcha

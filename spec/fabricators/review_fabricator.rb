@@ -1,8 +1,8 @@
 Fabricator(:review) do 
 
 
-  authorID 					{ ObjectId() }
-  author 					{ Faker::Name.first_name }
+  recipient_id 				{ ObjectId() }
+  reviewer_id				{ ObjectId() }
   text						{ Faker::Lorem.paragraph }
   rating					{ rand(1..5) }
 
