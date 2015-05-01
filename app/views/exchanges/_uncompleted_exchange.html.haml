@@ -1,0 +1,4 @@
+= link_to "Exchange", user_exchange_path(uncompleted_exchange.send(user_type), uncompleted_exchange)
+with 
+= link_to "#{uncompleted_exchange.send(user_type).name}", user_path(uncompleted_exchange.send(user_type))
+%br

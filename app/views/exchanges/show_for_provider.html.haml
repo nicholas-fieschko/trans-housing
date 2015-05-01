@@ -2,19 +2,19 @@
   .pure-u-1-8.side-columns
   .pure-u-3-4.login-box-positioner
     .sign-up-box.sign-up-column
-      - if @request.completed
+      - if @exchange.completed
         %h1
           You have finished helping #{@seeker.name}.
 
-        - if @provider_review_for_seeker.completed
+        - if @exchange.provider_review_for_seeker.completed
           %h1
             You have left #{@seeker.name} a review. Thank you!
         - else
           %div
             If you have time, please write a review about your experience with #{@seeker.name}. This helps other people like you navigate TransHousing safely.
-          = link_to "Write a review", edit_user_review_url(@seeker.id.to_s, @provider_review_for_seeker.id.to_s), class: "login-submit-button"
+          = link_to "Write a review", edit_user_review_url(@seeker, @exchange.provider_review_for_seeker), class: "login-submit-button"
 
-      - elsif !@request.provider_accept_request
+      - elsif !@exchange.provider_accept_exchange
         %h1
           #{@seeker.name} has sent a help request!
 
@@ -22,28 +22,28 @@
           Click the button below to accept #{@seeker.name}'s request.
 
         %div
-          = link_to "Accept request", user_request_path(@seeker, @request, accept: true), method: :patch, class: "login-submit-button"
+          = link_to "Accept exchange", user_exchange_path(@seeker, @exchange, accept: true), method: :patch, class: "login-submit-button"
 
-      - elsif !@request.seeker_accept_request 
+      - elsif !@exchange.seeker_accept_exchange 
         %h1
           You have offered to help #{@seeker.name}.
 
         %div
           The next step is for #{@seeker.name} to confirm your offer. You will receive a notification at that time.
 
-      - elsif !@request.provider_confirm_interaction
+      - elsif !@exchange.provider_confirm_interaction
 
         %h1
           You have an active help request with #{@seeker.name}.
 
         %div
-          Once you have completed your exchange with #{@seeker.name}, please come back to confirm your interaction occurred. Once both parties have confirmed the interaction, you will be able to leave reviews for each other.
+          Once you have completed your request with #{@seeker.name}, please come back to confirm your interaction occurred. Once both parties have confirmed the interaction, you will be able to leave reviews for each other.
 
         %div
-          = link_to "Confirm Interaction", user_request_path(@seeker, @request, confirm: true), method: :patch, class: "login-submit-button"
+          = link_to "Confirm Interaction", user_exchange_path(@seeker, @exchange, confirm: true), method: :patch, class: "login-submit-button"
 
 
-      - elsif !@request.seeker_confirm_interaction
+      - elsif !@exchange.seeker_confirm_interaction
 
         %h1
           You have confirmed your interaction with #{@seeker.name}.

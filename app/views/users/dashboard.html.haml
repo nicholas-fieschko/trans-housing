@@ -2,32 +2,42 @@
   .pure-u-1-8.side-columns
   .pure-u-3-4.login-box-positioner
     .login-box.login-column
-      %h3 Pending Reviews
 
-      - if @reviews.any?
-        Reminder: please complete the following reviews:
+      %h3 Pending Exchanges
 
-        - @reviews.each do |r|
-          Review for #{User.find(r.user_id).name}: 
-          = link_to "Click here", edit_user_review_url(r.user_id.to_s, r.id.to_s)
-
+      - if @user.pending_exchanges.any?
+        = render partial: "exchanges/uncompleted_exchange", collection: @user.pending_exchanges, locals: {user_type: @user.user_type_complement}
       - else
-        No pending reviews.
+        No pending exchanges right now.
+
+      %h3 Active Exchanges
+
+      - if @user.active_exchanges.any?
+        = render partial: "exchanges/uncompleted_exchange", collection: @user.active_exchanges, locals: {user_type: @user.user_type_complement}
+      - else
+        No active exchanges right now.
+
+
+      %h3 Reviews to Finish
+      - if @user.authored_reviews.uncompleted.any?
+        Reminder: please complete the following reviews:
+        = render partial: "reviews/uncompleted_review", collection: @user.authored_reviews.uncompleted
+      - else
+        Nobody to review right now.
+
+
+      %h3 Past Reviews You've Written
+      - if @user.authored_reviews.completed.any?
+        = render partial: "reviews/authored_review", collection: @user.authored_reviews.completed
+      - else
+        You haven't written any reviews yet!
+
 
       %h3 History
+      - if @user.exchanges.completed.any?
+        = render partial: "exchanges/completed_exchange", collection: @user.exchanges.completed, locals: {user_type: @user.user_type_complement}
+      - else
+        You haven't interacted with anyone yet!
 
-      - @user.requests.each do |r|
-        - if @user.is_provider
-          - if r.completed
-            Helped #{User.find(r.seeker).name} #{time_ago_in_words(r.updated_at)} ago.
-          - else
-            Remember to 
-            = link_to "finish helping #{User.find(r.seeker).name}.", user_request_path(User.find(r.seeker), r)
-        - else
-          - if r.completed
-            Helped by #{User.find(r.provider).name} #{time_ago_in_words(r.updated_at)} ago.
-          - else
-            Reminder: You have a 
-            = link_to "help request", user_request_path(User.find(r.provider), r)
-            with #{User.find(r.provider).name}. 
   .pure-u-1-8.side-columns
+

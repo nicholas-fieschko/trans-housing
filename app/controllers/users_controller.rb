@@ -99,12 +99,8 @@ class UsersController < ApplicationController
 
 
   def dashboard
-    if signed_in?
-      @user = current_user
-      @reviews = Review.where(authorID: @user.id, completed: false).all
-    else
-      signed_in_user
-    end
+    signed_in_user
+    @user = current_user
   end
 
   private

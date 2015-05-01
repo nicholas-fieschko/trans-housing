@@ -28,7 +28,7 @@ class User
   field      :sum_rating,                   type: Float
   field      :average_rating,               type: Float
 
-  has_and_belongs_to_many :requests
+  has_and_belongs_to_many :exchanges
 
 	has_many :conversations
   has_many :messages
@@ -144,6 +144,34 @@ class User
     return ['housing','laundry','food','buddy','shower','transportation']
   end
 
+  def self.providers
+    User.where(is_provider: true)
+  end
+
+  def self.seekers
+    User.where(is_provider: false)
+  end
+
+  def authored_reviews
+    Review.where(reviewer_id: self.id).all
+  end
+
+  def pending_exchanges
+    self.exchanges.select { |n| !n.seeker_accept_exchange || !n.provider_accept_exchange }
+  end
+
+  def active_exchanges
+    self.exchanges.select { |n| n.seeker_accept_exchange && n.provider_accept_exchange && !n.completed }
+  end
+
+  def user_type
+    if self.provider? then "provider" else "seeker" end
+  end
+
+  def user_type_complement
+    if self.provider? then "seeker" else "provider" end
+  end
+
   # Retrieve whether or not a user has enabled receipt of 
   # new message notifications by text message.
   # Default is false. 
@@ -221,6 +249,25 @@ class User
      "Laundry",
      "Transportation"]
   end
+
+  ###################################################################################
+  # These are only used for fabrication - in practice, we will use cached values
+  # in the fields of User model
+  def calculate_number_reviews
+    self.reviews.length
+  end
+
+  def calculate_sum_rating
+    if self.reviews.empty? then 0
+    else self.reviews.map {|r| r.rating}.reduce(:+) end
+  end
+
+  def calculate_average_rating
+    if self.reviews.empty? then 0
+    else (self.calculate_sum_rating.to_f / self.calculate_number_reviews).round(1) end
+  end
+  ####################################################################################
+
 
   # def self.numerical_options
   #   ["1","2","3","4","5","6","7","8","9","10"]
