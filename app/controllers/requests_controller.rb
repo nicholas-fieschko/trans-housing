@@ -47,8 +47,6 @@ class RequestsController < ApplicationController
     end
   end
 
-
-
   def show
     if (@request = Request.find(params[:id])) && signed_in?
       @provider = User.find(@request.provider)
@@ -87,25 +85,24 @@ class RequestsController < ApplicationController
 
   private
 
-    def get_provider_seeker
-
-      if signed_in?
-        if current_user.is_provider && !User.find(params[:user_id]).is_provider
-          @provider = current_user
-          @seeker = User.find(params[:user_id])
-          return 'provider'
-        elsif !current_user.is_provider && User.find(params[:user_id]).is_provider
-          @seeker = current_user
-          @provider = User.find(params[:user_id])
-          return 'seeker'
-        else
-          render 'error'
-        end
+  def get_provider_seeker
+    
+    if signed_in?
+      if current_user.is_provider && !User.find(params[:user_id]).is_provider
+        @provider = current_user
+        @seeker = User.find(params[:user_id])
+        return 'provider'
+      elsif !current_user.is_provider && User.find(params[:user_id]).is_provider
+        @seeker = current_user
+        @provider = User.find(params[:user_id])
+        return 'seeker'
       else
-        signed_in_user
+        render 'error'
       end
-
+    else
+      signed_in_user
     end
-
-
+    
+  end
+  
 end

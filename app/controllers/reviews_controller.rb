@@ -30,17 +30,10 @@ class ReviewsController < ApplicationController
   def show
   end
 
-
-
-
-
-
   private
-
-    def review_params
-      params.require(:review).permit(:text, :rating)
-    end
-
-
-
+  
+  def review_params
+    params.require(:review).permit(:text, :rating)
+  end
+  
 end
