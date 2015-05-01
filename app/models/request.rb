@@ -27,13 +27,13 @@ class Request
 
   before_create :initialization
   def initialization
-  	self.expirable_created_at = Time.now
-  	self.seeker_accept_request = false
-  	self.provider_accept_request = false
-  	self.seeker_confirm_interaction = false
-  	self.provider_confirm_interaction = false
-  	self.completed = false
-  	return true
+    self.expirable_created_at = Time.now
+    self.seeker_accept_request = false
+    self.provider_accept_request = false
+    self.seeker_confirm_interaction = false
+    self.provider_confirm_interaction = false
+    self.completed = false
+    return true
   end
-
+  
 end
