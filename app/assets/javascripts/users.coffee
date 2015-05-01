@@ -57,7 +57,7 @@ th.error_messages_by_id = {
   "user_password_confirmation"         :  th.error_messages_general["password"]
 }
 
-
+# Inserts a relevant invalid input message above a sign-up page field.
 th.insert_error_for = (field) -> 
   if $(".input-error").length == 0
     $("<span class='input-error' id='#{field}-error'>" +
@@ -66,13 +66,12 @@ th.insert_error_for = (field) ->
       "</span>")
       .insertBefore($("##{field}").parents("form"))
 
+# Input is the button for a given page in the sign-up wizard.
+# It validates input on that page and advances the wizard or inserts
+# an error message as appropriate.
 th.validateAndAdvance = (obj) ->
-  # Advances wizard with directions [[from, to],[from,to],...] 
-  # after validating field with id specified.
   field_id = obj[0].id.replace '_button',''
   field_invalid = th.validateField field_id
-
-  # end_of_form = false
 
   if field_invalid
     th.insert_error_for field_id
@@ -101,11 +100,8 @@ th.validateAndAdvance = (obj) ->
         th.advanceWizard('6','7')
       when "user_password", "user_password_confirmation"
         $("#submit_signup").click()
-        # end_of_form = true
 
-  # return end_of_form
-
-
+# Returns false if a field is valid (there were no errors) or true if invalid.
 th.validateField = (field_id) ->
   field = $("##{field_id}")
   was_error = false
@@ -151,16 +147,10 @@ th.validateField = (field_id) ->
     when "user_password", "user_password_confirmation"
       if $("#user_password").val() != $("#user_password_confirmation").val()
         was_error = true
-    # else
-      # console.error "Unknown field."
-      # was_error = true
   return was_error
 
-
-
-th.clickNext = (current_field_id) ->
-  $("##{current_field_id}").parents(".wizard-current").find(".wizard-forward").click()
-
+# Advances the sign-up wizard to the appropriate next screen for pages where
+# which screen should be displayed depends on previous input.
 th.advanceWhereDecision = (coming_from) ->
   if coming_from == 'g-2'
     if $("#user_gender_attributes_trans_true").is(':checked')
@@ -180,7 +170,9 @@ th.advanceWhereDecision = (coming_from) ->
     else
       th.advanceWizard('3','g-2')
 
-
+# Fills in the gender identity text field according to the drop-down
+# selection of identity and hides or shows drop-downs appropriate for
+# the user based on their previous input (trans status, nonbinary status).
 th.updateGenderIdentity = (id) ->
   newGender = $("#{id}").val()
   if newGender == "Nonbinary"
@@ -193,6 +185,8 @@ th.updateGenderIdentity = (id) ->
     $("#user_gender_attributes_identity").show()
   $("#user_gender_attributes_identity").val(newGender)
 
+# Shows the appropriate drop-down for gender-identity when a user
+# selects their trans status.
 th.setGenderSelectOptions = (is_trans) ->
   if is_trans
     $("#binary_genders").hide()
@@ -204,31 +198,38 @@ th.setGenderSelectOptions = (is_trans) ->
     $("#binary_genders").show()
     $("#binary_trans_genders").hide()
 
+# Clears the custom pronouns fields. Called when a user selects 
+# that they are not trans.
 th.clearPronouns = ->
   $("#user_gender_attributes_they").val('')
   $("#user_gender_attributes_them").val('')
   $("#user_gender_attributes_their").val('')
 
+# Shows and hides main pages of the wizard appropriately.
 th.advanceWizard = (from,to) -> 
   $(".step-#{from}").removeClass "wizard-current"
   $(".step-#{to}").addClass "wizard-current"
 
+# Shows and hides sub-pages of the wizard appropriately (gender section, etc).
 th.advanceMiniWizard = (letter,from,to) -> 
   $(".step-#{letter}-#{from}").removeClass "wizard-current"
   $(".step-#{letter}-#{to}").addClass "wizard-current"
 
+# Update resource question text based on seeker or provider status.
 th.updateHelperSeekerStatusText = (status) ->
   if status == "seeker"
     $("#seeker-status-text").text "What could be helpful to you?"  
   if status == "provider"
     $("#seeker-status-text").text "What can you do to help?"  
 
+# Updates question text of pronoun correctness inquiry page.
 th.updatePronouns = ->
   gender = $("#user_gender_attributes_identity").val()
   $("#they").text("\"#{th.pronoun.they(gender)}\",")
   $("#them").text("\"#{th.pronoun.them(gender)}\",")
   $("#their").text("\"#{th.pronoun.their(gender)}\"?")
 
+# Reference of default pronoun for given genders by tense.
 th.pronoun =
   they: (gender) -> 
     switch gender.toLowerCase()

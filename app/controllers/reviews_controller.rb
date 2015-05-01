@@ -27,9 +27,6 @@ class ReviewsController < ApplicationController
   end
 
 
-
-
-
   private
 
     def review_params
@@ -43,5 +40,6 @@ class ReviewsController < ApplicationController
         redirect_to @user
       end
     end
+
 
 end

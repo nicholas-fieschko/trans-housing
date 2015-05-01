@@ -1,6 +1,8 @@
 # Run the following two commands to seed the database:
 # rake db:reset
 # rake db:mongoid:create_indexes    # must do this or else will get Ajax error!
+Fabricate(:provider, contact: Fabricate.build(:contact, email: "0@internet.com"))
+Fabricate(:seeker,   contact: Fabricate.build(:contact, email: "1@internet.com"))
 
 Fabricate.times(30,:provider)
 Fabricate.times(30,:seeker)

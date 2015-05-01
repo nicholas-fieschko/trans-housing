@@ -18,5 +18,5 @@
     = render 'flash_messages'
     = yield
 
-    /= debug(params) if Rails.env.production? #development?
-    /=console if Rails.env.production? #development?
+    /= debug(params) if Rails.env.test? #development?
+    /= console if Rails.env.test? || Rails.env.development?

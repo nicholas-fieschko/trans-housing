@@ -1,5 +1,5 @@
 class User
-	
+  
   include Mongoid::Document
   include Mongoid::Attributes::Dynamic
   include ActiveModel::SecurePassword
@@ -30,42 +30,45 @@ class User
 
   has_and_belongs_to_many :exchanges
 
-	has_many :conversations
+  has_many :conversations
   has_many :messages
-
+  
   accepts_nested_attributes_for  :gender, :contact,
-                                 :food_resource, :shower_resource, :laundry_resource,
-                                 :housing_resource, :transportation_resource,
-                                 :extended_profile, #:preference_profile,
-                                 :buddy_resource, :misc_resource, :location
+  :food_resource, :shower_resource, :laundry_resource,
+  :housing_resource, :transportation_resource,
+  :extended_profile,
+  :buddy_resource, :misc_resource, :location
+  
   validates_presence_of          :gender, :contact, :name,
-                                 :food_resource, :shower_resource, :laundry_resource,
-                                 :housing_resource, :transportation_resource,
-                                 :buddy_resource #, :location
-  validates_associated           :gender, :contact#, :location
-
-
+  :food_resource, :shower_resource, :laundry_resource,
+  :housing_resource, :transportation_resource,
+  :buddy_resource
+  
+  validates_associated           :gender, :contact#
+  
+  
   field :remember_token,         type: String
   field :password_digest,        type: String
-
+  
   has_secure_password
   before_create :create_remember_token, :initialization
-
+  
   def pronoun(tense)
-    standard_pronouns = { "male" => 
-                          {"they" => "he",
-                           "them" => "him", 
-                           "their" => "his"},
-                         "female" => 
-                          {"they" => "she",
-                           "them" => "her", 
-                           "their" => "her"} }
+    standard_pronouns = { 
+      "male" => 
+      {"they" => "he",
+        "them" => "him", 
+        "their" => "his"},
+      "female" => 
+      {"they" => "she",
+        "them" => "her", 
+        "their" => "her"} }
     identity = self.gender[:identity].downcase
     standard_pronouns.has_key?(identity) ? standard_pronouns[identity][tense] : nil ||
-    self.gender[tense.to_sym] ||
-    tense
+      self.gender[tense.to_sym] ||
+      tense
   end
-
+  
   # Returns true if JSON from mailgun API call contains true "is_valid" field
   # Description of validator in Mailgun docs; multimap doesn't work for Ruby 2
   def mailgun_valid?(email)
@@ -79,7 +82,7 @@ class User
     hash["is_valid"]
   end
   
-	def they
+  def they
     self.pronoun "they"
   end
 
@@ -90,10 +93,11 @@ class User
   def their
     self.pronoun "their"
   end
-
+  
   def provider?
     self.is_provider
   end
+  
   def seeker?
     !self.is_provider
   end
@@ -101,21 +105,27 @@ class User
   def food?
     self.food_resource[:currently_offered]
   end
+
   def shower?
     self.shower_resource[:currently_offered]
   end
+
   def laundry?
     self.laundry_resource[:currently_offered]
   end
+
   def housing?
     self.housing_resource[:currently_offered]
   end
+
   def transportation?
     self.transportation_resource[:currently_offered]
   end
+
   def buddy?
     self.buddy_resource[:currently_offered]
   end
+
   def misc?
     if self.misc_resource.nil?
       false
@@ -177,10 +187,10 @@ class User
   # Default is false. 
   def receives_message_notifs_by_text?
     if self.prefs.nil? || self.prefs.message_notifs.nil? ||
-       self.prefs.message_notifs[:text].blank? ||
-       self.prefs.message_notifs[:text] == false
+        self.prefs.message_notifs[:text].blank? ||
+        self.prefs.message_notifs[:text] == false
       false
-     elsif self.prefs.message_notifs[:text] == true
+    elsif self.prefs.message_notifs[:text] == true
       true
     end
   end
@@ -190,10 +200,10 @@ class User
   # Default is true. 
   def receives_message_notifs_by_email?
     if self.prefs.nil? || self.prefs.message_notifs.nil? ||
-       self.prefs.message_notifs[:email].blank? ||
-       self.prefs.message_notifs[:email] == true
+        self.prefs.message_notifs[:email].blank? ||
+        self.prefs.message_notifs[:email] == true
       true
-     elsif self.prefs.message_notifs[:email] == false
+    elsif self.prefs.message_notifs[:email] == false
       false
     end
   end
@@ -207,7 +217,7 @@ class User
        self.prefs.dashboard_notifs[:text].blank? ||
        self.prefs.dashboard_notifs[:text] == false
       false
-     elsif self.prefs.dashboard_notifs[:text] == true
+    elsif self.prefs.dashboard_notifs[:text] == true
       true
     end
   end
@@ -218,10 +228,10 @@ class User
   # Default is true. 
   def receives_dashboard_notifs_by_email?
     if self.prefs.nil? || self.prefs.dashboard_notifs.nil? ||
-       self.prefs.dashboard_notifs[:email].blank? ||
-       self.prefs.dashboard_notifs[:email] == true
+        self.prefs.dashboard_notifs[:email].blank? ||
+        self.prefs.dashboard_notifs[:email] == true
       true
-     elsif self.prefs.dashboard_notifs[:email] == false
+    elsif self.prefs.dashboard_notifs[:email] == false
       false
     end
   end
@@ -314,22 +324,22 @@ class User
   #   end
   # end
 
-    private
+  private
+  
+  def create_remember_token
+    self.remember_token = User.digest(User.new_remember_token)
+  end
+  
+  def init_reviews
+    self.number_reviews = 0
+    self.average_rating = 0
+    self.sum_rating = 0
+  end
 
-    def create_remember_token
-      self.remember_token = User.digest(User.new_remember_token)
-    end
-
-    def init_reviews
-      self.number_reviews = 0
-      self.average_rating = 0
-      self.sum_rating = 0
-    end
-
-    def initialization
-      init_reviews
-      self.preference_profile ||= PreferenceProfile.new
-      self.extended_profile ||= ExtendedProfile.new
-    end
-
+  def initialization
+    init_reviews
+    self.preference_profile ||= PreferenceProfile.new
+    self.extended_profile ||= ExtendedProfile.new
+  end
+  
 end

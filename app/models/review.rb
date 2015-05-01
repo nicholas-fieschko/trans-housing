@@ -48,5 +48,4 @@ class Review
     self.update_attribute(:expirable_created_at, nil)
   end
 
-
 end
