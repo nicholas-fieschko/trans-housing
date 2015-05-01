@@ -12,36 +12,16 @@ class LocationsController < ApplicationController
   
   def search
     location = Location.new
-    if params[:iniflag] == "1" && 
-        session[:location] && session[:location]["state"] != "Unknown"
-      if session[:coordinate]
-        @nearbyUsers = location.search(session[:coordinate].reverse, 
-                                       filters_array, params[:zoom])
-      else 
-        @cor = Geokit::Geocoders::GoogleGeocoder.geocode(
-                                                         session[:location]["city"] + session[:location]["state"])
-        if @cor.success
-          session[:coordinate] = [@cor.lng, @cor.lat]
-          @nearbyUsers = location.search(session[:coordinate], 
-                                         filters_array, params[:zoom])
-        else 
-          @nearbyUsers = location.search(params[:loc], 
-                                         filters_array, params[:zoom])
-        end
-      end
+    if params[:iniflag] == "1" && signed_in? &&
+		@nearbyUsers = location.search(params[:loc], filters_array, 
+									   params[:zoom], "ini")
     else
-      @nearbyUsers = location.search(params[:loc], filters_array, params[:zoom])
+        @nearbyUsers = location.search(params[:loc], filters_array, 
+									   params[:zoom], "rep")
     end
     
     if @nearbyUsers
-      #if @params[:loc].is_a?(Hash)
-      #	print @params[:loc]
-      #	@location = Geokit::Geocoders::GoogleGeocoder.reverse_geocode 
-      #				[(params[:loc][:"0"][0].to_f+params[:loc][:"0"][1].to_f)/2, 
-      #				(params[:loc][:"1"][0].to_f+params[:loc][:"1"][1].to_f)/2]
-      #else
       @location = Geokit::Geocoders::GoogleGeocoder.reverse_geocode params[:loc]
-      #end
       # TODO: there should be more checking wrapping around zip/city/state
       # or move the checking to model 
       if not session[:location] 

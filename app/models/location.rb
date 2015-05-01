@@ -30,7 +30,19 @@ class Location
   end
 	
 
-  def search(query, filters, zoomlevel)
+  def search(query, filters, zoomlevel, iniflg)
+	if iniflg == "ini" && self.city && 
+		self.city != "Unknown Location" 
+		if !self.coordinates
+			@cor = Geokit::Geocoders::GoogleGeocoder.geocode(
+					self.city + " " + self.state)
+			if @cor.success
+				self.coordinates = [@cor.lng, @cor.lat]
+			end
+		end
+		query = self.coordinate
+	end
+
     # Little hack here...should use lnglatRange() 
     @zoom = zoomlevel.to_i
     @distance = 2*(2**(15-@zoom))
