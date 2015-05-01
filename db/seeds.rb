@@ -20,27 +20,25 @@
 
 # Run the following two commands to seed the database:
 # rake db:reset
-# rake db:mongoid:create_indexes		# must do this or else will get Ajax error!
+# rake db:mongoid:create_indexes    # must do this or else will get Ajax error!
 
 providers = Fabricate.times(50,:provider)
 seekers = Fabricate.times(50,:seeker)
 
-
-
 User.all.each do |u| 
-	number_reviews = rand(5)
-	sum_rating = 0
-	for i in 1..number_reviews
-		author = User.all.sample
-		r = Fabricate(:review, authorID: author.id, author: author.name)
-		r.update_attribute(:completed, 1)
-   		r.update_attribute(:expirable_created_at, nil)
-		u.reviews.push(r)
-		sum_rating += r.rating
-	end
-	u.update_attribute(:number_reviews, number_reviews)
-	u.update_attribute(:sum_rating, sum_rating)
-	u.update_attribute(:average_rating, (u.sum_rating / u.number_reviews).round(1))
+  number_reviews = rand(5)
+  sum_rating = 0
+  for i in 1..number_reviews
+    author = User.all.sample
+    r = Fabricate(:review, authorID: author.id, author: author.name)
+    r.update_attribute(:completed, 1)
+      r.update_attribute(:expirable_created_at, nil)
+    u.reviews.push(r)
+    sum_rating += r.rating
+  end
+  u.update_attribute(:number_reviews, number_reviews)
+  u.update_attribute(:sum_rating, sum_rating)
+  u.update_attribute(:average_rating, (u.sum_rating / u.number_reviews).round(1))
 
 end
 
