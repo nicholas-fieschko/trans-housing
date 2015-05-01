@@ -81,14 +81,17 @@ class ConversationsController < ApplicationController
 			text:     params[:message][:text]
 		)
 		
-		# Reset the unread list; add the message; persist
-		@thread.readers = [@receiver.id, @sender.id] #.push(@receiver.id)
-		@thread.owners = [@receiver.id, @sender.id] #.push(@receiver.id)
+		# Reset the unread list; only the sender will have read the msg
+		@thread.readers = [@sender.id]
 
+		# If the receiver had deleted ownership of the thread, undelete
+		if @thread.owners.exclude? @receiver.id
+			@thread.owners.push(@receiver.id)
+		end
+
+		# Persist the message
 		@thread.messages.push(@message)
 		@thread.save
-		@sender.save
-		@receiver.save
 
 		# Trigger some emails/SMS
 		send_copies(@sender, @receiver, @message)
