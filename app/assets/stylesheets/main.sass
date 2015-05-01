@@ -1,425 +1,414 @@
 @import "bootstrap-sprockets"
 @import "bootstrap"
 
-$trans-pink:          pink
-$trans-blue:          #6FBEF3
-$trans-purple:        #BF55EC
+$trans-pink:                  pink
+$trans-blue:                  #6FBEF3
+$trans-purple:                #BF55EC
 
-$light-trans-pink:    #fff6f8
-$light-trans-blue:    #dbf1ff
+$light-trans-pink:            #fff6f8
+$light-trans-blue:            #dbf1ff
 
-$error-red:           #E74C3C
+$error-red:                   #E74C3C
 
 @mixin bg-and-text-color($bg,$text)
-  color:              $text
-  background-color:   $bg
-  border-color:       $bg
-  border-style:       solid
-  border-width:       1px
+  color:                      $text
+  background-color:           $bg
+  border-color:               $bg
+  border-style:               solid
+  border-width:               1px
 
 @mixin btn-hover-invert($default-bg-color, $default-text-color)
-  @include            bg-and-text-color($default-bg-color,$default-text-color)
+  @include                    bg-and-text-color($default-bg-color,$default-text-color)
   &:hover
-    @include          bg-and-text-color($default-text-color,$default-bg-color)
+    @include                  bg-and-text-color($default-text-color,$default-bg-color)
 
 @mixin placeholder 
   &::-webkit-input-placeholder 
     @content
-  &:-moz-placeholder  /* Firefox 18- */
+  &:-moz-placeholder
     @content
-  &::-moz-placeholder   /* Firefox 19+ */
+  &::-moz-placeholder
     @content
   &:-ms-input-placeholder 
     @content
 li
-  list-style: none
+  list-style:                 none
 
 li.pure-menu-item
-  margin:             0px 3px
+  margin:                     0px 3px
 
 header
-  overflow:           auto
+  overflow:                   auto
 
 .logo-homepage#logo
-  font-size:          300%
+  font-size:                  300%
 .header-menu-items
-  float:              right
+  float:                      right
 #logo
-  float:              left
-  text-decoration:    none
+  float:                      left
+  text-decoration:            none
 #logo-housing
-  color:              $trans-blue
+  color:                      $trans-blue
 #logo-trans
-  color:              $trans-pink
+  color:                      $trans-pink
 
 h2
-  font-size:          1.5em
+  font-size:                  1.5em
 
 .btn
   &:active
-    box-shadow:       none
+    box-shadow:               none
 
 .btn-header
-  @include transition(all 0.2s ease-in-out)
-  color:              white
-  text-transform:     uppercase
-  font-weight:        bold
-  margin:             8px 5px
+  @include                    transition(all 0.2s ease-in-out)
+  color:                      white
+  text-transform:             uppercase
+  font-weight:                bold
+  margin:                     8px 5px
 
 .btn-lg-header
-  padding:            10px 20px
-  font-size:          20px
-  line-height:        1.33
-  margin:             12px 5px
+  padding:                    10px 20px
+  font-size:                  20px
+  line-height:                1.33
+  margin:                     12px 5px
 
 #sign-up-button.btn-sign-up
-  @include            btn-hover-invert($trans-blue,white)
+  @include                    btn-hover-invert($trans-blue,white)
 
 #sign-in-button.btn-sign-in,#sign-out-button.btn-sign-out
-  @include            btn-hover-invert($trans-pink,white)
+  @include                    btn-hover-invert($trans-pink,white)
 
 a#header-username
-  text-decoration:    none
+  text-decoration:            none
 
 a#header-username,h1#user-name
   &.header-username-male
-    color:            $trans-blue
+    color:                    $trans-blue
   &.header-username-female
-    color:            $trans-pink
+    color:                    $trans-pink
   &.header-username-nb
-    color:            $trans-purple
+    color:                    $trans-purple
 
 i.settings-icon
-  vertical-align:      middle
-  text-align:          center
+  vertical-align:             middle
+  text-align:                 center
   &:hover
-    color:             $trans-blue
-    -webkit-animation: spin 3.1s infinite linear
-    -moz-animation:    spin 3.1s infinite linear
-    -o-animation:      spin 3.1s infinite linear
-    animation:         spin 3.1s infinite linear
+    color:                    $trans-blue
+    -webkit-animation:        spin 3.1s infinite linear
+    -moz-animation:           spin 3.1s infinite linear
+    -o-animation:             spin 3.1s infinite linear
+    animation:                spin 3.1s infinite linear
 
 #frontpage-map
-  background-image:   url("map_placeholder.gif")
-  height:             400vh
+  background-image:           url("map_placeholder.gif")
+  height:                     400vh
 
 .pure-g [class *="pure-u"]
-  font-family:        'Source Sans Pro', sans-serif !important
-  @include transition(all 1s ease-in-out)
+  font-family:                'Source Sans Pro', sans-serif !important
+  @include                    transition(all 1s ease-in-out)
 
 .filters,.filter-placeholder
-  text-align:         center
-  text-transform:     capitalize
+  text-align:                 center
+  text-transform:             capitalize
 
 .filters[class *="pure-u"]
-  display: none
+  display:                    none
   & label
-    color:  inherit
-    font-weight:  inherit
-    margin: 0em .3em
+    color:                    inherit
+    font-weight:              inherit
+    margin:                   0em .3em
 
 .spin-fix .settings-icon
-  -webkit-transform-origin:  50% calc(50% - .5px)
-  transform-origin:          50% calc(50% - .5px)
+  -webkit-transform-origin:   50% calc(50% - .5px)
+  transform-origin:           50% calc(50% - .5px)
 
   
 body
-  font-family:        'Source Sans Pro', sans-serif
+  font-family:                'Source Sans Pro', sans-serif
 
 input:-webkit-autofill
-  -webkit-box-shadow: 0 0 0px 1000px white inset !important
+  -webkit-box-shadow:         0 0 0px 1000px white inset !important
   &:focus
-    -webkit-box-shadow: 0 0 0px 1000px white inset !important
+    -webkit-box-shadow:       0 0 0px 1000px white inset !important
 
 .radio-container
-  padding:            1em
+  padding:                    1em
 
 .radio-container input[type=radio]
   &[id*=false],&[id*=true]
-    margin:           .2em
+    margin:                   .2em
 
 select
-  height:             2.5em
-  border:             1px solid #ccc
-  background-color:   #fff
-  border-radius:      4px
-  vertical-align:     middle
-  padding:            .5em .6em
+  height:                     2.5em
+  border:                     1px solid #ccc
+  background-color:           #fff
+  border-radius:              4px
+  vertical-align:             middle
+  padding:                    .5em .6em
 
 .control-label
-  width:             25%
-  text-align: right
-  padding-right: 2em
-  vertical-align: super
+  width:                      25%
+  text-align:                 right
+  padding-right:              2em
+  vertical-align:             super
 
 .pure-form-aligned input.input-field[type]
-  width:             50%
+  width:                      50%
 
 
 .notice-container
-  padding:            15px
-  text-align:         center
-  font-family:        "Source Sans Pro", sans-serif
+  padding:                    15px
+  text-align:                 center
+  font-family:                "Source Sans Pro", sans-serif
 
 .notice-error-container
-  @extend             .notice-container
-  color:              white
-  font-weight:        bolder
-  background-color:   $error-red
+  @extend                     .notice-container
+  color:                      white
+  font-weight:                bolder
+  background-color:           $error-red
 
 .notice-warning-container
-  @extend             .notice-container
-  color:              #d35400
-  font-weight:        bolder
-  background-color:   #ffc835
+  @extend                     .notice-container
+  color:                      #d35400
+  font-weight:                bolder
+  background-color:           #ffc835
 
 .notice-success-container
-  @extend             .notice-container
-  color:              white
-  font-weight:        bolder
-  background-color:   #2ECC71
+  @extend                     .notice-container
+  color:                      white
+  font-weight:                bolder
+  background-color:           #2ECC71
 
 span.notice-text
-  height:             100%
-  vertical-align:     super
-  display:            inline-block
-  padding:            0px 15px
+  height:                     100%
+  vertical-align:             super
+  display:                    inline-block
+  padding:                    0px 15px
 
 
 // User Profile SASS
 .grid-columns-container,.user-profile-column,.sign-up-column,.gen-column
-  height:             100%
-  font-family:        'Source Sans Pro', sans-serif
+  height:                     100%
+  font-family:                'Source Sans Pro', sans-serif
 
 .user-profile-column,.account-settings-column
-  background-color:   white
-  padding:            20px
-  overflow:           auto
-  height:             100%
+  background-color:           white
+  padding:                    20px
+  overflow:                   auto
+  height:                     100%
 
 #profile-page
-  text-align:         left
+  text-align:                 left
 
 #profile-left-column
-  text-align:         center
+  text-align:                 center
 
 #profile-right-column
-  padding-left:       2.5em
+  padding-left:               2.5em
 
 #profile-bottom-section
-  text-align:         center
+  text-align:                 center
 
 .user-rating,.user-name
-  float: left
+  float:                      left
 
 .user-name
-  margin: .67em 0.67em 0
+  margin:                     .67em 0.67em 0
 
 .user-status
-  clear: both
-
-.user-resources
-  // float: left
-  // clear: both
+  clear:                      both
 
 #request-help-button
-  float: right
+  float:                      right
 
 //Sign up
 
 form 
-  @include transition(all 1s ease-in-out)
+  @include                    transition(all 1s ease-in-out)
 
 .sign-up-column,.login-box
-  text-align:         center
-  overflow:           auto
+  text-align:                 center
+  overflow:                   auto
   & input[type]
-    margin: 15px 0px
-    text-align:       center
-    font-size:        25px
-    // height:           100%
-    line-height:      100%
+    margin:                   15px 0px
+    text-align:               center
+    font-size:                25px
+    line-height:              100%
     @include placeholder
-      color:            #ccc
-      font-style: italic
-      text-align:       center
-      font-size:        16px
+      color:                  #ccc
+      font-style:             italic
+      text-align:             center
+      font-size:              16px
 
 span.input-error
-  font-style:           italic
-  color:                $error-red
+  font-style:                 italic
+  color:                      $error-red
   & i
-    margin:             5px
+    margin:                   5px
 
 .wizard-page
-  display:              none
+  display:                    none
   &.wizard-current
-    display:            block
-    overflow:           auto
+    display:                  block
+    overflow:                 auto
 
 .wizard-forward,.message-reply-button
-  float:              right
-  @extend             .btn 
-  @extend             .btn-header 
-  @extend             .btn-sign-up
-  @include            btn-hover-invert($trans-blue,white)
+  float:                      right
+  @extend                     .btn 
+  @extend                     .btn-header 
+  @extend                     .btn-sign-up
+  @include                    btn-hover-invert($trans-blue,white)
 
 #submit_signup
-  @extend             .wizard-forward 
+  @extend                     .wizard-forward 
   
 .wizard-back
-  float:              left
-  @extend             .btn 
-  @extend             .btn-header 
-  @extend             .btn-sign-up
-  @include            btn-hover-invert($trans-pink,white)
+  float:                      left
+  @extend                     .btn 
+  @extend                     .btn-header 
+  @extend                     .btn-sign-up
+  @include                    btn-hover-invert($trans-pink,white)
 
 div fieldset
-  border:             none
+  border:                     none
 
 .mapcontainer
-  height:             25em
+  height:                     25em
 
 #user_gender_attributes_identity,#nonbinary_trans_genders,
 #binary_trans_genders
-  display: none
+  display:                    none
 
 .g-recaptcha > div > div
-  width:              100% !important
+  width:                      100% !important
 
 
-// Sessions SASS. Until I completely re-do the application.css.sass
-// organization as recommended elsewhere (a to-do item), things must
-// be put here if I wish to use existing mixins. 
+// Sessions SASS
 @mixin login-field-label($bg-color,$text-color)
-  @include            bg-and-text-color($bg-color,$text-color)
-  cursor:             default
-  text-transform:     uppercase
-  display:            block
-  font-size:          1.5em
-  font-weight:        normal
-  line-height:        1.43
-  text-align:         center
-  vertical-align:     middle
-  padding:            6px 12px
-  margin:             0px
+  @include                    bg-and-text-color($bg-color,$text-color)
+  cursor:                     default
+  text-transform:             uppercase
+  display:                    block
+  font-size:                  1.5em
+  font-weight:                normal
+  line-height:                1.43
+  text-align:                 center
+  vertical-align:             middle
+  padding:                    6px 12px
+  margin:                     0px
   &:hover
-    @include          bg-and-text-color($bg-color,$text-color)
+    @include                  bg-and-text-color($bg-color,$text-color)
 
 @mixin login-field-input($border-color)
-  color:              $border-color
-  border-color:       $border-color
-  border-style:       dashed
-  width:              100%
-  font-size:          100%
-  padding:            6px 12px
-  outline:            none
-  text-align:         center
+  color:                      $border-color
+  border-color:               $border-color
+  border-style:               dashed
+  width:                      100%
+  font-size:                  100%
+  padding:                    6px 12px
+  outline:                    none
+  text-align:                 center
 
 .login-column
-  height: 100%
+  height:                     100%
 
 .login-username-label
-  @include            login-field-label(white,$trans-blue)
+  @include                    login-field-label(white,$trans-blue)
 
 .login-username-input
-  @include            login-field-input($trans-blue)
+  @include                    login-field-input($trans-blue)
 
 .login-password-label
-  @include            login-field-label(white,$trans-pink)
+  @include                    login-field-label(white,$trans-pink)
 
 .login-password-input
-  @include            login-field-input($trans-pink)
+  @include                    login-field-input($trans-pink)
 
 .login-submit-button
-  @extend             .btn
-  @extend             .btn-header
-  @include            btn-hover-invert($trans-pink, white)
-  font-size:          17px
-  padding:            10px
-  width:              100%
+  @extend                     .btn
+  @extend                     .btn-header
+  @include                    btn-hover-invert($trans-pink, white)
+  font-size:                  17px
+  padding:                    10px
+  width:                      100%
 
 .pure-form input[type].login-submit-button
-  @extend             .login-submit-button
-  margin:             0
-  margin-top:         10px
+  @extend                     .login-submit-button
+  margin:                     0
+  margin-top:                 10px
 
 .pure-form input[type=radio]
-  width:              inherit !important
+  width:                      inherit !important
 
 .pure-form input[type=radio] ~ label
-  padding: .5em
-  vertical-align: super
+  padding:                    .5em
+  vertical-align:             super
 
 .pure-form input[type=submit]
-  width:              inherit !important
-  border:             inherit !important
+  width:                      inherit !important
+  border:                     inherit !important
 
 
 
 
 .login-box,.sign-up-box,.account-settings-box,.page-content-box
-  background-color:   white
-  padding:            15px
-  //border-radius:      10px
-  text-align:         center
-  font-family:        'Source Sans Pro', sans-serif
+  background-color:           white
+  padding:                    15px
+  text-align:                 center
+  font-family:                'Source Sans Pro', sans-serif
 
 
 .login-box-positioner
-  position:           relative
-  // top:                5%
-  // border-radius:      6px
-  height:             100%
-  border-color:       $light-trans-pink
-  border-style:       solid
-  border-width:       2em
-  overflow:           auto
+  position:                   relative
+  height:                     100%
+  border-color:               $light-trans-pink
+  border-style:               solid
+  border-width:               2em
+  overflow:                   auto
 
 
 .map-bg
-  background-color:   $light-trans-blue
-//  background-image:   url("map_placeholder.gif")
+  background-color:           $light-trans-blue
 
 .side-columns
-  border-style:       double
-  border-width:       .5em
-  border-color:       white
-  height:             100%
+  border-style:               double
+  border-width:               .5em
+  border-color:               white
+  height:                     100%
 
 html,body
-  height:             100%
-  overflow-x: hidden
+  height:                     100%
+  overflow-x:                 hidden
 
 // Messages
 
 #inbox-return-link
-  float: left
-  display: block
+  float:                      left
+  display:                    block
 
 #message-subject,#message-reply-header
-  clear: both
-  margin-bottom: 5px
+  clear:                      both
+  margin-bottom:              5px
 
 .message-body 
-  padding: 15px 30px
-  text-align: left
-  color: black
-  background-color: #f8f9f9
-  clear: both
+  padding:                    15px 30px
+  text-align:                 left
+  color:                      black
+  background-color:           #f8f9f9
+  clear:                      both
 
 .message-sender
-  float: right
-  font-style: italic
+  float:                      right
+  font-style:                 italic
 
 #message-reply
-  width: 70%
-  margin: 30px
+  width:                      70%
+  margin:                     30px
 
 
 #thread-delete-button
-  color: $error-red
-  font-size: 1em
-  background-color: white
-  float: right
-  border: none
+  color:                      $error-red
+  font-size:                  1em
+  background-color:           white
+  float:                      right
+  border:                     none
