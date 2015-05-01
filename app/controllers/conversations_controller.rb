@@ -77,7 +77,7 @@ class ConversationsController < ApplicationController
 		@thread   = Conversation.find(params[:id])
 	
 		@message = Message.new(
-			sender:   @sender,
+			sender:   @sender.id,
 			text:     params[:message][:text]
 		)
 		
