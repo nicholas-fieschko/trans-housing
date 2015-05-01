@@ -50,6 +50,7 @@ group :development, :test do
   gem 'capybara'
   gem 'selenium-webdriver'
   gem 'site_prism'
+  gem 'rack_session_access'
 
   gem 'guard'
   gem 'guard-livereload', '~> 2.4', require: false

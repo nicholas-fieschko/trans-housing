@@ -26,19 +26,15 @@ class UsersController < ApplicationController
 			session[:location]["city"]+ " " + session[:location]["state"])
 		if @geokitResult.success
 			session[:coordinates] = [@geokitResult.lng, @geokitResult.lat]
-    # Below is added by nick after invalid location resulted in nil session coords.
-    # else
-    #   session[:coordinates] = [41.31845, -72.92226]
 		end
 	end
 
     @user.location[:coordinates] = session[:coordinates].map &:to_f
    
     
-    if verify_recaptcha(model: @user, message: "Robot!!") && @user.save
-
+    if verify_recaptcha(model: @user, message: "Please retry the captcha.") && @user.save
        # Iff phone # given, make sure it's correct (but let continue)
-      if @user.contact[:phone]
+      if !@user.contact[:phone].blank?
         @user.contact[:phone] = GlobalPhone.normalize(@user.contact[:phone])
         @phone = @user.contact[:phone]
         if !GlobalPhone.validate(@phone)
@@ -48,7 +44,7 @@ class UsersController < ApplicationController
       end
 
       # Iff email addr given, make sure it's valid (but let continue)
-      if @user.contact[:email]
+      if !@user.contact[:email].blank?
         if !@user.mailgun_valid?(@user.contact[:email])
           flash[:warning] = "Note: we were unable to automatically verify your email address. Please check in your settings that it is correct."
         end
@@ -63,7 +59,15 @@ class UsersController < ApplicationController
 
       redirect_to @user
     else
-      # Put in a flash alert with the captcha error message
+      # If the captcha error is the only one, only give a captcha error.
+      if @user.errors.messages.except(:base).all? { |k,v| v.empty? }
+        error_message = @user.errors.messages[:base].first
+      else 
+        error_message = "Some of your input was invalid or missing." + 
+        "Those fields are highlighted in red. " +
+        "Please fill all fields appropriately and retry the captcha."
+      end
+      flash.now[:error] = error_message
       render 'new'
     end
   end
@@ -130,10 +134,7 @@ class UsersController < ApplicationController
     def edit_user_params
       params.require(:user).permit(
         :name,
-        # :is_provider,
         :password, :password_confirmation,
-        # gender_attributes:                [:identity, :trans, :cp,
-        #                                     :they, :their, :them],
         extended_profile_attributes:        [:profile_summary],
         contact_attributes:                 [:email, :phone],
         location_attributes:                [:c,:zip,:city,:state],

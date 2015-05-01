@@ -15,6 +15,8 @@ RSpec.feature "Sign In", :type => :feature do
         phone:               @phone))
     @signin_page = SignInPage.new
     @signin_page.load
+
+    @logged_in_text = "Signed in as #{@user.name}"
   end
 
   context "User navigates to the sign in page" do
@@ -31,14 +33,14 @@ RSpec.feature "Sign In", :type => :feature do
       @signin_page.username_field.set @email
       @signin_page.password_field.set @password
       @signin_page.signin_button.click
-      expect(page).to have_content "Signed in as #{@user.name}"
+      expect(page).to have_content @logged_in_text
     end
 
     it "signs in with correct phone and password" do
       @signin_page.username_field.set @phone
       @signin_page.password_field.set @password
       @signin_page.signin_button.click
-      expect(page).to have_content "Signed in as #{@user.name}"
+      expect(page).to have_content @logged_in_text
     end
   end
 
@@ -50,7 +52,7 @@ RSpec.feature "Sign In", :type => :feature do
     end
 
     it "does not successfully log in with the wrong password" do
-      expect(page).to_not have_content "Signed in as #{@user.name}"
+      expect(page).to_not have_content @logged_in_text
     end
 
     it "displays an appropriate error message if user does not exist" do
