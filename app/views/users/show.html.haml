@@ -39,7 +39,7 @@
               = "#{@user.location.city}, #{@user.location.state}"
         .pure-u-3-4#profile-right-column
           %h2 About #{@user.name}
-          - if @user.extended_profile[:profile_summary].blank?
+          - if @user.extended_profile.nil? || @user.extended_profile[:profile_summary].blank?
             - if current_user == @user
               You can edit your profile summary on
               = link_to "your settings page.", edit_user_path(current_user)
