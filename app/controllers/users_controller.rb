@@ -26,11 +26,15 @@ class UsersController < ApplicationController
 			@user.location[:city]+ " " + @user.location[:state])
 		if @geokitResult.success
 			@user.location[:c] = [@geokitResult.lng, @geokitResult.lat]
-		else
+		elsif session[:coordinates]
 		    @user.location[:c] = session[:coordinates].map &:to_f
+		else 
+			@user.location[:c] = [-41.3111, 72.9267]
 		end
-	else
-		@user.location[:c] = session[:coordinates].map &:to_f
+	elsif session[:coordinates]
+		@user.location[:c] = session[:coordinates].map &:to_f		
+	else 
+		@user.location[:c] = [-41.3111, 72.9267]
     end
     
     if verify_recaptcha(model: @user, message: "Please retry the captcha.") && @user.save
