@@ -27,7 +27,7 @@ class UsersController < ApplicationController
 		if @geokitResult.success
 			@user.location[:c] = [@geokitResult.lng, @geokitResult.lat]
 		else
-		    @user.locatation[:c] = session[:coordinates].map &:to_f
+		    @user.location[:c] = session[:coordinates].map &:to_f
 		end
 	else
 		@user.location[:c] = session[:coordinates].map &:to_f
