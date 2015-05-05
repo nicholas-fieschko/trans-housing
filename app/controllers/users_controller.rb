@@ -18,6 +18,7 @@ class UsersController < ApplicationController
     @user.build_buddy_resource
   end
 
+  # should move part of this to model
   def create
     @user = User.new(user_params)
 	session[:signup] = true
